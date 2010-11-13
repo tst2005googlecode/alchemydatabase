@@ -58,4 +58,5 @@ Y-Axis is requests/second .................. X-axis is number of rows returned<b
 [http://allinram.info/alsosql/PC_ALL_log_w_axisnames.png]
 <br/>
 <br/>
+==Benchmark FOUR==
 [http://groups.google.com/group/redisql-dev/msg/e24027e82e5c2094 Lua benchmarks] .. informal writeup
