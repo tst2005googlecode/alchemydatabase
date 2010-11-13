@@ -1,4 +1,4 @@
-  * Stable releases packed up into hearty [http://code.google.com/p/alchemy/downloads/list Code Tarballs]
+  * Stable releases packed up into hearty [http://code.google.com/p/alchemydatabase/downloads/list Code Tarballs]
   * Development branch code, fork at will via [http://github.com/JakSprats/Redisql Github]
 
 
