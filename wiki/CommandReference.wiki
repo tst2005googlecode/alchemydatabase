@@ -4,6 +4,7 @@
 Alchemy Database supports:
   # An OLTP optimised subset of SQL
   # Commands to transform NOSQL data to SQL and vice versa (dubbed MORPH Commands)
+  # embedded LUA w/ client-server functionality
   # ALL redis 2.0 commands<br/>
 
 Supported SQL data types are currently UNSIGNED INT and TEXT.<br/>
