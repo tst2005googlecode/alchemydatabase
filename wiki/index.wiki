@@ -6,7 +6,7 @@ The documentation is a work in progress.
   * Alchemy Database is VERY fast, scales well when joining, and runs in swap with style, check out [http://code.google.com/p/redisql/wiki/Benchmarks Benchmarks]
   * Ways to unleash the power of Alchemy Database, w/ examples in code :) check out [http://code.google.com/p/redisql/wiki/Examples Examples]
 
-  * Want to write a client, or extend an existing one, best to have a firm grasp of the [./Protocol Alchemy Database Protocol]
+  * Want to write a client, or extend an existing one, best to have a firm grasp of the [http://code.google.com/p/alchemydatabase/wiki/Protocol Alchemy Database Protocol]
 
   * Stable releases packed up into hearty [http://code.google.com/p/redisql/downloads/list Code Tarballs]
   * Development branch code, fork at will via [http://github.com/JakSprats/Redisql Github]
