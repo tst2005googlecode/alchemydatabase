@@ -1,5 +1,5 @@
-  * Stable releases packed up into hearty [http://code.google.com/p/redisql/downloads/list Code Tarballs]
+  * Stable releases packed up into hearty [http://code.google.com/p/alchemy/downloads/list Code Tarballs]
   * Development branch code, fork at will via [http://github.com/JakSprats/Redisql Github]
 
 
-  * Client source-code/git-repos, etc.. can be found [http://code.google.com/p/redisql/wiki/Clients here]
+  * Client source-code/git-repos, etc.. can be found [http://code.google.com/p/alchemydatabase/wiki/Clients here]
