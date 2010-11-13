@@ -1,0 +1,14 @@
+#labels Phase-Deploy
+==CLIENTS:==
+*FEATURED*
+  # redisql-rb: Ruby client http://github.com/JakSprats/redis-rb (fork of redis-rb)
+  # NODE.JS client http://github.com/JakSprats/node_Redisql (patch to node_redis) - actively maintained
+  # Predisql: PHP 5.3 CLIENT: http://github.com/JakSprats/predis (a fork of Predis)
+  # Embedded Lua: https://github.com/JakSprats/Redisql/blob/master/helper.lua
+  # Many more to come .... (redis supports 15+ and adding on Redisql is trivial)
+
+*More clients*
+  # Redisqlska: PHP Client http://github.com/JakSprats/Rediska (a fork of Rediska)
+  # Predisql: PHP 5.2 backport of this version is available [http://allinram.info/alsosql/Predis_v0.6.1-PHP5.2_ALSOSQL_ENABLED.tgz here]
+
+Information on the redis-functionality of packages can be found [http://code.google.com/p/redis/wiki/SupportedLanguages here]
