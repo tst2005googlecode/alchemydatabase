@@ -1,4 +1,3 @@
-#labels Featured
 = Alchemy Database's Documentation =
 
 The documentation is a work in progress.
