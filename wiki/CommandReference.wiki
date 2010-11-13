@@ -1,0 +1,209 @@
+#labels Featured
+= ALCHEMY DATABASE COMMANDS =
+
+Alchemy Database supports:
+  # An OLTP optimised subset of SQL
+  # Commands to transform NOSQL data to SQL and vice versa (dubbed MORPH Commands)
+  # ALL redis 2.0 commands<br/>
+
+Supported SQL data types are currently UNSIGNED INT and TEXT.<br/>
+FLOAT is coming very soon. Datetime (per second resolution) should be represented as a UNSIGNED INT<br/>
+TEXT uses variable length storage and compression. UNSIGNED INT stores data using 2 bytes when possible.
+
+==Supported SQL==
+
+===Create/Drop Operations:===
+  * {{{CREATE TABLE customer (id INT, group_id INT, name TEXT, phone text, age INT);}}}
+  * {{{CREATE INDEX cust_group_ind ON customer (group_id);}}}
+  * {{{DROP TABLE customer}}}
+  * {{{DROP INDEX cust_group_ind}}}
+  * {{{DESC customer}}} - provides detailed memory usage info
+  * {{{DUMP customer}}} - dumps the table to client
+  * {{{DUMP customer TO MYSQL}}} - dumps the table in mysql format
+
+===Single Row Operations===
+  * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’301-933-1891’,30);}}}
+  * {{{SELECT group_id, phone FROM customer WHERE id = 1}}}
+  * {{{DELETE FROM customer WHERE id = 1}}}
+  * {{{UPDATE customer SET phone = ‘703-933-1891’, group_id = 4 WHERE id = 1}}}
+  * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’301-933-1891’,30) RETURN SIZE;}}} - returns the size of the row, table, and indices
+
+===Index Operations===
+  * {{{SELECT group_id, phone FROM customer WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT x]}}}
+  * {{{SELECT group_id, phone FROM customer WHERE group_id IN (300, 301, 307, 311) [ORDER BY column LIMIT x]}}}
+  * _Introducing_ the *Non-Relational Range Query* - the IN() can contain ANY redis command that returns rows (e.g. LRANGE, SINTER, ZREVRANGE, etc...)
+  Get name and number of the 5 most recent active customers
+{{{
+SELECT name, phone FROM customer WHERE group_id IN (LRANGE L_IND_recent_calls 0 5) [ORDER BY column LIMIT x]
+}}}
+  * {{{DELETE FROM customer WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT x]}}}
+  * {{{UPDATE customer SET phone = ‘703-933-1891’, group_id = 4 WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT x]}}}
+ 
+
+===Joins===
+===Join via single Index===
+{{{
+SELECT customer.name, group.slogan
+ FROM customer, group
+ WHERE customer.group_id = group.id AND
+       group.id BETWEEN 300 AND = 400
+       [ORDER BY table.column LIMIT x]
+}}}
+
+===Multi Index Join w/ Non-Relational IN() Clause===
+Get patient billing info for patients who got both treatment and prescriptions
+{{{
+SELECT patient.name, info.address, bill.amount
+FROM patient, info, bill
+WHERE patient.id = bill.patient_id AND
+      patient.id = info.patient_id AND
+      patient.id IN (SINTER treatment_set prescription_set)
+      [ORDER BY table.column LIMIT x]
+}}}
+
+===Create table from Join===
+{{{
+SELECT customer.name, group.slogan
+FROM customer, group
+WHERE customer.group_id = group.id AND
+      group.id IN (300, 301, 307, 311)
+STORE INSERT new_table
+}}}
+
+===Create table from Range Query===
+{{{
+SELECT *
+FROM customer
+WHERE group_id BETWEEN 300 AND = 400
+STORE INSERT new_table
+}}}
+An alternate syntax to Create Table from Range Query
+{{{
+CREATE TABLE new_table
+AS SELECT * FROM customer WHERE group_id BETWEEN 300 AND = 400
+}}}
+
+===Full Table Scan===
+Find unindexed data – _not recommended, should be avoided when possible_
+{{{
+SCANSELECT id, phone FROM customer WHERE name = ‘bill’;
+}}}
+Full Table Scan w/ Range Query
+{{{
+SCANSELECT id, group, phone FROM customer WHERE age BETWEEN 18 AND 25
+}}}
+  _the SCANSELECT command makes it impossible to accidentally do a full table scan w/ SELECT_
+<br/>
+==MORPH Commands==
+===Normalise redis keys into a SQL Table===
+  * NORM wildcard `[`wildcard2,wildcard3`]`
+  All redis-keys matching "wildcard" are normalised into a SQL table
+{{{
+NORM "user:*"
+}}}
+      # take ALL string KEYS matching the wildcard "user:`*`"
+      # create column_names using the pattern "user:`*`:column_name"
+      # the pk will be the part matching "`*`"
+      # put 1-3 together into a single Alchemy Database table (w/ many rows) named "user".
+      # an example in PHP can be found [http://github.com/JakSprats/predis/blob/master/examples/pop_norm.php here]
+  Star schema normalisation: All redis-keys matching "user_address:`*`,user_payment:`*`,user:`*`" are normalised into the SQL tables "user_address,user_payment,user" respectively
+{{{
+NORM "user:*" payment,address
+}}}
+      # This will create the Alchemy Database tables "user_address,user_payment,user" from
+      # all keys matching the "user_address:`*`,user_payment:`*`,user:`*`" wildcards (in that order)
+      # creating columns automatically (using the patterns "user_address:`*`:column, user_payment:`*`:column, user:`*`:column")
+      # an example in PHP can be found [http://github.com/JakSprats/predis/blob/master/examples/pop_norm.php here]
+
+===Store the results of an Alsoql SELECT into a redis datastructure===
+  * SELECT ..... STORE REDIS_COMMAND
+{{{
+SELECT name, salary
+FROM employee
+WHERE city = "san Francisco"
+STORE HSET SanFranWorker
+}}}
+      # create a redis Hash Table named {{{SanFranWorker}}} with all the employees from city "San Francisco"
+      # the values returned from the SELECTed column "name" will be the Hash Table's keys
+      # the values returned from the SELECTed column "salary" will be the Hash Table's values
+  Given the SQL table {{{CREATE TABLE actionlist (id INT PRIMARY KEY, user_id INT, timestamp INT, action TEXT)}}}<br/>
+  The {{{$}}} on the end of {{{user_action_zset$}}} has a special functionality
+{{{
+SELECT user_id, timestamp, action
+FROM actionlist
+WHERE id BETWEEN 1 AND 20000
+STORE ZADD user_action_zset$
+}}}
+    # for each user_id, a distinct ZSET will be created named "user_action_zset:1, user_action_zset:2", etc...
+    # each row will execute the command {{{ZADD user_action_zset${user_id} timestamp action}}}
+    # afterwards the command {{{ZREVRANGE user_action_zset:1 0 1}}} would return user 1's last two actions
+    # this functionality is demonstrated in this [http://github.com/JakSprats/redis-rb/blob/master/examples/action_list.rb Ruby script]
+
+===Create a Alchemy Database table from the results of a redis command===
+  * CREATE TABLE table AS REDIS_COMMAND
+  NOTE: the ZSET tweets uses timestamp as its score
+{{{
+CREATE TABLE yesterdays_tweets AS ZRANGEBYSCORE tweets $two_days_ago $yesterday
+}}}
+      # take the members of the ZSET from two_days_ago until yesterday
+      # store them in a Alchemy Database table named "yesterdays_tweets" (pk will be auto incremented INT)
+      # an example in PHP can be found in the example script [http://github.com/JakSprats/predis/blob/master/examples/tweet/tweet_archiver.php here] that calls the ZSetCache class [http://github.com/JakSprats/predis/blob/master/examples/ZsetCache.php here]
+
+===Denormalise a Alchemy Database table into one redis hash-table per table row===
+  * DENORM table denorm_wildcard
+{{{
+DENORM user "user:*"
+}}}
+      # denormalise the "user" table into an individual hash-table per row, named "user:pk" (e.g. user:1, user:2)
+      # the keys of these hashes will be the column-names of the "user" table.
+  this is a simple mechanism to "Go Schemaless", an example script in PHP showcasing this can be found [http://github.com/JakSprats/predis/blob/master/examples/schemaless.php here]
+
+<br/>
+==LUA Command==
+Alchemy Database has embedded [http://www.lua.org/about.html LUA] <br/>
+[http://www.ibm.com/developerworks/linux/library/l-embed-lua/index.html IBM's lua description]: _The Lua programming language is a small scripting language specifically designed to be embedded in other programs. Lua’s C API allows exceptionally clean and simple code both to call Lua from C, and to call C from Lua”_<br/>
+Alchemy Database has embedded Lua in its C-server and C in its embedded Lua :)<br/>
+The speed of embedded LUA commands in Alchemy Database is impressive: [http://groups.google.com/group/redisql-dev/msg/e24027e82e5c2094 benchmark]<br/>
+
+===Simple LUA===
+{{{
+LUA "x=45;return x;"
+}}}
+===embedded LUA "client()" function===
+The lua function "client()" will call the Alchemy Database server internally as if it were a client call.<br/>
+Command to set a user's last_login and return his status
+{{{
+LUA "client('SET','user:123:last_login',1289597410); return client('GET', 'user:123:status');"
+}}}
+===helper.lua===
+The file [https://github.com/JakSprats/Redisql/blob/master/helper.lua helper.lua] contains a full Alchemy Database client library, defining simple versions of Alchemy Database commands: e.g. get(), set(), zadd(), hset(), create_table(), select(), update(), norm()<br/>
+When helper.lua's functions have been loaded into Alchemy Database, the above command could be simplified as 
+{{{
+LUA "set('user:123:last_login',1289597410); return get('user:123:status');"
+}}}
+Loading helper.lua into the Alchemy Database server can be done either by specifiying the "luafilename" in the config file "redisql.conf" or by the following command
+{{{
+./redisql-cli CONFIG SET luafilename helper.lua
+}}}
+The "CONFIG SET luafilename" also provides a simple way to modify lua functions in Alchemy Database w/o server restarts. Modify the commands in helper.lua and then load them, this will *reset Lua's state* and the new functions will be in place.<br/>
+===Global Lua Variable Server===
+This form of embedding Lua extends Alchemy Database to be a global lua variable server. Lua variables have global scope, so if one client sets them another can read them.<br/>
+[http://lua-users.org/wiki/TablesTutorial Lua tables] are a very flexible and useful datatype in Lua<br/>
+Here is a command sequence from different clients accessing the same Lua table:
+{{{
+LUA "user_123_t = { 1,1,2,3,5,8,13 }; return 'SET lua table';"
+LUA "return user_123_t[4];"
+}}}
+NOTE: for those requiring enhanced Lua performance, Alchemy Database's Makefile has an option (and instructions) to link to libluajit instead of liblua.
+<br/>
+==REDIS Commands==
+redis supports commands to deal with many data structures, including (strings, sets, lists, sorted-sets, and hash tables) - [http://code.google.com/p/redis/wiki/CommandReference full list]<br/>
+redis project home page *[http://code.google.com/p/redis/ here]*<br/>
+Extensive documentation on redis commands can be found [http://code.google.com/p/redis/wiki/CommandReference here]<br/>
+<br/>
+The following is an IFRAME of redis' command reference page, complete w/ links describing each command<br/>
+<wiki:gadget url="http://www.allinram.info/alsosql/gadget.xml"  border="0" width="1200" height="4050"/> 
+
+===SQL NOTES===
+  # Column ordering in INSERT statements not yet supported
+  # Table aliasing in JOIN statements not yet supported
