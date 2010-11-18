@@ -7,9 +7,11 @@ Alchemy Database supports:
   # embedded LUA w/ client-server functionality
   # ALL redis 2.0 commands<br/>
 
-Supported SQL data types are currently UNSIGNED INT and TEXT.<br/>
-FLOAT is coming very soon. Datetime (per second resolution) should be represented as a UNSIGNED INT<br/>
-TEXT uses variable length storage and compression. UNSIGNED INT stores data using 2 bytes when possible.
+Supported SQL data types are currently UNSIGNED INT, TEXT, and FLOAT.<br/>
+Datetime should be represented as a UNSIGNED INT or FLOAT<br/>
+TEXT uses variable length storage and compression and can be substituted for any VARCHAR() or CHAR().<br/>
+UNSIGNED INT stores data using 2 bytes when possible.
+
 
 ==Supported SQL==
 
