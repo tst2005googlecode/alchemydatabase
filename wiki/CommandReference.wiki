@@ -37,7 +37,7 @@ UNSIGNED INT stores data using 2 bytes when possible.
   * _Introducing_ the *Non-Relational Range Query* - the IN() can contain ANY redis command that returns rows (e.g. LRANGE, SINTER, ZREVRANGE, etc...)
   Get name and number of the 5 most recent active customers
 {{{
-SELECT name, phone FROM customer WHERE group_id IN (LRANGE L_IND_recent_calls 0 5) [ORDER BY column LIMIT n OFFSET m]
+SELECT name, phone FROM customer WHERE group_id IN ($LRANGE L_IND_recent_calls 0 5) [ORDER BY column LIMIT n OFFSET m]
 }}}
   * {{{DELETE FROM customer WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
   * {{{UPDATE customer SET phone = ‘703-933-1891’, group_id = 4 WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
@@ -60,7 +60,7 @@ SELECT patient.name, info.address, bill.amount
 FROM patient, info, bill
 WHERE patient.id = bill.patient_id AND
       patient.id = info.patient_id AND
-      patient.id IN (SINTER treatment_set prescription_set)
+      patient.id IN ($SINTER treatment_set prescription_set)
       [ORDER BY table.column LIMIT n OFFSET m]
 }}}
 
