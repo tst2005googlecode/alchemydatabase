@@ -66,21 +66,14 @@ WHERE patient.id = bill.patient_id AND
 
 ===Create table from Join===
 {{{
-SELECT customer.name, group.slogan
+CREATE TABLE new_table
+AS SELECT customer.name, group.slogan
 FROM customer, group
 WHERE customer.group_id = group.id AND
       group.id IN (300, 301, 307, 311)
-STORE INSERT new_table
 }}}
 
 ===Create table from Range Query===
-{{{
-SELECT *
-FROM customer
-WHERE group_id BETWEEN 300 AND = 400
-STORE INSERT new_table
-}}}
-An alternate syntax to Create Table from Range Query
 {{{
 CREATE TABLE new_table
 AS SELECT * FROM customer WHERE group_id BETWEEN 300 AND = 400
