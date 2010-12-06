@@ -117,7 +117,7 @@ Ported libraries for Alchemy Database include
   # Embedded Lua: https://github.com/JakSprats/Redisql/blob/master/helper.lua
 
 ==ENTIRE PROTOCOL==
-[http://code.google.com/p/alchemydatabase/wiki/EntireProtocol The Entire Protocol]
+A link to [http://code.google.com/p/alchemydatabase/wiki/EntireProtocol the Entire Protocol] illustrated though examples.
 
 ===NOTES===
   * in the future, the Ruby and PHP clients will follow the example of the Node.js cilents and become very small patchs that are 100% on top of the redis clients.
