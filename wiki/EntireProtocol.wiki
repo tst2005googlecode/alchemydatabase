@@ -7,6 +7,7 @@ Bash code
   $CLI INSERT INTO foo VALUES \(1,1.1111111,one\)
   $CLI INSERT INTO foo VALUES \(2,2.2222222,two\)
   $CLI SELECT "*" FROM foo WHERE "id = 1"
+  $CLI SCANSELECT "*" FROM foo 
   $CLI UPDATE foo SET val=9.999999 WHERE "id = 1"
   $CLI DELETE FROM foo WHERE "id = 2"
   $CLI DROP INDEX foo_val_index
@@ -21,6 +22,8 @@ OK
 OK
 OK
 1. "1,1.111111045,one"
+1. "1,1.111111045,one"
+2. "2,2.22222209,two"
 (integer) 1
 (integer) 1
 (integer) 1
@@ -110,6 +113,22 @@ id = 1
 *1
 $17
 1,1.111111045,one
+
+*4
+$10
+SCANSELECT
+$1
+*
+$4
+FROM
+$3
+foo
+
+*2
+$17
+1,1.111111045,one
+$16
+2,2.22222209,two
 
 *6
 $6
