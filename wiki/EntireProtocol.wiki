@@ -1,5 +1,5 @@
-== SQL PROTOCOL ==
-Bash code
+== SQL EXAMPLE ==
+Bash code:
 {{{
   CLI="./redisql-server"
   $CLI CREATE TABLE foo "(id INT, val FLOAT, name TEXT)"
@@ -197,8 +197,8 @@ $17
 1,9.999999046,one
 }}}
 
-== LUA PROTOCOL ==
-Bash commands: 
+== LUA EXAMPLE ==
+Bash code:
 {{{
   CLI="./redisql-server"
   $CLI CONFIG SET luafilename helper.lua
@@ -234,4 +234,121 @@ return select('*','foo','id = 1');
 
 $17
 1,9.999999046,one
+}}}
+
+== NORMALISATION EXAMPLE ==
+Bash code:
+{{{
+  CLI="./redisql-server"
+  $CLI SET user:1:name bill
+  $CLI SET user:1:age 33
+  $CLI SET user:1:address:city "capitol city"
+
+  $CLI SET user:2:age 22
+  $CLI SET user:2:name jane
+  $CLI SET user:2:address:city "houston"
+
+  $CLI NORM user address
+  $CLI denorm user "user:*"
+}}}
+
+Returns:
+{{{
+OK
+OK
+OK
+OK
+OK
+OK
+1. "CREATE TABLE user_address (pk INT,city TEXT)"
+2. "CREATE TABLE user (pk INT,age INT,name TEXT)"
+(integer) 2
+}}}
+
+Line Protocol Request then Response:
+{{{
+*3
+$3
+SET
+$11
+user:1:name
+$4
+bill
+
++OK
+
+*3
+$3
+SET
+$10
+user:1:age
+$2
+33
+
++OK
+
+*3
+$3
+SET
+$19
+user:1:address:city
+$12
+capitol city
+
++OK
+
+*3
+$3
+SET
+$10
+user:2:age
+$2
+22
+
++OK
+
+*3
+$3
+SET
+$11
+user:2:name
+$4
+jane
+
++OK
+
+*3
+$3
+SET
+$19
+user:2:address:city
+$7
+houston
+
++OK
+
+*3
+$4
+NORM
+$4
+user
+$7
+address
+
+*2
+$44
+CREATE TABLE user_address (pk INT,city TEXT)
+$44
+CREATE TABLE user (pk INT,age INT,name TEXT)
+
+*3
+$6
+denorm
+$4
+user
+$6
+user:*
+
+:2
+
 }}}
