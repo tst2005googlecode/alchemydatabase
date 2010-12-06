@@ -1,0 +1,36 @@
+== SQL PROTOCOL ==
+Bash code
+{{{
+  CLI=./redisql-server"
+  $CLI CREATE TABLE foo "(id INT, val FLOAT, name TEXT)"
+  $CLI CREATE INDEX foo_val_index ON foo \(val\)
+  $CLI INSERT INTO foo VALUES \(1,1.1111111,one\)
+  $CLI INSERT INTO foo VALUES \(2,2.2222222,two\)
+  $CLI SELECT "*" FROM foo WHERE "id = 1"
+  $CLI UPDATE foo SET val=9.999999 WHERE "id = 1"
+  $CLI DELETE FROM foo WHERE "id = 2"
+  $CLI DROP INDEX foo_val_index
+  $CLI DESC foo
+  $CLI DUMP foo
+}}}
+
+Returns:
+{{{
+OK
+OK
+OK
+OK
+1. "1,1.111111045,one"
+(integer) 1
+(integer) 1
+(integer) 1
+1. "id | INT | INDEX: foo:id:index [BYTES: 0]"
+2. "val | FLOAT "
+3. "name | TEXT "
+4. "INFO: KEYS: [NUM: 1 MIN: 1 MAX: 1] BYTES: [BT-DATA: 13 BT-TOTAL: 4158 INDEX: 0]"
+1. "1,9.999999046,one"
+}}}
+
+Line Protocol Request:
+{{{
+}}}
