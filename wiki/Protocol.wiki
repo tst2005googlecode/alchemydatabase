@@ -116,6 +116,9 @@ Ported libraries for Alchemy Database include
   # Predisql: PHP 5.3 CLIENT: http://github.com/JakSprats/predis (a fork of Predis)
   # Embedded Lua: https://github.com/JakSprats/Redisql/blob/master/helper.lua
 
+==ENTIRE PROTOCOL==
+[http://code.google.com/p/alchemydatabase/wiki/EntireProtocol The Entire Protocol]
+
 ===NOTES===
   * in the future, the Ruby and PHP clients will follow the example of the Node.js cilents and become very small patchs that are 100% on top of the redis clients.
   * *SELECT* is used by both redis (select DB) and Alchemy Database (select `*` from table where id = 1) in different capacities. Clients must either override redis' default SELECT functionality to accept either 1 (e.g. select DB) or 5 arguments (e.g. select `*` from table where id = 1) OR come up w/ a two different commands for redis' and Alchemy Database' select functionality (the former is recommended, but requires overriding and is more complex)
