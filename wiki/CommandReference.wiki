@@ -34,16 +34,18 @@ UNSIGNED INT stores data using 2 bytes when possible.
 ===Index Operations===
   * {{{SELECT group_id, phone FROM customer WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
   * {{{SELECT group_id, phone FROM customer WHERE group_id IN (300, 301, 307, 311) [ORDER BY column LIMIT n OFFSET m]}}}
+  * {{{DELETE FROM customer WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
+  * {{{UPDATE customer SET phone = ‘703-933-1891’, group_id = 4 WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
   * _Introducing_ the *Non-Relational Range Query* - the IN() can contain ANY redis command that returns rows (e.g. LRANGE, SINTER, ZREVRANGE, etc...)
   Get name and number of the 5 most recent active customers
 {{{
 SELECT name, phone FROM customer WHERE group_id IN ($LRANGE L_IND_recent_calls 0 5) [ORDER BY column LIMIT n OFFSET m]
-}}}
-  * {{{DELETE FROM customer WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
-  * {{{UPDATE customer SET phone = ‘703-933-1891’, group_id = 4 WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
- 
+}}} 
+===Update Expressions===
+  * {{{UPDATE customer SET phone = phone || ' ext 912', group_id = group_id * 4, age = age +1 WHERE id = 1}}}
+  UPDATE expressions currently support the following functionalities {{{(+=, -=, *=, /=, %=, ^=, ||=)}}}
 
-===Joins===
+===JOINS===
 ===Join via single Index===
 {{{
 SELECT customer.name, group.slogan
