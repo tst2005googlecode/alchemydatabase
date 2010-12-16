@@ -1,14 +1,15 @@
 #labels Phase-Deploy
 ==CLIENTS:==
 *FEATURED*
-  # redisql-rb: Ruby client http://github.com/JakSprats/redis-rb (fork of redis-rb)
+  # redis-rb: Ruby client http://github.com/JakSprats/redis-rb (fork of redis-rb)
   # NODE.JS client http://github.com/JakSprats/node_Redisql (patch to node_redis) - actively maintained
-  # Predisql: PHP 5.3 CLIENT: http://github.com/JakSprats/predis (a fork of Predis)
-  # Embedded Lua: https://github.com/JakSprats/Redisql/blob/master/helper.lua
-  # Many more to come .... (redis supports 15+ and adding on Redisql is trivial)
+  # Predis: PHP 5.3 CLIENT: http://github.com/JakSprats/predis (a fork of Predis)
+  # Lua client: https://github.com/JakSprats/redis-lua
+  # Embedded Lua: https://github.com/JakSprats/Redisql/blob/master/test/alchemy.lua
+  # Many more to come (Python,Java,etc..).... (redis supports 15+ and adding on Alchemy Database is trivial, it is done via patches, forking is not needed)
 
 *More clients*
-  # Redisqlska: PHP Client http://github.com/JakSprats/Rediska (a fork of Rediska)
-  # Predisql: PHP 5.2 backport of this version is available [http://allinram.info/alsosql/Predis_v0.6.1-PHP5.2_ALSOSQL_ENABLED.tgz here]
+  # Rediska: PHP Client http://github.com/JakSprats/Rediska (a fork of Rediska)
+  # Predis: PHP 5.2 backport of this version is available [http://allinram.info/alsosql/Predis_v0.6.1-PHP5.2_ALSOSQL_ENABLED.tgz here]
 
 Information on the redis-functionality of packages can be found [http://code.google.com/p/redis/wiki/SupportedLanguages here]
