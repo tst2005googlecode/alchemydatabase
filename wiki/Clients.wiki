@@ -1,13 +1,14 @@
 #labels Phase-Deploy
 ==CLIENTS:==
 *FEATURED*
-  # redis-rb: Ruby client http://github.com/JakSprats/redis-rb
-  # jedis: Java Client https://github.com/JakSprats/jedis 
-  # NODE.JS client http://github.com/JakSprats/node_Redisql (patch to node_redis) 
-  # Predis: PHP 5.3 CLIENT: http://github.com/JakSprats/predis
+  # Ruby client: http://github.com/JakSprats/redis-rb
+  # Java Client: https://github.com/JakSprats/jedis 
+  # Python Client: https://github.com/JakSprats/redis-py
+  # Node.js client: http://github.com/JakSprats/node_Redisql (patch to node_redis) 
+  # PHP Client: http://github.com/JakSprats/predis
   # Lua client: https://github.com/JakSprats/redis-lua
   # Embedded Lua: https://github.com/JakSprats/Redisql/blob/master/test/alchemy.lua
-  # Many more to come (Python,etc..).... (redis supports 15+ and adding on Alchemy Database is trivial, it is done via patches, forking is not needed)
+  # Many more to come .... (redis supports 15+ and adding on Alchemy Database is trivial, it is done via patches, forking is not needed)
 
 *More clients*
   # Rediska: PHP Client http://github.com/JakSprats/Rediska (a fork of Rediska)
