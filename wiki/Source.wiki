@@ -2,4 +2,4 @@
   * Development branch code, fork at will via [http://github.com/JakSprats/Redisql Github]
 
 
-  * Client source-code/git-repos, etc.. can be found [http://code.google.com/p/alchemydatabase/wiki/Clients here]
+  * [http://code.google.com/p/alchemydatabase/wiki/Clients Client] source-code-tarballs + git-repo-links
