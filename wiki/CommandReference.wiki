@@ -45,6 +45,11 @@ SELECT name, phone FROM customer WHERE group_id IN ($LRANGE L_IND_recent_calls 0
   * {{{UPDATE customer SET phone = phone || ' ext 912', group_id = group_id * 4, age = age +1 WHERE id = 1}}}
   UPDATE expressions currently support the following functionalities {{{(+=, -=, *=, /=, %=, ^=, ||=)}}}
 
+===Where Clause Grammar===
+{{{
+WHERE {[pk/fk=X],[pk/fk BETWEEN X AND Y],[pk/fk IN (X,Y,Z)]} {AND [column=X],[column!=X],[column<X],[column<=X],[column>X],[column>=X],[column IN (X,Y,Z)]}*
+}}}
+
 ===JOINS===
 ===Join via single Index===
 {{{
