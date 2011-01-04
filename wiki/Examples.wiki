@@ -3,7 +3,6 @@
 
 *[http://code.google.com/p/alchemydatabase/wiki/Examples#MYSQL_EXAMPLES Jump to examples for Mysql users]*<br/>
 *[http://code.google.com/p/alchemydatabase/wiki/Examples#REDIS_EXAMPLES Jump to examples for Redis users]*<br/>
-*[http://code.google.com/p/alchemydatabase/wiki/Examples#INSWAP_EXAMPLE Jump to examples for InSwapMode example]*<br/>
 <br/>
 
 Alchemy Database provides a single home for your SQL and NOSQL data. Its event driven fast and you can effectively use all of your RAM (even go into swap if you arent scared) to store your data and have it retrieved consistently at RAM speed<br/>
@@ -98,5 +97,3 @@ With this ZSetCache class, you need only to define your own achiving criterion a
 The approach: cache-old-data-to-disk is a fantastic way to ensure your In Memory Database stays well within its RAM's size and can also be used to avoid spending money on hardware by avoiding the need to scale horizontally.
 <br/>
 <br/>
-== INSWAP EXAMPLE ==
-*coming soon*
