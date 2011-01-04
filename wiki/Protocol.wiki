@@ -4,12 +4,11 @@
 Alchemy Database uses the NOSQL data-store redis' client/server protocol. Redis has a very simple, powerful, and efficient ASCII protocol for transferring data via TCP, UDP, and Unix Domain Sockets.
 <br/>
 
-Redis protocol is specified [http://code.google.com/p/redis/wiki/ProtocolSpecification here]. This is the starting point for learning about the protocol, and this is where the protocol is defined.
+Redis protocol is specified [http://redis.io/topics/protocol here]. This is the starting point for learning about the protocol, and this is where the protocol is defined.
 <br/>
 
 Alchemy Database's commands basically have the same syntax, except SQL Keywords are required, so clients need to insert them where appropriate.<br/>
 
-Alchemy Database requests use redis' [http://code.google.com/p/redis/wiki/ProtocolSpecification#The_new_unified_request_protocol unified request protocol].<br/>
 Alchemy Database responses are 100% redis compliant (e.g. CREATE TABLE -> +OK, SELECT `*` FROM table -> Multi-Bulk)
 
 ==List of number of arguments and placement of SQL keywords for Alchemy Database commands==
@@ -24,12 +23,12 @@ Alchemy Database responses are 100% redis compliant (e.g. CREATE TABLE -> +OK, S
   # UPDATE has 6 arguments "UPDATE table SET col1=val1,col2=val2,,, WHERE where_clause"
   # DELETE has 5 arguments "DELETE FROM table WHERE where_clause"
   # SCANSELECT has 6 arguments "SCANSELECT column1,column2,,, FROM tbl WHERE where_clause"
-  # NORM has 2 arguments "NORM main_wildcard secondary_wildcard,,,," - 2nd is optional
   # DENORM has 2 arguments "DENORM table_name main_wildcard"
   # LUA has 1 arguments "LUA lua_cmd"
  
 Optional Syntaxes
   # DUMP can also dump to Mysql format, where it has 5 aguments "DUMP table_name TO MYSQL mysql_table_name"
+  # DUMP can also dump to File, where it has 5 aguments "DUMP table_name TO FILE /home/me/table.txt"
   # SCANSELECT can also have 4 arguments when it has no where-clause "SCANSELECT column1,column2,,, FROM tbl"
 
 
@@ -108,7 +107,7 @@ $6
 id = 7
 }}}
 
-This redis protocol has been implemented [http://code.google.com/p/redis/wiki/SupportedLanguages in over 15 languages in redis], so supporting Alchemy Database ONLY requires adding 14 commands to these clients, as Alchemy Database has not introduced any changes to the core protocol.<br/>
+This redis protocol has been implemented [http://redis.io/clients in over 20 languages in redis], so supporting Alchemy Database ONLY requires adding 14 commands to these clients, as Alchemy Database has not introduced any changes to the core protocol.<br/>
 
 Ported libraries for Alchemy Database include 
   # Ruby client: http://github.com/JakSprats/redis-rb
