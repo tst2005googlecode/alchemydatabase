@@ -9,7 +9,7 @@
   # PHP Client: http://github.com/JakSprats/predis
   # Lua client: https://github.com/JakSprats/redis-lua
   # Embedded Lua: https://github.com/JakSprats/Redisql/blob/master/test/alchemy.lua
-  # Many more to come .... (redis supports 15+ and adding on Alchemy Database is trivial, it is done via patches, forking is not needed)
+  # Many more to come .... (redis supports 20+ and adding on Alchemy Database is trivial, it is done via patches, forking is not needed)
 
 *More clients*
   # Rediska: PHP Client http://github.com/JakSprats/Rediska (a fork of Rediska)
