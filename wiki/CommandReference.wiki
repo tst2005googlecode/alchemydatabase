@@ -194,7 +194,7 @@ Here is a command sequence from different clients accessing the same Lua table:
 LUA "user_123_t = { 1,1,2,3,5,8,13 }; return 'SET lua table';"
 LUA "return user_123_t[4];"
 }}}
-NOTE: for those requiring enhanced Lua performance, Alchemy Database's Makefile has an option (and instructions) to link to libluajit instead of liblua.
+NOTE: for those requiring enhanced Lua performance, Alchemy Database's [https://github.com/JakSprats/Redisql/blob/master/Makefile#L14-23 Makefile] has an option (and instructions) to link to libluajit instead of liblua.
 <br/>
 ==REDIS Commands==
 redis supports commands to deal with many data structures, including (strings, sets, lists, sorted-sets, and hash tables) - [http://code.google.com/p/redis/wiki/CommandReference full list]<br/>
