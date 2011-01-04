@@ -28,7 +28,7 @@ Also note that joining a Mysql table w/ a Alchemy Database during runtime is not
 
 === MYSQL EXAMPLE TWO: Try NOSQL out ===
 Curious about NOSQL? Want to try it out w/o the risk of data lock in, use Alchemy Database. Alchemy Database provides mechanisms to get your data into any Alchemy Database/redis data-structure and get it back out, there is no risk of product data lock in. To go schemaless:<br/>
-  # export you mysql table into Alchemy Database (w/ simple [http://github.com/JakSprats/predis/blob/master/examples/schemaless.php scripts]), 
+  # export your mysql table into Alchemy Database (w/ simple [http://github.com/JakSprats/predis/blob/master/examples/schemaless.php scripts]), 
   # denormalise Alchemy Database's tables into ANY redis datastructure (LIST,SET,ZSET,HASH) using the SELECT STORE syntax, which provides the possibilities to break up tables any way you want
 {{{
 SELECT ....
