@@ -92,26 +92,6 @@ SCANSELECT id, group, phone FROM customer WHERE age BETWEEN 18 AND 25
   _the SCANSELECT command makes it impossible to accidentally do a full table scan w/ SELECT_
 <br/>
 ==MORPH Commands==
-===Normalise redis keys into a SQL Table===
-  * NORM wildcard `[`wildcard2,wildcard3`]`
-  All redis-keys matching "wildcard" are normalised into a SQL table
-{{{
-NORM "user:*"
-}}}
-      # take ALL string KEYS matching the wildcard "user:`*`"
-      # create column_names using the pattern "user:`*`:column_name"
-      # the pk will be the part matching "`*`"
-      # put 1-3 together into a single Alchemy Database table (w/ many rows) named "user".
-      # an example in PHP can be found [http://github.com/JakSprats/predis/blob/master/examples/pop_norm.php here]
-  Star schema normalisation: All redis-keys matching "user_address:`*`,user_payment:`*`,user:`*`" are normalised into the SQL tables "user_address,user_payment,user" respectively
-{{{
-NORM "user:*" payment,address
-}}}
-      # This will create the Alchemy Database tables "user_address,user_payment,user" from
-      # all keys matching the "user_address:`*`,user_payment:`*`,user:`*`" wildcards (in that order)
-      # creating columns automatically (using the patterns "user_address:`*`:column, user_payment:`*`:column, user:`*`:column")
-      # an example in PHP can be found [http://github.com/JakSprats/predis/blob/master/examples/pop_norm.php here]
-
 ===Store the results of an Alsoql SELECT into a redis datastructure===
   * SELECT ..... STORE REDIS_COMMAND
 {{{
