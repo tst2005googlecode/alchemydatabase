@@ -168,17 +168,17 @@ Command to set a user's last_login and return his status
 {{{
 LUA "client('SET','user:123:last_login',1289597410); return client('GET', 'user:123:status');"
 }}}
-===helper.lua===
-The file [https://github.com/JakSprats/Redisql/blob/master/helper.lua helper.lua] contains a full Alchemy Database client library, defining simple versions of Alchemy Database commands: e.g. get(), set(), zadd(), hset(), create_table(), select(), update(), norm()<br/>
-When helper.lua's functions have been loaded into Alchemy Database, the above command could be simplified as 
+===alchemy.lua===
+The file [https://github.com/JakSprats/Redisql/blob/master/test/alchemy.lua alchemy.lua] contains a full Alchemy Database client library, defining simple versions of Alchemy Database commands: e.g. get(), set(), zadd(), hset(), create_table(), select(), update(), norm()<br/>
+When alchemy.lua's functions have been loaded into Alchemy Database, the above command could be simplified as 
 {{{
 LUA "set('user:123:last_login',1289597410); return get('user:123:status');"
 }}}
-Loading helper.lua into the Alchemy Database server can be done either by specifiying the "luafilename" in the config file "redisql.conf" or by the following command
+Loading alchmey.lua into the Alchemy Database server can be done either by specifiying the "luafilename" in the config file "redisql.conf" or by the following command
 {{{
-./redisql-cli CONFIG SET luafilename helper.lua
+./redisql-cli CONFIG SET luafilename test/alchemy.lua
 }}}
-The "CONFIG SET luafilename" also provides a simple way to modify lua functions in Alchemy Database w/o server restarts. Modify the commands in helper.lua and then load them, this will *reset Lua's state* and the new functions will be in place.<br/>
+The "CONFIG SET luafilename" also provides a simple way to modify lua functions in Alchemy Database w/o server restarts. Modify the commands in alchemy.lua and then load them, this will *reset Lua's state* and the new functions will be in place.<br/>
 ===Global Lua Variable Server===
 This form of embedding Lua extends Alchemy Database to be a global lua variable server. Lua variables have global scope, so if one client sets them another can read them.<br/>
 [http://lua-users.org/wiki/TablesTutorial Lua tables] are a very flexible and useful datatype in Lua<br/>
