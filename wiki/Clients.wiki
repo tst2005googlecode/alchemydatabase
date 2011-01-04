@@ -16,3 +16,4 @@
   # Predis: PHP 5.2 backport of this version is available [http://allinram.info/alsosql/Predis_v0.6.1-PHP5.2_ALSOSQL_ENABLED.tgz here]
 
 Information on the redis-functionality of packages can be found [http://redis.io/clients here]
+Information on how to write AlchemyDB clients can be found [http://code.google.com/p/alchemydatabase/wiki/Protocol here]
