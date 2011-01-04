@@ -90,6 +90,22 @@ Full Table Scan w/ Range Query
 SCANSELECT id, group, phone FROM customer WHERE age BETWEEN 18 AND 25
 }}}
   _the SCANSELECT command makes it impossible to accidentally do a full table scan w/ SELECT_
+
+===Alchemy Cursors===
+Since Alchemy is a *single threaded datastore*, long running queries block other queries during their execution.<br/>
+For this reason Alchemy has cursors, similar (but simpler) to SQL cursors.<br/>
+Alchemy Cursors use the construct _ORDER BY pk/fk LIMIT X OFFSET *variable*_ to store cursor state in _*variable*_ between cursor calls.<br/>
+<br/>
+An example of a long running update could be 
+{{{
+UPDATE tbl SET col=X WHERE fk = 1
+}}}
+which can be simply transformed into a cursor by repeatedly calling: 
+{{{
+UPDATE tbl SET col=X WHERE fk = 1 ORDER BY fk LIMIT 1000 OFFSET cursor_upd8tbl
+}}}
+until the return value is less than _1000_ which signals the final row matching _fk = 1_ has been updated.
+<br/>
 <br/>
 ==MORPH Commands==
 ===Store the results of an Alsoql SELECT into a redis datastructure===
