@@ -96,15 +96,16 @@ Since Alchemy is a *single threaded datastore*, long running queries block other
 For this reason Alchemy has cursors, similar (but simpler) to SQL cursors.<br/>
 Alchemy Cursors use the construct _ORDER BY pk/fk LIMIT X OFFSET *variable*_ to store cursor state in _*variable*_ between cursor calls.<br/>
 <br/>
-An example of a long running update could be 
+An example of a long-running-update could be 
 {{{
 UPDATE tbl SET col=X WHERE fk = 1
 }}}
 which can be simply transformed into a cursor by repeatedly calling: 
 {{{
-UPDATE tbl SET col=X WHERE fk = 1 ORDER BY fk LIMIT 1000 OFFSET cursor_upd8tbl
+UPDATE tbl SET col=X WHERE fk = 1 ORDER BY fk LIMIT 1000 OFFSET CursorUpd8tbl
 }}}
-until the return value is less than _1000_ which signals the final row matching _fk = 1_ has been updated.
+which will update the variable _CursorUpd8tbl_ on each call (to 1000,2000,3000,...etc) and will erase the variable _CursorUpd8tbl_ when the final row has been updated.<br/>
+So calling the above command until the return value is less than _1000_ (which signals the final row matching _fk = 1_ has been updated) will complete the long-running-update described above, but in non-blocking chunks of 1000 rows.
 <br/>
 <br/>
 ==MORPH Commands==
