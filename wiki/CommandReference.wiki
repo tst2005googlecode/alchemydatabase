@@ -80,12 +80,6 @@ WHERE customer.group_id = group.id AND
       group.id IN (300, 301, 307, 311)
 }}}
 
-===Create table from Range Query===
-{{{
-CREATE TABLE new_table
-AS SELECT * FROM customer WHERE group_id BETWEEN 300 AND = 400
-}}}
-
 ===Full Table Scan===
 Find unindexed data – _not recommended, should be avoided when possible_
 {{{
