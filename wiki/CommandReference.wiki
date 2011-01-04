@@ -52,6 +52,7 @@ WHERE {[pk/fk=X],[pk/fk BETWEEN X AND Y],[pk/fk IN (X,Y,Z)]} {AND [column=X],[co
 }}}
 
 ===JOINS===
+Alchemy currently supports denormalised Table Joins, but will soon support Star Schema joins<br/>
 ===Join via single Index===
 {{{
 SELECT customer.name, group.slogan
