@@ -111,14 +111,18 @@ id = 7
 This redis protocol has been implemented [http://code.google.com/p/redis/wiki/SupportedLanguages in over 15 languages in redis], so supporting Alchemy Database ONLY requires adding 14 commands to these clients, as Alchemy Database has not introduced any changes to the core protocol.<br/>
 
 Ported libraries for Alchemy Database include 
-  # redisql-rb: Ruby client http://github.com/JakSprats/redis-rb (fork of redis-rb)
-  # NODE.JS client http://github.com/JakSprats/node_Redisql (patch to node_redis) - actively maintained
-  # Predisql: PHP 5.3 CLIENT: http://github.com/JakSprats/predis (a fork of Predis)
-  # Embedded Lua: https://github.com/JakSprats/Redisql/blob/master/helper.lua
+  # Ruby client: http://github.com/JakSprats/redis-rb
+  # Java Client: https://github.com/JakSprats/jedis 
+  # Python Client: https://github.com/JakSprats/redis-py
+  # Node.js client: http://github.com/JakSprats/node_Redisql (dependency [https://github.com/mranney/node_redis node_redis] - thanks to [http://ranney.com/ Matt Ranney]) 
+  # C# Client: https://github.com/mythz/ServiceStack.Redis/tree/master/src/ServiceStack.Redis/Alchemy -By [https://github.com/boxerab Aaron Boxer]
+  # PHP Client: http://github.com/JakSprats/predis
+  # Lua client: https://github.com/JakSprats/redis-lua
+  # Embedded Lua: https://github.com/JakSprats/Redisql/blob/master/test/alchemy.lua
 
 ==ENTIRE PROTOCOL==
 A link to [http://code.google.com/p/alchemydatabase/wiki/EntireProtocol the Entire Protocol] illustrated though examples.
 
 ===NOTES===
-  * in the future, the Ruby and PHP clients will follow the example of the Node.js cilents and become very small patchs that are 100% on top of the redis clients.
-  * *SELECT* is used by both redis (select DB) and Alchemy Database (select `*` from table where id = 1) in different capacities. Clients must either override redis' default SELECT functionality to accept either 1 (e.g. select DB) or 5 arguments (e.g. select `*` from table where id = 1) OR come up w/ a two different commands for redis' and Alchemy Database' select functionality (the former is recommended, but requires overriding and is more complex)
+  * in the future, the Ruby, PHP, Java, Lua, and Python clients will follow the example of the Node.js and C# clients and become very small patches that are 100% on top of the redis clients.
+  * *SELECT* is used by both redis (select DB) and Alchemy Database (select `*` from table where id = 1) in different capacities. Clients must either override redis' default SELECT functionality to accept either 1 (e.g. select DB) or 5 arguments (e.g. select `*` from table where "id = 1") OR come up w/ a two different commands for redis' and Alchemy Database' select functionality (the former is recommended, but requires overriding and is more complex)
