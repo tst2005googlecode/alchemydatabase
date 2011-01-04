@@ -83,7 +83,7 @@ This can be done at command line with the commands: (the output of the 2nd comma
 CREATE TABLE X AS DUMP Redis_Object
 DUMP X TO MYSQL
 }}}
-[http://github.com/JakSprats/predis/blob/master/examples/backup_redis_to_mysql.php Here] is a 15 line php script that backs up EVERY KEY (that isnt a string:) in your redisDB to mysql 
+[https://github.com/JakSprats/redis-rb/blob/master/examples/backup_redis_to_mysql.rb Here] is a 40 line php script that backs up EVERY KEY (that isnt a string or index:) in your redisDB to mysql 
 
 
 === REDIS EXAMPLE TWO: normalise redis keys to save memory ===
