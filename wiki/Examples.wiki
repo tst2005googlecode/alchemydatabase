@@ -16,7 +16,7 @@ The following examples showcase how Alchemy Database can
 == MYSQL EXAMPLES ==
 === MYSQL EXAMPLE ONE: SQL tables at NOSQL speed ===
 If your database is bottlenecking and you need NOSQL speed, that is what Alchemy Database was built for<br/>
-Alchemy Database is a full relational database and is VERY fast
+Alchemy Database is a full relational database and is [http://code.google.com/p/alchemydatabase/#FAST_ON_COMMODITY_HARDWARE: VERY fast]
   # export table(s) to Alchemy Database (e.g. w/ Ruby function [https://github.com/JakSprats/redis-rb/blob/master/examples/schemaless.rb#L16-61 import_from_mysql]), 
   # cutover your application to use an Alchemy Database library (which speak SQL and support RDBMS functionality, meaning you simply switch libraries and maybe rename a few functions, if your current mysql library uses non standard function names)
   # That's it, you are set 
