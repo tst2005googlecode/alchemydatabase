@@ -86,28 +86,7 @@ DUMP X TO MYSQL
 [https://github.com/JakSprats/redis-rb/blob/master/examples/backup_redis_to_mysql.rb Here] is a 40 line php script that backs up EVERY KEY (that isnt a string or index:) in your redisDB to mysql 
 
 
-=== REDIS EXAMPLE TWO: normalise redis keys to save memory ===
-If your data in redis is composed of denormalised strings and you are getting low on memory, it is simple to normalise them into a Alchemy Database table and save incredible amounts of memory, and in most use cases increase performance (e.g. because you only have to do one lookup for all of a single user's data, as opposed to 2+ in the denormalised case). If your redis data has reached a point where it can be put into a schema, storing the data in Alchemy Database tables has many benefits.<br/>
-<br/>
-Alchemy Database normalises redis keys into tables by searching the entire key space with wildcards and storing matching keys into the target normalised table.<br/>
-<br/>
-To normalise keys into a single table using a single wildcard, use the command:
-{{{
-NORM "user:*"
-}}}
-This will create the Alchemy Database table "user" from all keys matching the "user:`*`" wildcard and create columns automatically (using the pattern "user:`*`:column")<br/>
-
-It is also possible to normalise a denormalised star schema of keys using several wildcards w/ the following command:
-{{{
-NORM "user:*" payment,address
-}}}
-This will create the Alchemy Database tables "user_address,user_payment,user" from all keys matching the "user_address:`*`,user_payment:`*`,user:`*`" wildcards (in that order) and create columns automatically (using the patterns "user_address:`*`:column, user_payment:`*`:column, user:`*`:column")<br/>
-<br/>
-A script demonstrating these functionalities can be found [http://github.com/JakSprats/predis/blob/master/examples/pop_norm.php here]<br/>
-<br/>
-In benchmarks, the memory savings from normalisation start at 300% and in a "normal" 4 column table, you can expect about 1000% memory improvements. Normalised data is inherently more compact.
-
-=== REDIS EXAMPLE THREE: create a Mysql Cache for "old" redis data ===
+=== REDIS EXAMPLE TWO: create a Mysql Cache for "old" redis data ===
 In Memory Databases are fantastic, until they get low on RAM, which is somewhat of an eventuality.<br/>
 <br/>
 Its a good practice to archive data you probably will not access again on the frontend from your In Memory Database to a disk based Database (e.g. mysql) and then build a thin cache layer that will retrieve archived data from the disk based Database as needed.<br/>
