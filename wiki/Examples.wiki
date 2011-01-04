@@ -69,8 +69,7 @@ Steps to go from mysql to schemaless nosql
 DENORM table "table:*"
 }}}
 Thats it, you will now have one hash-table per sql-table-row with names "table:1, table:2, table:3, ....".<br/>
-You are schemaless. And for the meek/sensible, there are ways to reverse this process described [http://code.google.com/p/alchemydatabase/wiki/Examples#REDIS_EXAMPLE_ONE:_backup_redis_data_to_Mysql_for_Data_Mining_or here], you can schema-up :) 
-A working Ruby example, can be found [https://github.com/JakSprats/redis-rb/blob/master/examples/schemaless.rb here] .. it is basically 2 function calls :)
+You are schemaless.
 <br/>
 <br/>
 <br/>
