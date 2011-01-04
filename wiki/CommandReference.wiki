@@ -182,6 +182,10 @@ Loading alchmey.lua into the Alchemy Database server can be done either by speci
 ./redisql-cli CONFIG SET luafilename test/alchemy.lua
 }}}
 The "CONFIG SET luafilename" also provides a simple way to modify lua functions in Alchemy Database w/o server restarts. Modify the commands in alchemy.lua and then load them, this will *reset Lua's state* and the new functions will be in place.<br/>
+To *ADD* lua functions to AlchemyDB (at runtime)
+{{{
+./redisql-cli CONFIG ADD lua helper.lua
+}}}
 ===Global Lua Variable Server===
 This form of embedding Lua extends Alchemy Database to be a global lua variable server. Lua variables have global scope, so if one client sets them another can read them.<br/>
 [http://lua-users.org/wiki/TablesTutorial Lua tables] are a very flexible and useful datatype in Lua<br/>
