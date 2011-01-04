@@ -239,17 +239,11 @@ $17
 == NORMALISATION EXAMPLE ==
 Bash code:
 {{{
-  CLI="./redisql-server"
-  $CLI SET user:1:name bill
-  $CLI SET user:1:age 33
-  $CLI SET user:1:address:city "capitol city"
-
-  $CLI SET user:2:age 22
-  $CLI SET user:2:name jane
-  $CLI SET user:2:address:city "houston"
-
-  $CLI NORM user address
-  $CLI denorm user "user:*"
+  $CLI CREATE TABLE user "(id INT, name TEXT, age INT, city TEXT)"
+  $CLI INSERT INTO user VALUES "(1,'bill',33,'capitol city')"
+  $CLI INSERT INTO user VALUES "(2,'jane',22,'houston')"
+  $CLI denorm user "user:*"(integer) 2
+  $CLI HGETALL user:1 
 }}}
 
 Returns:
@@ -257,89 +251,56 @@ Returns:
 OK
 OK
 OK
-OK
-OK
-OK
-1. "CREATE TABLE user_address (pk INT,city TEXT)"
-2. "CREATE TABLE user (pk INT,age INT,name TEXT)"
 (integer) 2
+1. "name"
+2. "'bill'"
+3. "age"
+4. "33"
+5. "city"
+6. "'capitol city'"
 }}}
 
 Line Protocol Request then Response:
 {{{
-*3
-$3
-SET
-$11
-user:1:name
-$4
-bill
-
-+OK
-
-*3
-$3
-SET
-$10
-user:1:age
-$2
-33
-
-+OK
-
-*3
-$3
-SET
-$19
-user:1:address:city
-$12
-capitol city
-
-+OK
-
-*3
-$3
-SET
-$10
-user:2:age
-$2
-22
-
-+OK
-
-*3
-$3
-SET
-$11
-user:2:name
-$4
-jane
-
-+OK
-
-*3
-$3
-SET
-$19
-user:2:address:city
-$7
-houston
-
-+OK
-
-*3
-$4
-NORM
+*4
+$6
+CREATE
+$5
+TABLE
 $4
 user
-$7
-address
+$39
+(id INT, name TEXT, age INT, city TEXT)
 
-*2
-$44
-CREATE TABLE user_address (pk INT,city TEXT)
-$44
-CREATE TABLE user (pk INT,age INT,name TEXT)
++OK
+
+*5
+$6
+INSERT
+$4
+INTO
+$4
+user
+$6
+VALUES
+$28
+(1,'bill',33,'capitol city')
+
++OK
+
+*5
+$6
+INSERT
+$4
+INTO
+$4
+user
+$6
+VALUES
+$23
+(2,'jane',22,'houston')
+
++OK
 
 *3
 $6
@@ -351,4 +312,23 @@ user:*
 
 :2
 
+*2
+$7
+HGETALL
+$6
+user:1
+
+*6
+$4
+name
+$6
+'bill'
+$3
+age
+$2
+33
+$4
+city
+$14
+'capitol city'
 }}}
