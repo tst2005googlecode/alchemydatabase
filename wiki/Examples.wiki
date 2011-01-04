@@ -63,14 +63,14 @@ One of the most mind blowing features of NOSQL is it is SCHEMALESS. This means i
 <br/>
 Steps to go from mysql to schemaless nosql
   # Read out a table's contents from mysql and insert them into Alchemy Database<br/>
-  A 50 line php example can be found [http://github.com/JakSprats/predis/blob/master/lib/Redisql.php here], (function importFromMysql() lines 208-262)
+  A 45 line Ruby example can be found [https://github.com/JakSprats/redis-rb/blob/master/examples/schemaless.rb#L16-61 here]
   # Denormalise the table using the command 
 {{{
 DENORM table "table:*"
 }}}
 Thats it, you will now have one hash-table per sql-table-row with names "table:1, table:2, table:3, ....".<br/>
 You are schemaless. And for the meek/sensible, there are ways to reverse this process described [http://code.google.com/p/alchemydatabase/wiki/Examples#REDIS_EXAMPLE_ONE:_backup_redis_data_to_Mysql_for_Data_Mining_or here], you can schema-up :) 
-A working PHP example, can be found [http://github.com/JakSprats/predis/blob/master/examples/schemaless.php here] .. it is basically 2 function calls :)
+A working Ruby example, can be found [https://github.com/JakSprats/redis-rb/blob/master/examples/schemaless.rb here] .. it is basically 2 function calls :)
 <br/>
 <br/>
 <br/>
