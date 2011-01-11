@@ -41,14 +41,22 @@ UNSIGNED INT stores data using 2 bytes when possible.
   Get name and number of the 5 most recent active customers
 {{{
 SELECT name, phone FROM customer WHERE group_id IN ($LRANGE L_IND_recent_calls 0 5) [ORDER BY column LIMIT n OFFSET m]
-}}} 
+}}}
+
 ===Update Expressions===
-  * {{{UPDATE customer SET phone = phone || ' ext 912', group_id = group_id * 4, age = age +1 WHERE id = 1}}}
   UPDATE expressions currently support the following functionalities {{{(+=, -=, *=, /=, %=, ^=, ||=)}}}
+{{{
+UPDATE customer SET phone = phone || ' ext 912', group_id = group_id * 4, age = age +1 WHERE id = 1
+}}}
 
 ===Where Clause Grammar===
+  The First column in the WhereClause determines the Index to use, subsequent columns will "filter" the rows matching the IndexLookup
 {{{
 WHERE {[pk/fk=X],[pk/fk BETWEEN X AND Y],[pk/fk IN (X,Y,Z)]} {AND [column=X],[column!=X],[column<X],[column<=X],[column>X],[column>=X],[column IN (X,Y,Z)]}*
+}}}
+  ORDER BY single and multiple columns
+{{{
+  WHERE fk = 7 ORDER BY col1 DESC, col2, col3 ASC
 }}}
 
 ===JOINS===
