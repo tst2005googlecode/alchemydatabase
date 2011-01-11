@@ -50,7 +50,7 @@ UPDATE customer SET phone = phone || ' ext 912', group_id = group_id * 4, age = 
 }}}
 
 ===Where Clause Grammar===
-  The First column in the WhereClause determines the Index to use, subsequent columns will "filter" the rows matching the IndexLookup
+  The First column in the Where Clause determines the Index to use, subsequent columns will "filter" the rows matching the Index Lookup
 {{{
 WHERE {[pk/fk=X],[pk/fk BETWEEN X AND Y],[pk/fk IN (X,Y,Z)]} {AND [column=X],[column!=X],[column<X],[column<=X],[column>X],[column>=X],[column IN (X,Y,Z)]}*
 }}}
