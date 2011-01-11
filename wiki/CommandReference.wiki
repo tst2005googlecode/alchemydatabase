@@ -111,10 +111,11 @@ which can be simply transformed into a cursor w/ client side logic (written in p
 ret=1000
 while (ret == 1000) {
   ret = UPDATE tbl SET col=X WHERE fk = 1 ORDER BY fk LIMIT 1000 OFFSET CursorUpd8tbl
+  sleep(0.01);
 }
 }}}
 which will update the variable {{{CursorUpd8tbl}}} on each call (0->1000->2000->3000->...) and will erase the variable {{{CursorUpd8tbl}}} when the final row has been updated.<br/>
-So calling the above command repeatedly, until the return value is less than _1000_ (which signals the final row matching _fk = 1_ has been updated) will complete the long-running-update described above, but in non-blocking chunks of 1000 rows.
+So calling the above command repeatedly, until the return value is less than _1000_ (which signals the final row matching _fk = 1_ has been updated) will complete the long-running-update described above, but in non-blocking chunks of 1000 rows (w/ 1ms sleeps between chunks).
 <br/>
 <br/>
 ==MORPH Commands==
