@@ -131,16 +131,16 @@ STORE HSET SanFranWorker
       # create a redis Hash Table named {{{SanFranWorker}}} with all the employees from city "San Francisco"
       # the values returned from the SELECTed column "name" will be the Hash Table's keys
       # the values returned from the SELECTed column "salary" will be the Hash Table's values
-  Denormalised SELECT STORE. In the following command, the _$_ on the end of _user_action_zset$_ means the results of the SELECT will be prepended to the REDIS_COMMAND with no spaces between
+  Denormalised SELECT STORE: In the following command, the "_$_" on the end of "_user_action_zset$_" means the results of the SELECT will be prepended to the REDIS_COMMAND with no spaces between
 {{{
 SELECT user_id, timestamp, action
 FROM actionlist
 WHERE id BETWEEN 1 AND 20000
-STORE ZADD user_action_zset:$
+STORE ZADD user_act_zset_$
 }}}
-    # for each user_id, a distinct ZSET will be created named "user_action_zset:1, user_action_zset:2", etc...
-    # each row will execute the command {{{ZADD user_action_zset${user_id} timestamp action}}}
-    # afterwards the command {{{ZREVRANGE user_action_zset:1 0 1}}} would return user 1's last two actions
+    # for each _user_id_, a unique ZSET will be created named "user_act_zset_1, user_act_zset_2", "auser_act_zset_3", etc...
+    # each row will execute the command _ZADD user_action_zset_${user_id} timestamp action_
+    # afterwards the command _ZREVRANGE user_action_zset_1 0 1_ would return user 1's last two actions
     # this functionality is demonstrated in this [http://github.com/JakSprats/redis-rb/blob/master/examples/action_list.rb Ruby script]
 
 ===Create a Alchemy Database table from the results of a redis command===
