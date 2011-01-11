@@ -93,11 +93,7 @@ WHERE customer.group_id = group.id AND
 ===Full Table Scan===
 Find unindexed data – _not recommended, should be avoided when possible_
 {{{
-SCANSELECT id, phone FROM customer WHERE name = ‘bill’;
-}}}
-Full Table Scan w/ Range Query
-{{{
-SCANSELECT id, group, phone FROM customer WHERE age BETWEEN 18 AND 25
+SCANSELECT id, phone FROM customer WHERE name = ‘bill’ AND age BETWEEN 18 AND 25
 }}}
   _the SCANSELECT command makes it impossible to accidentally do a full table scan w/ SELECT_
 
