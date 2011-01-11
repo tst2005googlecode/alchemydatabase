@@ -138,9 +138,9 @@ FROM actionlist
 WHERE id BETWEEN 1 AND 20000
 STORE ZADD user_act_zset_$
 }}}
-    # for each _user_id_, a unique ZSET will be created named "user_act_zset_1, user_act_zset_2", "user_act_zset_3", etc...
-    # each row will execute the command _ZADD user_action_zset_${user_id} timestamp action_
-    # afterwards the command _ZREVRANGE user_action_zset_1 0 1_ would return user 1's last two actions
+    # for each _user_id_, a unique ZSET will be created named ("user_act_zset_1","user_act_zset_2","user_act_zset_3"), etc...
+    # each row will execute the command _`ZADD user_action_zset_${user_id} timestamp action`_
+    # afterwards the command _`ZREVRANGE user_action_zset_1 0 1`_ would return user 1's last two actions
     # this functionality is demonstrated in this [http://github.com/JakSprats/redis-rb/blob/master/examples/action_list.rb Ruby script]
 
 ===Create a Alchemy Database table from the results of a redis command===
