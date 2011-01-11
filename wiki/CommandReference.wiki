@@ -56,7 +56,7 @@ WHERE {[pk/fk=X],[pk/fk BETWEEN X AND Y],[pk/fk IN (X,Y,Z)]} {AND [column=X],[co
 }}}
   ORDER BY single and multiple columns with LIMIT OFFSET
 {{{
-  WHERE fk = 7 ORDER BY col1 DESC, col2, col3 ASC LIMIT 10 OFFSET 100
+WHERE fk = 7 ORDER BY col1 DESC, col2, col3 ASC LIMIT 10 OFFSET 100
 }}}
 
 ===JOINS===
