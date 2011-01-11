@@ -61,7 +61,7 @@ WHERE fk = 7 ORDER BY col1 DESC, col2, col3 ASC LIMIT 10 OFFSET 100
 }}}
 
 ===JOINS===
-Alchemy currently supports denormalised Table Joins, but will soon support Star Schema joins<br/>
+Alchemy currently supports denormalised Table Joins, and will soon support Star Schema joins<br/>
 ===Join via single Index===
 {{{
 SELECT customer.name, group.slogan
@@ -130,7 +130,8 @@ STORE HSET SanFranWorker
 }}}
       # create a redis Hash Table named {{{SanFranWorker}}} with all the employees from city "San Francisco"
       # the values returned from the SELECTed column "name" will be the Hash Table's keys
-      # the values returned from the SELECTed column "salary" will be the Hash Table's values<br/>
+      # the values returned from the SELECTed column "salary" will be the Hash Table's values
+
   * DENORMALISED SELECT STORE:
   In the following command, the "_$_" on the end of "_user_action_zset$_" means the results of the SELECT will be prepended to the REDIS_COMMAND with no spaces between
 {{{
@@ -205,6 +206,55 @@ LUA "return user_123_t[4];"
 }}}
 NOTE: for those requiring enhanced Lua performance, Alchemy Database's [https://github.com/JakSprats/Redisql/blob/master/Makefile#L14-23 Makefile] has an option (and instructions) to link to libluajit instead of liblua.
 <br/>
+<br/>
+=== SQL + NOSQL and the Non-Relational-Index ===
+The following example will show how some problems dont quite fit into SQL, and dont quite fit into NOSQL, but the combination of SQL+NOSQL fits them perfectly, and then Lua is thrown in as a stored-procedure-like optimisation.
+<br/>
+  SETUP: the 2nd index is a Non-Relational-Index (similar to a SQL trigger), which per INSERT
+    # forms a redis command by transformating performing character substitution on the redis_command using the columns of the inserted row
+    # runs the redis command
+{{{
+CREATE TABLE messages AS (id INT, member_id INT, timestamp INT, message TEXT)
+CREATE INDEX ind_msg_mem ON messages (member_id)
+CREATE INDEX ind_msg_ts  ON messages "LPUSH msg_ts_$member_id $id"
+}}}
+        Inserting "_`(1,33,1294761320,'hows the weather today?')`_" would run "_`LPUSH msg_ts_33 1`_"
+
+  Inserting messages and capping per member messages to 100 (written in pseudocode)
+    # first check the number of messages member _33_ has
+    # if it is more than _100_, remove the final message from both the Non-Relational-Index and the Table (using a Non-Relational-Delete)
+    # Insert the row "_`(1,33,1294761320,'hows the weather today?')`_"
+{{{
+    len = LLEN(msg_ts_33);
+    if (len > 100) {
+        DELETE FROM message WHERE id IN ($RPOP msg_ts_33);
+    }
+    INSERT INTO messages VALUES (1,33,1294761320,'hows the weather today?');
+}}}
+  Get last 5 message for member 33
+{{{
+    SELECT message FROM messages WHERE id IN ($LRANGE msg_ts_33 0 4)
+}}}
+  The Insert-cap step can be turned into the following lua function
+{{{
+function insert_cap(table, member_id, row, limit)
+    len = llen(msg_ts .. member_id);
+    if (len > 100) then
+        delete(table,'id IN ($RPOP msg_ts_' .. member_id .. ')';
+    end
+    return insert(table, row);
+end
+}}}
+  And then called:
+{{{
+    LUA "return insert_cap('messages', 33, '1,33,1294761320,\'hows the weather today?\'', 100)
+}}}
+  The final product:
+    # requires NO sorting
+    # performs all lookups via Primary-Key
+    # implicitly stores the timestamp index in natural order (saves memory over a sorted relational index)
+    # uses LUA to create a stored procedure (less network I/O)
+<br/>
 ==REDIS Commands==
 redis supports commands to deal with many data structures, including (strings, sets, lists, sorted-sets, and hash tables)<br/>
 redis' project home page *[http://redis.io/ here]*<br/>
@@ -216,3 +266,4 @@ The following is an IFRAME of redis' command reference page, complete w/ links d
 ===SQL NOTES===
   # Column ordering in INSERT statements not yet supported
   # Table aliasing in JOIN statements not yet supported
+  # Multiple Column ORDER BYs not yet supported for JOINS
