@@ -132,7 +132,7 @@ STORE HSET SanFranWorker
       # the values returned from the SELECTed column "name" will be the Hash Table's keys
       # the values returned from the SELECTed column "salary" will be the Hash Table's values
   * DENORMALISED SELECT STORE:
-  In the following command, the "_$_" on the end of "_user_action_zset$_" means the results of the SELECT will be prepended to the REDIS_COMMAND with no spaces between
+    In the following command, the "_$_" on the end of "_user_action_zset$_" means the results of the SELECT will be prepended to the REDIS_COMMAND with no spaces between
 {{{
 SELECT user_id, timestamp, action
 FROM actionlist
