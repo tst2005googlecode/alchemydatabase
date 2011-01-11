@@ -24,6 +24,7 @@ UNSIGNED INT stores data using 2 bytes when possible.
   * {{{DESC customer}}} - provides detailed memory usage info
   * {{{DUMP customer}}} - dumps the table to client
   * {{{DUMP customer TO MYSQL}}} - dumps the table in mysql format
+  * {{{DUMP customer TO FILE fname}}} - dumps the table to the file "fname"
 
 ===Single Row Operations===
   * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’301-933-1891’,30);}}}
