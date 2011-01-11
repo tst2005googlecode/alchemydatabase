@@ -106,7 +106,7 @@ An example of a long-running-update could be
 {{{
 UPDATE tbl SET col=X WHERE fk = 1
 }}}
-which can be simply transformed into a cursor by repeatedly calling: 
+which can be simply transformed into a cursor w/ client side logic (written in pseudocode):
 {{{
 ret=1000
 while (ret == 1000) {
