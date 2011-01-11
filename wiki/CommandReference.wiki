@@ -130,9 +130,9 @@ STORE HSET SanFranWorker
 }}}
       # create a redis Hash Table named {{{SanFranWorker}}} with all the employees from city "San Francisco"
       # the values returned from the SELECTed column "name" will be the Hash Table's keys
-      # the values returned from the SELECTed column "salary" will be the Hash Table's values
+      # the values returned from the SELECTed column "salary" will be the Hash Table's values<br/>
   * DENORMALISED SELECT STORE:
-    In the following command, the "_$_" on the end of "_user_action_zset$_" means the results of the SELECT will be prepended to the REDIS_COMMAND with no spaces between
+  In the following command, the "_$_" on the end of "_user_action_zset$_" means the results of the SELECT will be prepended to the REDIS_COMMAND with no spaces between
 {{{
 SELECT user_id, timestamp, action
 FROM actionlist
