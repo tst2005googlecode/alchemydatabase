@@ -54,9 +54,9 @@ UPDATE customer SET phone = phone || ' ext 912', group_id = group_id * 4, age = 
 {{{
 WHERE {[pk/fk=X],[pk/fk BETWEEN X AND Y],[pk/fk IN (X,Y,Z)]} {AND [column=X],[column!=X],[column<X],[column<=X],[column>X],[column>=X],[column IN (X,Y,Z)]}*
 }}}
-  ORDER BY single and multiple columns
+  ORDER BY single and multiple columns with LIMIT OFFSET
 {{{
-  WHERE fk = 7 ORDER BY col1 DESC, col2, col3 ASC
+  WHERE fk = 7 ORDER BY col1 DESC, col2, col3 ASC LIMIT 10 OFFSET 100
 }}}
 
 ===JOINS===
