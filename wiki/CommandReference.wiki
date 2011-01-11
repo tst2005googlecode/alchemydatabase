@@ -237,17 +237,17 @@ CREATE INDEX ind_msg_ts  ON messages "LPUSH msg_ts_$member_id $id"
 }}}
   The Insert-cap step can be turned into the following lua function
 {{{
-function insert_cap(table, member_id, row, limit)
-    len = llen(msg_ts .. member_id);
+function insert_msg_cap(member_id, row, limit)
+    len = llen('msg_ts_' .. member_id);
     if (len > 100) then
-        delete(table,'id IN ($RPOP msg_ts_' .. member_id .. ')';
+        delete('messages','id IN ($RPOP msg_ts_' .. member_id .. ')';
     end
-    return insert(table, row);
+    return insert('messages', row);
 end
 }}}
-  And then called:
+  And then called via:
 {{{
-    LUA "return insert_cap('messages', 33, '1,33,1294761320,\'hows the weather today?\'', 100)
+    LUA "return insert_msg_cap(33, '1,33,1294761320,\'hows the weather today?\'', 100);"
 }}}
   The final product:
     # requires NO sorting
