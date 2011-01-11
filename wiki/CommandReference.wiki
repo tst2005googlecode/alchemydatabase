@@ -131,13 +131,16 @@ STORE HSET SanFranWorker
       # create a redis Hash Table named {{{SanFranWorker}}} with all the employees from city "San Francisco"
       # the values returned from the SELECTed column "name" will be the Hash Table's keys
       # the values returned from the SELECTed column "salary" will be the Hash Table's values
-  Given the SQL table {{{CREATE TABLE actionlist (id INT PRIMARY KEY, user_id INT, timestamp INT, action TEXT)}}}<br/>
-  The {{{$}}} on the end of {{{user_action_zset$}}} has a special functionality
+  Denormalised SELECT STORE
+{{{
+CREATE TABLE actionlist (id INT PRIMARY KEY, user_id INT, timestamp INT, action TEXT)
+}}}
+  In the following command, the {{{$}}} on the end of {{{user_action_zset$}}} means the results of the SELECT will be prepended to the REDIS_COMMAND with no spaces between
 {{{
 SELECT user_id, timestamp, action
 FROM actionlist
 WHERE id BETWEEN 1 AND 20000
-STORE ZADD user_action_zset$
+STORE ZADD user_action_zset:$
 }}}
     # for each user_id, a distinct ZSET will be created named "user_action_zset:1, user_action_zset:2", etc...
     # each row will execute the command {{{ZADD user_action_zset${user_id} timestamp action}}}
