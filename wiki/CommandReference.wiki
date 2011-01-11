@@ -211,7 +211,7 @@ NOTE: for those requiring enhanced Lua performance, Alchemy Database's [https://
 The following example will show how some problems dont quite fit into SQL, and dont quite fit into NOSQL, but the combination of SQL+NOSQL fits them perfectly, and then Lua is thrown in as a stored-procedure-like optimisation.
 <br/>
   SETUP: the 2nd index is a Non-Relational-Index (similar to a SQL trigger), which per INSERT
-    # forms a redis command by transformating performing character substitution on the redis_command using the columns of the inserted row
+    # forms a redis command by performing character substitution on the declared redis_command using the values of the columns of the inserted row
     # runs the redis command
 {{{
 CREATE TABLE messages AS (id INT, member_id INT, timestamp INT, message TEXT)
