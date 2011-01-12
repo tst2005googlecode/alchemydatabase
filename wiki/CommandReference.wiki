@@ -212,7 +212,7 @@ The following example is an example of a problem that doesn't quite fit into SQL
 <br/>
   TASK: each user can store up to 100 messages and will want to look at his 5 most recent messages<br/>
   <br/>
-  SETUP: the index (below) is a Non-Relational-Index (similar to a SQL trigger), which per INSERT forms a redis-command by performing character substitution on the index-string, replacing "_`$`_" delimited column-names w/ the values of the columns in the inserted row, and then runs the redis-command
+  SETUP: the index (below) is a Non-Relational-Index (similar to a SQL Indexes on Expressions), which per INSERT forms a redis-command by performing character substitution on the index-string, replacing "_`$`_" delimited column-names w/ the values of the columns in the inserted row, and then runs the redis-command
 {{{
 CREATE TABLE messages AS (id INT, member_id INT, timestamp INT, message TEXT)
 CREATE INDEX ind_msg_ts  ON messages "LPUSH msg_ts_$member_id $id"
