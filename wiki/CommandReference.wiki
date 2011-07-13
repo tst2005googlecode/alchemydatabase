@@ -264,6 +264,4 @@ The following is an IFRAME of redis' command reference page, complete w/ links d
 <wiki:gadget url="http://www.allinram.info/alsosql/gadget2.xml"  border="0" width="1200" height="2900"/> 
 
 ===SQL NOTES===
-  # Column ordering in INSERT statements not yet supported
-  # Table aliasing in JOIN statements not yet supported
   # Multiple Column ORDER BYs not yet supported for JOINS
