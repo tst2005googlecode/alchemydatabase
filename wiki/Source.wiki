@@ -1,4 +1,4 @@
   * Stable releases packed up into hearty [http://code.google.com/p/alchemydatabase/downloads/list Code Tarballs]
-  * Development branch code, fork at will via [https://github.com/JakSprats/Alchemy-Database]
+  * Development branch code, fork at will via [https://github.com/JakSprats/Alchemy-Database Github]
 
   * [http://code.google.com/p/alchemydatabase/wiki/Clients Client] source-code-tarballs + git-repo-links
