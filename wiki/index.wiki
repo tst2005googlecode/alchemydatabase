@@ -9,7 +9,7 @@ The documentation is a work in progress.
   * Want to write a client, or extend an existing one, best to have a firm grasp of the [http://code.google.com/p/alchemydatabase/wiki/Protocol Alchemy Database Protocol]
 
   * Stable releases packed up into hearty [http://code.google.com/p/alchemydatabase/downloads/list Code Tarballs]
-  * Development branch code, fork at will via [http://github.com/JakSprats/Redisql Github]
+  * Development branch code, fork at will via [https://github.com/JakSprats/Alchemy-Database Github]
 
 
   * Clients can be found [http://code.google.com/p/alchemydatabase/wiki/Clients here]
