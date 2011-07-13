@@ -11,9 +11,6 @@
   # Embedded Lua: https://github.com/JakSprats/Redisql/blob/master/test/alchemy.lua
   # Many more to come .... (redis supports 20+ and adding on Alchemy Database is trivial, it is done via patches, forking is not needed)
 
-*More clients*
-  # Rediska: PHP Client http://github.com/JakSprats/Rediska (a fork of Rediska)
-  # Predis: PHP 5.2 backport of this version is available [http://allinram.info/alsosql/Predis_v0.6.1-PHP5.2_ALSOSQL_ENABLED.tgz here]
 
 Information on the redis-functionality of packages can be found [http://redis.io/clients here]<br/>
 Information on how to write AlchemyDB clients can be found [http://code.google.com/p/alchemydatabase/wiki/Protocol here]
