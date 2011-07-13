@@ -8,7 +8,7 @@
   # C# Client: https://github.com/mythz/ServiceStack.Redis/tree/master/src/ServiceStack.Redis/Alchemy -By [https://github.com/boxerab Aaron Boxer]
   # PHP Client: http://github.com/JakSprats/predis
   # Lua client: https://github.com/JakSprats/redis-lua
-  # Embedded Lua: https://github.com/JakSprats/Redisql/blob/master/test/alchemy.lua
+  # Embedded Lua: https://github.com/JakSprats/Alchemy-Database/blob/redis/src/alchemy.lua
   # Many more to come .... (redis supports 20+ and adding on Alchemy Database is trivial, it is done via patches, forking is not needed)
 
 
