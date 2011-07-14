@@ -115,8 +115,8 @@ Ported libraries for Alchemy Database include
   # Node.js client: http://github.com/JakSprats/node_Redisql (dependency [https://github.com/mranney/node_redis node_redis] - thanks to [http://ranney.com/ Matt Ranney]) 
   # C# Client: https://github.com/mythz/ServiceStack.Redis/tree/master/src/ServiceStack.Redis/Alchemy -By [https://github.com/boxerab Aaron Boxer]
   # PHP Client: http://github.com/JakSprats/predis
-  # Lua client: https://github.com/JakSprats/redis-lua
-  # Embedded Lua: https://github.com/JakSprats/Redisql/blob/master/test/alchemy.lua
+  # Lua client: https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/tests/lua/external_alchemy.lua
+  # Embedded Lua: https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/tests/lua/alchemy.lua
 
 ==ENTIRE PROTOCOL==
 A link to [http://code.google.com/p/alchemydatabase/wiki/EntireProtocol the Entire Protocol] illustrated though examples.
