@@ -8,7 +8,7 @@ Alchemy Database supports:
 
 ==NOTES==
 Supported SQL data types are currently UNSIGNED INT, UNSIGNED LONG, TEXT, and FLOAT.<br/>
-Datetime should be represented as a UNSIGNED INT or FLOAT<br/>
+Datetime should be represented as a UNSIGNED INT/LONG or FLOAT<br/>
 TEXT uses variable length storage and compression and can be substituted for any VARCHAR() or CHAR().<br/>
 UNSIGNED INT stores data using 2 bytes when possible.
 
@@ -18,6 +18,7 @@ UNSIGNED INT stores data using 2 bytes when possible.
 ===Create/Drop Operations:===
   * {{{CREATE TABLE customer (id INT, group_id INT, name TEXT, phone text, age INT);}}}
   * {{{CREATE INDEX cust_group_ind ON customer (group_id);}}}
+  * {{{CREATE INDEX cust_grp_age_ind ON customer (group_id, age);}}} - Compund Indexes
   * {{{DROP TABLE customer}}}
   * {{{DROP INDEX cust_group_ind}}}
   * {{{DESC customer}}} - provides detailed memory usage info
