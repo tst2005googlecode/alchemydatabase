@@ -193,7 +193,7 @@ The syntax for the LRUINDEX is:
  CREATE TABLE tbl (pk INT, c1 INT, c2 INT)
  CREATE LRUINDEX ON tbl
 }}}
-After the LRUINDEX command is called, the tables columns are {{{pk INT, c1 INT, c2 INT, lur INT)}}}
+After the LRUINDEX command is called, the tables columns are {{{(pk INT, c1 INT, c2 INT, lru INT)}}}
 
 Combining a LRUINDEX and a LUATRIGGER is an easy way to add LRU-caching to a relational table.
 
