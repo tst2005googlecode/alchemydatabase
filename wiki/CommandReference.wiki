@@ -3,12 +3,11 @@
 
 Alchemy Database supports:
   # [http://code.google.com/p/alchemydatabase/wiki/CommandReference#Supported_SQL An OLTP optimised subset of SQL]
-  # [http://code.google.com/p/alchemydatabase/wiki/CommandReference#MORPH_Commands Commands to transform NOSQL data to SQL and vice versa (dubbed MORPH Commands)]
   # [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUA_Command embedded LUA w/ client-server functionality]
   # [http://code.google.com/p/alchemydatabase/wiki/CommandReference#REDIS_Commands ALL redis 2.0 commands]<br/>
 
 ==NOTES==
-Supported SQL data types are currently UNSIGNED INT, TEXT, and FLOAT.<br/>
+Supported SQL data types are currently UNSIGNED INT, UNSIGNED LONG, TEXT, and FLOAT.<br/>
 Datetime should be represented as a UNSIGNED INT or FLOAT<br/>
 TEXT uses variable length storage and compression and can be substituted for any VARCHAR() or CHAR().<br/>
 UNSIGNED INT stores data using 2 bytes when possible.
@@ -38,11 +37,6 @@ UNSIGNED INT stores data using 2 bytes when possible.
   * {{{SELECT group_id, phone FROM customer WHERE group_id IN (300, 301, 307, 311) [ORDER BY column LIMIT n OFFSET m]}}}
   * {{{DELETE FROM customer WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
   * {{{UPDATE customer SET phone = ‘703-933-1891’, group_id = 4 WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
-  * _Introducing_ the *Non-Relational Range Query* - the IN() can contain ANY redis command that returns rows (e.g. LRANGE, SINTER, ZREVRANGE, etc...)
-  Get name and number of the 5 most recent active customers
-{{{
-SELECT name, phone FROM customer WHERE group_id IN ($LRANGE L_IND_recent_calls 0 5) [ORDER BY column LIMIT n OFFSET m]
-}}}
 
 ===Update Expressions===
   UPDATE expressions currently support the following functionalities {{{(+=, -=, *=, /=, %=, ^=, ||=)}}}
@@ -69,17 +63,6 @@ SELECT customer.name, group.slogan
  WHERE customer.group_id = group.id AND
        group.id BETWEEN 300 AND = 400
        [ORDER BY table.column LIMIT n OFFSET m]
-}}}
-
-===Multi Index Join w/ Non-Relational IN() Clause===
-Get patient billing info for patients who got both treatment and prescriptions
-{{{
-SELECT patient.name, info.address, bill.amount
-FROM patient, info, bill
-WHERE patient.id = bill.patient_id AND
-      patient.id = info.patient_id AND
-      patient.id IN ($SINTER treatment_set prescription_set)
-      [ORDER BY table.column LIMIT n OFFSET m]
 }}}
 
 ===Create table from Join===
@@ -119,53 +102,10 @@ which will update the variable {{{CursorUpd8tbl}}} on each call (0->1000->2000->
 So calling the above command repeatedly, until the return value is less than _1000_ (which signals the final row matching _fk = 1_ has been updated) will complete the long-running-update described above, but in non-blocking chunks of 1000 rows (w/ 1ms sleeps between chunks).
 <br/>
 <br/>
-==MORPH Commands==
-===Store the results of an Alsoql SELECT into a redis datastructure===
-  * SELECT ..... STORE REDIS_COMMAND
-{{{
-SELECT name, salary
-FROM employee
-WHERE city = "san Francisco"
-STORE HSET SanFranWorker
-}}}
-      # create a redis Hash Table named {{{SanFranWorker}}} with all the employees from city "San Francisco"
-      # the values returned from the SELECTed column "name" will be the Hash Table's keys
-      # the values returned from the SELECTed column "salary" will be the Hash Table's values
 
-  * DENORMALISED SELECT STORE:
-  In the following command, the "_$_" on the end of "_user_action_zset$_" means the results of the SELECT will be prepended to the REDIS_COMMAND with no spaces between
-{{{
-SELECT user_id, timestamp, action
-FROM actionlist
-WHERE id BETWEEN 1 AND 20000
-STORE ZADD user_act_zset_$
-}}}
-    # for each _user_id_, a unique ZSET will be created named ("user_act_zset_1","user_act_zset_2","user_act_zset_3"), etc...
-    # each row will execute the command "_`ZADD user_act_zset_${user_id} timestamp action`_"
-    # afterwards the command "_`ZREVRANGE user_act_zset_1 0 1`_" would return user 1's most recent two actions
-    # this functionality is demonstrated in this [http://github.com/JakSprats/redis-rb/blob/master/examples/action_list.rb Ruby script]
-
-===Create a Alchemy Database table from the results of a redis command===
-  * CREATE TABLE table AS REDIS_COMMAND
-  NOTE: the ZSET tweets uses timestamp as its score
-{{{
-CREATE TABLE yesterdays_tweets AS ZRANGEBYSCORE tweets $two_days_ago $yesterday
-}}}
-      # take the members of the ZSET from two_days_ago until yesterday
-      # store them in a Alchemy Database table named "yesterdays_tweets" (pk will be auto incremented INT)
-      # an example in PHP can be found in the example script [http://github.com/JakSprats/predis/blob/master/examples/tweet/tweet_archiver.php here] that calls the ZSetCache class [http://github.com/JakSprats/predis/blob/master/examples/ZsetCache.php here]
-
-===Denormalise a Alchemy Database table into one redis hash-table per table row===
-  * DENORM table denorm_wildcard
-{{{
-DENORM user "user:*"
-}}}
-      # denormalise the "user" table into an individual hash-table per row, named "user:pk" (e.g. user:1, user:2)
-      # the keys of these hashes will be the column-names of the "user" table.
-  this is a simple mechanism to "Go Schemaless", an example script in PHP showcasing this can be found [http://github.com/JakSprats/predis/blob/master/examples/schemaless.php here]
-
-<br/>
 ==LUA Command==
+TODO: UPDATE this, LUA now calls lua functions, <br/><br/>
+
 Alchemy Database has embedded [http://www.lua.org/about.html LUA] <br/>
 [http://www.ibm.com/developerworks/linux/library/l-embed-lua/index.html IBM's lua description]: _The Lua programming language is a small scripting language specifically designed to be embedded in other programs. Lua’s C API allows exceptionally clean and simple code both to call Lua from C, and to call C from Lua”_<br/>
 Alchemy Database has embedded Lua in its C-server and C in its embedded Lua :)<br/>
@@ -207,54 +147,8 @@ LUA "return user_123_t[4];"
 NOTE: for those requiring enhanced Lua performance, Alchemy Database's [https://github.com/JakSprats/Redisql/blob/master/Makefile#L14-23 Makefile] has an option (and instructions) to link to libluajit instead of liblua.
 <br/>
 <br/>
-=== SQL + NOSQL and the Non-Relational-Index ===
-The following example is an example of a problem that doesn't quite fit into SQL or NOSQL, but combining SQL+NOSQL fits it perfectly (and then Lua is thrown in as a stored-procedure-like optimisation).
-<br/>
-  TASK: each user can store up to 100 messages and will want to look at his 5 most recent messages<br/>
-  <br/>
-  SETUP: the index (below) is a Non-Relational-Index (similar to a Postgres' Indexes-on-Expressions or Oracle's Function-Based-Indexes), which per INSERT forms a redis-command by performing character substitution on the index-string, replacing "_`$`_" delimited column-names w/ the values of the columns in the inserted row, and then runs the redis-command
-{{{
-CREATE TABLE messages AS (id INT, member_id INT, timestamp INT, message TEXT)
-CREATE INDEX ind_msg_ts  ON messages "LPUSH msg_ts_$member_id $id"
-}}}
-        On "_`INSERT INTO messages VALUES (1,33,1294761320,'hows the weather today?')`_" the Non-Relational-Index "_`ind_msg_ts`_" will run "_`LPUSH msg_ts_33 1`_"
-  The Non-Relational-Index allows you to build custom-indexes via an index-string w/ "_`$`_" delimited column-names.<br/>
-  <br/>
-  STEP ONE: Inserting messages and capping per member messages to 100 (written in pseudocode)
-    # check the number of messages member _33_ has
-    # if the count equals _100_, remove the final message from both the Non-Relational-Index and the Table (using a Non-Relational-Delete: _`DELETE+RPOP`_)
-    # Insert the row "_`(1,33,1294761320,'hows the weather today?')`_"
-{{{
-    len = LLEN(msg_ts_33);
-    if (len == 100) {
-        DELETE FROM message WHERE id IN ($RPOP msg_ts_33);
-    }
-    INSERT INTO messages VALUES (1,33,1294761320,'hows the weather today?');
-}}}
-  STEP TWO: Get last 5 message for member 33
-{{{
-    SELECT message FROM messages WHERE id IN ($LRANGE msg_ts_33 0 4)
-}}}
-  LUA OPTIMISATION: The Insert-cap step can be turned into the following lua function (this not only localizes app-logic, it also pushes logic into the datastore in an acceptable fashion)
-{{{
-function insert_msg_cap(member_id, row, limit)
-    len = llen('msg_ts_' .. member_id);
-    if (len == 100) then
-        delete('messages','id IN ($RPOP msg_ts_' .. member_id .. ')';
-    end
-    return insert('messages', row);
-end
-}}}
-  The application can then call this lua function in a straightforward manner:
-{{{
-    LUA "return insert_msg_cap(33, '1,33,1294761320,\'hows the weather today?\'', 100);"
-}}}
-  RESULT: The final product:
-    # requires NO sorting (in steps 1 & 2)
-    # performs ALL lookups via Primary-Key or via redis lists (O(logN) & O(1) speed)
-    # implicitly stores the timestamp index in natural order (saves memory, as lists are more compact data structures than sorted relational indexes)
-    # uses LUA to create a stored procedure (saves network hops AND uses less network I/O)
-<br/>
+
+
 ==REDIS Commands==
 redis supports commands to deal with many data structures, including (strings, sets, lists, sorted-sets, and hash tables)<br/>
 redis' project home page *[http://redis.io/ here]*<br/>
