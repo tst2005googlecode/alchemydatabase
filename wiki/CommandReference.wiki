@@ -113,9 +113,10 @@ The speed of embedded LUA commands in Alchemy Database is impressive: [http://gr
 The lua function "redis()" will call the Alchemy Database server internally as if it were a client call.<br/>
 Function to set a user's last_login and return his status
 {{{
-function getset_last_login
- redis('SET', 'user:123:last_login', 1289597410);
- return redis('GET', 'user:123:status');"
+ function getset_last_login
+   redis('SET', 'user:123:last_login', 1289597410);
+    return redis('GET', 'user:123:status');"
+  end
 }}}
 ===alchemy.lua===
 The file [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/tests/lua/alchemy.lua alchemy.lua] contains simplified Alchemy SQL calls<br/>
@@ -137,11 +138,15 @@ Given the imported lua function
     return redis('GET', arg3');
   end
 }}}
-The AlchemyDatabase call will define the function name and its 3 arguments
+The Alchemy Database call will define the function name and its 3 arguments
 {{{
    LUA getuserdata 'session_777' 'user_123' 'last_login'
 }}}
 and the data returned in the function _getuserdata_ will be output in redis' protocol (to be read by the client)
+
+=TODO=
+==LUA TRIGGERS==
+==LRU==
 
 ==REDIS Commands==
 redis supports commands to deal with many data structures, including (strings, sets, lists, sorted-sets, and hash tables)<br/>
