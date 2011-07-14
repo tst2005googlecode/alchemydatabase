@@ -18,33 +18,7 @@ This graph is OLTP DB relevant (2-20 rows returned) as it measures the performan
 Y-Axis is requests/second .................. X-axis is number of rows returned<br/>
 [http://allinram.info/alsosql/PC_RQ-20.png]
 
-The 3 graphs were created w/ the following commands
-  # {{{./Benchmark_Range_Query_Lengths.sh}}}
-  # {{{./Benchmark_Range_Query_Lengths.sh JOIN}}}
-  # {{{./Benchmark_Range_Query_Lengths.sh 3WAY}}}
 The difference between 2-table and 3-table joins becomes less as number-of-rows increases, as can be seen on the [http://code.google.com/p/redisql/wiki/ExtendedBenchmarks Extended Benchmarks]
-
-<br/>
-==Benchmark TWO==
-This is an interesting benchmark - *In Swap Performance*<br/>
-Alchemy Database has an architectural advantage over any hash table based database, namely it can go into swap.<br/>
-Alchemy Database also employs a database server log (called appendonly file) background rewriting technique that uses a spare core, and only 50MB of memory ... this means you can use 100% of your RAM and even go into swap, this is a minimum 2X increase in available RAM for the server<br/>
-<br/>
-For more information on In-Swap-Mode look [http://code.google.com/p/redisql/wiki/InSwapMode here]<br/>
-<br/>
-To run this benchmark you need 8GB of RAM, then run the script: {{{./IN_Swap_Performance_Test.sh}}} - NOTE: this script causes 1hour+ of severe disk thrashing to prove a point :)<br/>
-This script  
-  * writes 40 million 300 byte rows (11.3GB of data) to RAM,
-  * this results in about 4GB being written to swap (approx the first 15million)
-  * the script then tries to read the first 20 million rows (first 6GB) at random 
-  * this results in 70minutes of swap-thrashing and very low performance, shown [http://allinram.info/alsosql/SWAP_TIME_to_recover.png here]
-  * at about 10 million rows the performance [http://allinram.info/alsosql/Swap_0_to_20million.png improves], but it is not yet smooth, due to frequent random hard disk lookups
-  * eventually (20-30 million requests), the 6GB of RAM that are "ACTIVE" are back in [http://allinram.info/alsosql/SWAP_20Mto30M.png RAM]
-  * at 45-50million requests (graphed below), even though the dataset is over 40% resident in swap, the "ACTIVE" parts are being read at RAM speed _(except for occasional dips to swapping ... linux isnt perfect)_ Very few requests (<0.01%) would experience high latency in this range.
-Running in In-Swap-Mode requests/second from request 45million to 50million<br/>
-<br/>
-Y-Axis is requests/second .................. X-axis is requests<br/>
-[http://allinram.info/alsosql/Swap_45Mto50M.png]
 
 <br/>
 ==Benchmark THREE==
