@@ -186,13 +186,15 @@ And the following SQL declarations
 Is a very simple way to implement a per fk number-of-rows cap that runs at almost the same speed as a straight INSERT
 
 ==LRUINDEX==
-the LRUINDEX adds a column to a SQL table, called "lru", which updates itself everytime the commands INSERT,REPLACE,UPDATE,SELECT are called on the table.
+the LRUINDEX adds a column to a SQL table, called "lru", which updates the row's column everytime the commands INSERT,REPLACE,UPDATE,SELECT are called on the row in the table.
 
 The syntax for the LRUINDEX is:
 {{{
- CREATE TABLE tbl "(pk INT, c1 INT, c2 INT)"
+ CREATE TABLE tbl (pk INT, c1 INT, c2 INT)
  CREATE LRUINDEX ON tbl
 }}}
+After the LRUINDEX command is called, the tables columns are {{{pk INT, c1 INT, c2 INT, lur INT)}}}
+
 Combining a LRUINDEX and a LUATRIGGER is an easy way to add LRU-caching to a relational table.
 
 ==REDIS Commands==
