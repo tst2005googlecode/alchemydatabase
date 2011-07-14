@@ -156,18 +156,18 @@ The Alchemy Database call will define the function name and its 3 arguments
 }}}
 and the data returned in the function _getuserdata_ will be output in redis' protocol (to be read by the client)
 
-=TODO=
 ==LUA TRIGGERS==
 Luatriggers are lua functions that are run on every SQL INSERT/UPDATE/DELETE.
+
 The syntax for Luatriggers is {{{CREATE LUATRIGGER triggername ON table (column) add_trigger(cols,,,,) [delete_trigger(cols,,,)]}}}
-  * On INSERT "add_trigger(cols,,,,)" is called and the values of the inserted columns replace "(cols,,,,)" in the function call
-  * On UPDATE "add_trigger(cols,,,,)" is called, then "del_triggers(cols,,,)" is called
-  * On DELETE "del_triggers(cols,,,)" is called
+  * On INSERT {{{add_trigger(cols,,,,)}}} is called and the values of the inserted columns replace "(cols,,,,)" in the function call
+  * On UPDATE {{{add_trigger(cols,,,,)}}} is called, then "del_triggers(cols,,,)" is called
+  * On DELETE {{{del_triggers(cols,,,)}}} is called
 NOTE: "del_triggers()" is optional
 
 The following example lua function, does:
-  * "SELECT COUNT(*) FROM tbl WHERE fk1 = XXX"
-  * if this count is greater than 100, "DELETE FROM tbl WHERE fk1 = XXX LIMIT (count-100)" -> this delete caps the table at 100 rows per fk1
+  * {{{SELECT COUNT(*) FROM tbl WHERE fk1 = XXX}}}
+  * if this count is greater than 100, {{{DELETE FROM tbl WHERE fk1 = XXX LIMIT (count-100)}}} -> this delete caps the table at 100 rows per fk1
 {{{
 function add_cap(fk1)
   cnt = select_count("tbl", "fk1 = " + fk1); 
@@ -185,6 +185,7 @@ And the following SQL declarations
 }}}
 Is a very simple way to implement a per fk number-of-rows cap that runs at almost the same speed as a straight INSERT
 
+=TODO=
 ==LRU INDEX==
 
 ==REDIS Commands==
