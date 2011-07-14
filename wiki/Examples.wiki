@@ -1,4 +1,3 @@
-#labels Featured
 = Alchemy Database Examples =
 
 *[http://code.google.com/p/alchemydatabase/wiki/Examples#MYSQL_EXAMPLES Jump to examples for Mysql users]*<br/>
