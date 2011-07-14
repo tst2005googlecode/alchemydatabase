@@ -31,7 +31,10 @@ UNSIGNED INT stores data using 2 bytes when possible.
   * {{{DELETE FROM customer WHERE id = 1}}}
   * {{{UPDATE customer SET phone = ‘703-933-1891’, group_id = 4 WHERE id = 1}}}
   * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’301-933-1891’,30) RETURN SIZE;}}} - returns the size of the row, table, and indices
-
+  * {{{REPLACE INTO customer VALUES (1,300,’John Doe’,’703-387-7777’,30)}}} 
+  * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’703-387-7777’,30) ON DUPLICATE KEY UPDATE SET phone = ’703-387-7777’}}}
+  * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’301-933-1891’,30) (2,300,’Jane Smith’,’301-946-2222’,22) (1,300,’John Doe’,’202-933-444’,55)}}} - Bulk Insert
+ 
 ===Index Operations===
   * {{{SELECT group_id, phone FROM customer WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
   * {{{SELECT group_id, phone FROM customer WHERE group_id IN (300, 301, 307, 311) [ORDER BY column LIMIT n OFFSET m]}}}
