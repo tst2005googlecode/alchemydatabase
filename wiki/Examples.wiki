@@ -1,5 +1,7 @@
 = Alchemy Database Examples =
 
+= TODO - this is horribly out of date, there are only 2 examples =
+
 *[http://code.google.com/p/alchemydatabase/wiki/Examples#MYSQL_EXAMPLES Jump to examples for Mysql users]*<br/>
 *[http://code.google.com/p/alchemydatabase/wiki/Examples#REDIS_EXAMPLES Jump to examples for Redis users]*<br/>
 <br/>
