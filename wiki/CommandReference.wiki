@@ -70,7 +70,7 @@ SELECT customer.name, group.slogan
        group.id BETWEEN 300 AND = 400
        [ORDER BY table.column LIMIT n OFFSET m]
 }}}
-===EXPLAIN JoinPlan===
+===EXPLAIN Join-Plan===
 {{{
 EXPLAIN
  SELECT customer.name, group.slogan FROM customer, group
