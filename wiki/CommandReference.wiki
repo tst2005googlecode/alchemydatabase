@@ -18,7 +18,7 @@ UNSIGNED INT stores data using 2 bytes when possible. UNSIGNED LONG stores data 
 ===Create/Drop Operations:===
   * {{{CREATE TABLE customer (id INT, group_id INT, name TEXT, phone text, age INT);}}}
   * {{{CREATE INDEX cust_group_ind ON customer (group_id);}}}
-  * {{{CREATE INDEX cust_grp_age_ind ON customer (group_id, age);}}} - Compund Indexes
+  * {{{CREATE INDEX cust_grp_age_ind ON customer (group_id, age);}}} - Compound Indexes
   * {{{DROP TABLE customer}}}
   * {{{DROP INDEX cust_group_ind}}}
   * {{{DESC customer}}} - provides detailed memory usage info
