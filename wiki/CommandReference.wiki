@@ -34,6 +34,7 @@ UNSIGNED INT stores data using 2 bytes when possible.
   * {{{REPLACE INTO customer VALUES (1,300,’John Doe’,’703-387-7777’,30)}}} 
   * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’703-387-7777’,30) ON DUPLICATE KEY UPDATE SET phone = ’703-387-7777’}}}
   * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’301-933-1891’,30) (2,300,’Jane Smith’,’301-946-2222’,22) (1,300,’John Doe’,’202-933-444’,55)}}} - Bulk Insert
+  * {{{INSERT INTO customer (id, name, phone) VALUES (1,’John Doe’,’301-933-1891’);}}} - Partial Insert, Alchemy rows are streams, so only the data in the row will be stored, no bytes for NULL placeholders
  
 ===Index Operations===
   * {{{SELECT group_id, phone FROM customer WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
