@@ -104,50 +104,44 @@ So calling the above command repeatedly, until the return value is less than _10
 <br/>
 
 ==LUA Command==
-TODO: UPDATE this, LUA now calls lua functions, <br/><br/>
-
 Alchemy Database has embedded [http://www.lua.org/about.html LUA] <br/>
 [http://www.ibm.com/developerworks/linux/library/l-embed-lua/index.html IBM's lua description]: _The Lua programming language is a small scripting language specifically designed to be embedded in other programs. Lua’s C API allows exceptionally clean and simple code both to call Lua from C, and to call C from Lua”_<br/>
 Alchemy Database has embedded Lua in its C-server and C in its embedded Lua :)<br/>
-The speed of embedded LUA commands in Alchemy Database is impressive: [http://groups.google.com/group/redisql-dev/msg/e24027e82e5c2094 benchmark]<br/>
+The speed of embedded LUA commands in Alchemy Database is impressive: [http://groups.google.com/group/redisql-dev/msg/e24027e82e5c2094 benchmark] - TODO UPDATE<br/>
 
-===Simple LUA===
+===embedded LUA "redis()" function===
+The lua function "redis()" will call the Alchemy Database server internally as if it were a client call.<br/>
+Function to set a user's last_login and return his status
 {{{
-LUA "x=45;return x;"
-}}}
-===embedded LUA "client()" function===
-The lua function "client()" will call the Alchemy Database server internally as if it were a client call.<br/>
-Command to set a user's last_login and return his status
-{{{
-LUA "client('SET','user:123:last_login',1289597410); return client('GET', 'user:123:status');"
+function getset_last_login
+ redis('SET', 'user:123:last_login', 1289597410);
+ return redis('GET', 'user:123:status');"
 }}}
 ===alchemy.lua===
-The file [https://github.com/JakSprats/Redisql/blob/master/test/alchemy.lua alchemy.lua] contains a full Alchemy Database client library, defining simple versions of Alchemy Database commands: e.g. get(), set(), zadd(), hset(), create_table(), select(), update(), norm()<br/>
-When alchemy.lua's functions have been loaded into Alchemy Database, the above command could be simplified as 
+The file [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/tests/lua/alchemy.lua alchemy.lua] contains simplified Alchemy SQL calls<br/>
+Loading alchemy.lua into the Alchemy Database server can be done either by specifiying the "luafilename" in the config file "redis.conf" or by the following command
 {{{
-LUA "set('user:123:last_login',1289597410); return get('user:123:status');"
-}}}
-Loading alchmey.lua into the Alchemy Database server can be done either by specifiying the "luafilename" in the config file "redisql.conf" or by the following command
-{{{
-./redisql-cli CONFIG SET luafilename test/alchemy.lua
+./alchemy-cli CONFIG SET luafilename test/alchemy.lua
 }}}
 The "CONFIG SET luafilename" also provides a simple way to modify lua functions in Alchemy Database w/o server restarts. Modify the commands in alchemy.lua and then load them, this will *reset Lua's state* and the new functions will be in place.<br/>
 To *ADD* lua functions to AlchemyDB (at runtime)
 {{{
-./redisql-cli CONFIG ADD lua helper.lua
+./alchemy-cli CONFIG ADD lua helper.lua
 }}}
-===Global Lua Variable Server===
-This form of embedding Lua extends Alchemy Database to be a global lua variable server. Lua variables have global scope, so if one client sets them another can read them.<br/>
-[http://lua-users.org/wiki/TablesTutorial Lua tables] are a very flexible and useful datatype in Lua<br/>
-Here is a command sequence from different clients accessing the same Lua table:
+===calling LUA functions===
+once a lua function has been imported into Alchemy, it is simple to call it. <br/>
+Given the imported lua function 
 {{{
-LUA "user_123_t = { 1,1,2,3,5,8,13 }; return 'SET lua table';"
-LUA "return user_123_t[4];"
+  function getuserdata(arg1, arg2, arg3)
+    ...
+    return redis('GET', arg3');
+  end
 }}}
-NOTE: for those requiring enhanced Lua performance, Alchemy Database's [https://github.com/JakSprats/Redisql/blob/master/Makefile#L14-23 Makefile] has an option (and instructions) to link to libluajit instead of liblua.
-<br/>
-<br/>
-
+The AlchemyDatabase call will define the function name and its 3 arguments
+{{{
+   LUA getuserdata 'session_777' 'user_123' 'last_login'
+}}}
+and the data returned in the function _getuserdata_ will be output in redis' protocol (to be read by the client)
 
 ==REDIS Commands==
 redis supports commands to deal with many data structures, including (strings, sets, lists, sorted-sets, and hash tables)<br/>
