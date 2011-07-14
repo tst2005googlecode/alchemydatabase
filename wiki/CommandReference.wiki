@@ -125,8 +125,8 @@ The speed of embedded LUA commands in Alchemy Database is impressive: [http://gr
 The lua function "redis()" will call the Alchemy Database server internally as if it were a client call.<br/>
 Function to set a user's last_login and return his status
 {{{
- function getset_last_login
-   redis('SET', 'user:123:last_login', 1289597410);
+  function getset_last_login
+    redis('SET', 'user:123:last_login', 1289597410);
     return redis('GET', 'user:123:status');"
   end
 }}}
@@ -156,7 +156,7 @@ The Alchemy Database call will define the function name and its 3 arguments
 }}}
 and the data returned in the function _getuserdata_ will be output in redis' protocol (to be read by the client)
 
-==LUA TRIGGERS==
+==LUATRIGGER==
 Luatriggers are lua functions that are run on every SQL INSERT/UPDATE/DELETE.
 
 The syntax for Luatriggers is {{{CREATE LUATRIGGER triggername ON table (column) add_trigger(cols,,,,) [delete_trigger(cols,,,)]}}}
@@ -185,8 +185,15 @@ And the following SQL declarations
 }}}
 Is a very simple way to implement a per fk number-of-rows cap that runs at almost the same speed as a straight INSERT
 
-=TODO=
-==LRU INDEX==
+==LRUINDEX==
+the LRUINDEX adds a column to a SQL table, called "lru", which updates itself everytime the commands INSERT,REPLACE,UPDATE,SELECT are called on the table.
+
+The syntax for the LRUINDEX is:
+{{{
+ CREATE TABLE tbl "(pk INT, c1 INT, c2 INT)"
+ CREATE LRUINDEX ON tbl
+}}}
+Combining a LRUINDEX and a LUATRIGGER is an easy way to add LRU-caching to a relational table.
 
 ==REDIS Commands==
 redis supports commands to deal with many data structures, including (strings, sets, lists, sorted-sets, and hash tables)<br/>
