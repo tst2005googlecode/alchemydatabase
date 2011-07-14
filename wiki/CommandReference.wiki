@@ -70,6 +70,12 @@ SELECT customer.name, group.slogan
        group.id BETWEEN 300 AND = 400
        [ORDER BY table.column LIMIT n OFFSET m]
 }}}
+===EXPLAIN JoinPlan===
+{{{
+EXPLAIN
+ SELECT customer.name, group.slogan FROM customer, group
+ WHERE customer.group_id = group.id AND group.id BETWEEN 300 AND = 400
+}}}
 
 ===Create table from Join===
 {{{
