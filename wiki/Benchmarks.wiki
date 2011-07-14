@@ -21,7 +21,7 @@ Y-Axis is requests/second .................. X-axis is number of rows returned<b
 The difference between 2-table and 3-table joins becomes less as number-of-rows increases, as can be seen on the [http://code.google.com/p/redisql/wiki/ExtendedBenchmarks Extended Benchmarks]
 
 <br/>
-==Benchmark THREE==
+==Benchmark 2==
 Same as benchmark one but graphed logarithmically and showing how the server performs when it is returning range queries or joins w/ 2 through 50,000 result rows.
 
 This also shows how joins scale as number of tables increase. This is OLAP territory, not OLTP, and the server is not designed for such usage, still, the server holds up well, and such tests are necessary for completeness<br/>
@@ -32,5 +32,5 @@ Y-Axis is requests/second .................. X-axis is number of rows returned<b
 [http://allinram.info/alsosql/PC_ALL_log_w_axisnames.png]
 <br/>
 <br/>
-==Benchmark FOUR==
+==Benchmark 3==
 [http://groups.google.com/group/redisql-dev/msg/e24027e82e5c2094 Lua benchmarks] .. informal writeup
