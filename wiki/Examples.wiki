@@ -7,11 +7,6 @@
 
 Alchemy Database provides a single home for your SQL and NOSQL data. Its event driven fast and you can effectively use all of your RAM (even go into swap if you arent scared) to store your data and have it retrieved consistently at RAM speed<br/>
 
-The following examples showcase how Alchemy Database can
-  * transform SQL data to NOSQL data structures (denormalise and go schemaless)
-  * transfrom NOSQL data into SQL tables (normalise to save RAM or to backup to a RDBMS)
-  * transfrom various NOSQL data structures to other NOSQL data structures (repackage your data to your use case)
-
 <br/>
 == MYSQL EXAMPLES ==
 === MYSQL EXAMPLE ONE: SQL tables at NOSQL speed ===
@@ -25,67 +20,9 @@ Best to [http://code.google.com/p/alchemydatabase/wiki/CommandReference read] up
 Also note that joining a Mysql table w/ a Alchemy Database during runtime is not yet supported
 <br/><br/>
 
-=== MYSQL EXAMPLE TWO: Try NOSQL out ===
-Curious about NOSQL? Want to try it out w/o the risk of data lock in, use Alchemy Database. Alchemy Database provides mechanisms to get your data into any Alchemy Database/redis data-structure and get it back out, there is no risk of product data lock in. To go schemaless:<br/>
-  # export your mysql table into Alchemy Database (w/ simple [https://github.com/JakSprats/redis-rb/blob/master/examples/schemaless.rb scripts]), 
-  # denormalise Alchemy Database's tables into ANY redis datastructure (LIST,SET,ZSET,HASH) using the SELECT STORE syntax, which provides the possibilities to break up tables any way you want
-{{{
-SELECT ....
-FROM table
-WHERE ....
-STORE redis_command redis_object
-}}}
-   * Hash Table "user_pass" - lookup passwords directly using "name" (and the hash table is only as big as the results of the WHERE Clause)
-{{{
-SELECT name, passwd FROM user WHERE ... STORE HSET user_pass
-}}}
-   * ZSET "user_action" - you can now perform set logic on user actions OR range query via timestamp
-{{{
-SELECT timestamp, action FROM user_history WHERE ... STORE ZSET user_action
-}}}
-   * mysql-to-Alchemy Database-export and table-denormalisation are demo'ed [https://github.com/JakSprats/redis-rb/blob/master/examples/schemaless.rb here]
-  # Go hog wild w/ your new NOSQL Data. You are schemaless, you have lists, queues, sets, ordered sets, hash tables, message queues ....
-  # if you find NOSQL wasnt the right fit for your problem, then export your redis datastructures back into mysql by
-    * converting them to a Alchemy Database table
-{{{
-CREATE TABLE back_to_sql AS DUMP redis_object
-}}}
-    * export from Alchemy Database to mysql w/ the DUMP TO MYSQL command (piped into mysql)
-{{{
-DUMP back_to_sql TO MYSQL
-}}}
-    createTableFromRedisObject() and dumpToMysql() are demo'ed [http://github.com/JakSprats/predis/blob/master/examples/backup_redis_to_mysql.php here]
-
-
-=== MYSQL EXAMPLE THREE: Export Table from Mysql To NOSQL and Go Schemaless ===
-One of the most mind blowing features of NOSQL is it is SCHEMALESS. This means if you decide to give your users ten new attributes today and 20 new attributes tommorow and next week decide all of those attributes are stupid ... you can add and delete these attributes on-the-fly w/o updating your schema. No "ALTER TABLE ADD/DELETE COLUMN" w/ its unpredicable run-time behaviour. Go schemaless and add "columns" at will, cause they are no longer columns :)<br/>
-<br/>
-Steps to go from mysql to schemaless nosql
-  # Read out a table's contents from mysql and insert them into Alchemy Database<br/>
-  A 45 line Ruby example can be found [https://github.com/JakSprats/redis-rb/blob/master/examples/schemaless.rb#L16-61 here]
-  # Denormalise the table using the command 
-{{{
-DENORM table "table:*"
-}}}
-Thats it, you will now have one hash-table per sql-table-row with names "table:1, table:2, table:3, ....".<br/>
-You are schemaless.
-<br/>
-<br/>
-<br/>
 
 == REDIS EXAMPLES ==
-=== REDIS EXAMPLE ONE: backup redis data to Mysql for Data Mining or Data Analytics ===
-Alchemy Database provides the ability to normalise a redis data structure (list,set,zset & hash) to a SQL table. It is then trivial to dump this table to file and have Mysql read it in and archive it. From there it is simple to do datamining on your redis objects by merging them into aggregate tables and performing relational logic on said tables.<br/>
-<br/>
-This can be done at command line with the commands: (the output of the 2nd command can be read straight into mysql)
-{{{
-CREATE TABLE X AS DUMP Redis_Object
-DUMP X TO MYSQL
-}}}
-[https://github.com/JakSprats/redis-rb/blob/master/examples/backup_redis_to_mysql.rb Here] is a 40 line php script that backs up EVERY KEY (that isnt a string or index:) in your redisDB to mysql 
-
-
-=== REDIS EXAMPLE TWO: create a Mysql Cache for "old" redis data ===
+=== REDIS EXAMPLE ONE: create a Mysql Cache for "old" redis data ===
 In Memory Databases are fantastic, until they get low on RAM, which is somewhat of an eventuality.<br/>
 <br/>
 Its a good practice to archive data you probably will not access again on the frontend from your In Memory Database to a disk based Database (e.g. mysql) and then build a thin cache layer that will retrieve archived data from the disk based Database as needed.<br/>
