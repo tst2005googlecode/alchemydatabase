@@ -155,6 +155,3 @@ Extensive documentation on redis commands can be found [http://redis.io/commands
 <br/>
 The following is an IFRAME of redis' command reference page, complete w/ links describing each command<br/>
 <wiki:gadget url="http://www.allinram.info/alsosql/gadget2.xml"  border="0" width="1200" height="2900"/> 
-
-===SQL NOTES===
-  # Multiple Column ORDER BYs not yet supported for JOINS
