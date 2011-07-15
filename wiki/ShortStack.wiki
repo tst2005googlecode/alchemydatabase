@@ -36,3 +36,5 @@ end
 The variables {{{webserver_whitelist_address}}} and {{{webserver_whitelist_netmask}}} define the range of ip-addresses that will be allowed directed access to Alchemy Database (i.e. the whitelisted ips). These whitelisted ips are for AppServers.
 
 A blog explaining the why, when, and how of the Short-Stack can be found here: _TODO: LINK_
+
+The Actionscript and Jsquery libraries can be found here: _TODO: LINK_
