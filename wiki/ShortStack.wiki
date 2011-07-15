@@ -21,8 +21,6 @@ The variable {{{webservermode}}} turns the short-stack on.
 
 The variable {{{whitelist_lua}}} points to a file that contains whitelisted lua modules, that must be w/in a module named: "whitelist". Only functions in the module "whitelist" can be called from the frontend.
 
-The variable {{{webserver_index_function}}} is the function that is called, when "GET / HTTP/1.0" is called, or it is the function that generates the index.html page.
-
 Example whitelist.lua
 {{{
 function index_page() 
@@ -32,6 +30,8 @@ function login_page(user, passwd)
   return '<html>USER: ' + user + ' is logging in</html>';
 end
 }}}
+
+The variable {{{webserver_index_function}}} is the function that is called, when "GET / HTTP/1.0" is called, or it is the function that generates the index.html page.
 
 The variables {{{webserver_whitelist_address}}} and {{{webserver_whitelist_netmask}}} define the range of ip-addresses that will be allowed directed access to Alchemy Database (i.e. the whitelisted ips). These whitelisted ips are for AppServers.
 
