@@ -2,6 +2,10 @@
 
 *WARNING: Alchemy's Short Stack is VERY experimental*
 
+Alchemy's Short Stack refers to using Alchemy Database as a webserver-datastore stack. Turning on {{{webservermode}}} will activate HTTP serving on Alchemy's listening port. To provide a layer to protect database data from the outside world, in {{{webservermode}}} there are only 2 paths to access data:
+  * whitelisted-IPs: App-servers whose IP addresses have been whitelisted in {{{redis.conf}}} can directly access Alchemy Database
+  * other-IPs -> whitelisted lua functions: other IP addresses (i.e. external) can only call whitelisted lua functions (which then access the DB), ALL other calls (e.g. GET,SET,INSERT,SELECT) are prohibited.
+
 The following is a diagram of how Alchemy can be used in a Short-Stack architecture:
 
 http://allinram.info/alsosql/AlchemyShortStack.png
