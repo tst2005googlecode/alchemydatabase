@@ -6,6 +6,8 @@ Alchemy's Short Stack refers to using Alchemy Database as a webserver-datastore 
   * whitelisted-IPs: App-servers whose IP addresses have been whitelisted in {{{redis.conf}}} can directly access Alchemy Database
   * other-IPs -> whitelisted lua functions: other IP addresses (i.e. external) can only call whitelisted lua functions (which then access the DB), ALL other calls (e.g. GET,SET,INSERT,SELECT) are prohibited.
 
+Alchemy's Short Stack supports both HTTP and redis' protocol, the latter can be accessed in Javascript via a Flash (Actionscript _TODO LINK_) object and has improved performance.
+
 The following is a diagram of how Alchemy can be used in a Short-Stack architecture:
 
 http://allinram.info/alsosql/AlchemyShortStack.png
