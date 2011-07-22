@@ -37,7 +37,9 @@ function welcome(user)
 end
 }}}
 
-The variable {{{webserver_index_function}}} is the function that is called, when "GET / HTTP/1.0" is called, or it is the function that generates the index.html page.
+The variable {{{webserver_index_function}}} is the function that is called, when "GET / HTTP/1.0" is called, or it is the function that generates the index.html page (in the above whitelist.lua, {{{index_page()}}} would be called).
+
+The HTTP call {{{GET /welcome/user333 HTTP/1.0}}} would be translated to the lua function {{{welcome('user333');}}} and the HTML {{{'<html><h2>HI: user333</h2><img src ="/STATIC/logo.png"/></html>}}} would be returned as a HTTP 200.
 
 The variables {{{webserver_whitelist_address}}} and {{{webserver_whitelist_netmask}}} define the range of ip-addresses that will be allowed directed access to Alchemy Database (i.e. the whitelisted ips). These whitelisted ips are for App-Servers.
 
