@@ -17,7 +17,7 @@ Simple requests (via HTTP, Javascript, or Flash) can be processed by a whitelist
 To configure this setup, the following settings must be activated in the file *redis.conf*:
 {{{
   webservermode yes
-  whitelist_lua whitelist.lua
+  include_lua functions.lua
   webserver_index_function index_page
   webserver_whitelist_address 192.168.1.1
   webserver_whitelist_netmask 255.255.255.0
@@ -25,23 +25,30 @@ To configure this setup, the following settings must be activated in the file *r
 
 The variable {{{webservermode}}} turns the short-stack on.
 
-The variable {{{whitelist_lua}}} points to a file that contains whitelisted lua modules, that must be w/in a module named: "whitelist". Only functions in the module "whitelist" can be called from the frontend.
+The variable {{{include_lua}}} points to a file that contains both whitelisted lua modules (start w/ "WL`_`" and are callable directly from the frontend) and normal non-whitelisted (helper) functions.
 
-Example whitelist.lua
+Example functions.lua
 {{{
-function index_page() 
-  return '<html>HI I AM THE INDEX PAGE</html>';
+function htmlify(t)
+  return '<html>' .. h .. '</html>';
 end
-function welcome(user) 
-  return '<html><h2>HI: ' + user + '</h2><img src ="/STATIC/logo.png"/></html>';
+function WL_index_page() 
+  return htmlify('HI I AM THE INDEX PAGE');
+end
+function WL_welcome(user) 
+  return htmlify'<h2>HI: ' + user + '</h2><img src ="/STATIC/logo.png"/>');
 end
 }}}
 
 The variable {{{webserver_index_function}}} is the function that is called, when "GET / HTTP/1.0" is called, or it is the function that generates the index.html page (in the above whitelist.lua, {{{index_page()}}} would be called).
 
-The HTTP call {{{GET /welcome/user333 HTTP/1.0}}} would be translated to the lua function {{{welcome('user333');}}} and the HTML {{{'<html><h2>HI: user333</h2><img src ="/STATIC/logo.png"/></html>}}} would be returned as a HTTP 200.
+The HTTP call {{{GET /welcome/user333 HTTP/1.0}}} would be translated to the lua function {{{WL_welcome('user333');}}} and the HTML {{{'<html><h2>HI: user333</h2><img src ="/STATIC/logo.png"/></html>}}} would be returned as a HTTP 200.
 
-The variables {{{webserver_whitelist_address}}} and {{{webserver_whitelist_netmask}}} define the range of ip-addresses that will be allowed directed access to Alchemy Database (i.e. the whitelisted ips). These whitelisted ips are for App-Servers.
+The function {{{htmlify()}}} is a helper function and *NOT* callable from the frontend. The HTTP call {{{GET /htmlify/HIYA HTTP/1.0}}} would be translated to {{{WL_htmlify('HIYA');}}} and would result in a 404 as the function is not defined.
+
+The variables {{{webserver_whitelist_address}}} and {{{webserver_whitelist_netmask}}} define the range of ip-addresses that will be allowed DIRECT access to Alchemy's Database (i.e. the whitelisted ips). These whitelisted ips are for App-Servers.
+
+Together whitelisted lua functions (start w/ "WL`_`") and whitelisted IPs, provide a very crude security framework.
 
 A blog explaining the why, when, and how of the Short-Stack can be found [http://jaksprats.wordpress.com/2011/07/13/the-short-stack/ here]
 
