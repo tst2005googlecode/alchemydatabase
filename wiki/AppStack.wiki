@@ -50,7 +50,7 @@ The variables {{{webserver_whitelist_address}}} and {{{webserver_whitelist_netma
 
 Together whitelisted lua functions (start w/ "WL`_`") and whitelisted IPs, provide a very crude security framework.
 
-A blog explaining the why, when, and how of the Short-Stack can be found [http://jaksprats.wordpress.com/2011/07/13/the-short-stack/ here]
+A blog explaining the why, when, and how of the App-Stack can be found [http://jaksprats.wordpress.com/2011/07/13/the-App -stack/ here]
 
 The Actionscript and Jsquery libraries can be found here: _TODO: LINK_
 
