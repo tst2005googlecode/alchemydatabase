@@ -2,7 +2,7 @@
 
 *WARNING: Alchemy's AppStack is VERY experimental*
 
-Alchemy's AppStack is a combined DynamicWebserver+Datastore stack. Dynamic HTML webpages are create via [http://www.lua.org/about.html LUA] functions that access data via an embedded Alchemy Database.
+Alchemy's AppStack is a combined `DynamicWebserver+Datastore` stack. Dynamic HTML webpages are create via [http://www.lua.org/about.html LUA] functions that access data via an embedded Alchemy Database.
 
 Turning on {{{webservermode}}} in [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/redis.conf Alchemy's conf file], will activate HTTP serving on Alchemy's listening port. A layer to protect database access from the outside world is provided by only allowing 2 paths to access data:
   * whitelisted-IPs: App-servers whose IP addresses have been whitelisted in {{{redis.conf}}} can directly access Alchemy Database
