@@ -1,16 +1,18 @@
-= Alchemy's App Stack =
+= The Alchemy App Stack =
 
 *WARNING: Alchemy's App Stack is VERY experimental*
 
-Alchemy's App Stack refers to using Alchemy Database as a webserver-datastore stack. Turning on {{{webservermode}}} will activate HTTP serving on Alchemy's listening port. To provide a layer to protect database data from the outside world, in {{{webservermode}}} there are only 2 paths to access data:
+Alchemy's App Stack is a combined dynamic-webserver+datastore stack. Dynamic scripting is done via [http://www.lua.org/about.html LUA] functions that create dynamic HTML pages using an embedded Alchemy Database.
+
+Turning on {{{webservermode}}} will activate HTTP serving on Alchemy's listening port. To provide a layer to protect database access from the outside world, in {{{webservermode}}} there are only 2 paths to access data:
   * whitelisted-IPs: App-servers whose IP addresses have been whitelisted in {{{redis.conf}}} can directly access Alchemy Database
   * other-IPs -> whitelisted lua functions: other IP addresses (i.e. external) can only call whitelisted lua functions (which then access the DB), ALL other calls (e.g. GET,SET,INSERT,SELECT) are prohibited.
 
-Alchemy's App Stack supports both HTTP and redis' protocol, the latter can be accessed in Javascript via a Flash (Actionscript _TODO LINK_) object and has improved performance.
+Alchemy's App Stack supports both HTTP and redis' protocol, the latter can be accessed in Javascript via a [https://github.com/claus/as3redis Flash object] and has improved performance (up to 50% faster for tiny requests).
 
 The following is a diagram of how Alchemy can be used in a App-Stack architecture:
 
-http://allinram.info/alsosql/AlchemyShortStack.png
+http://allinram.info/alsosql/AlchemyAppStack.png
 
 Simple requests (via HTTP, Javascript, or Flash) can be processed by a whitelisted lua function in Alchemy Database.
 
@@ -40,7 +42,7 @@ function WL_welcome(user)
 end
 }}}
 
-The variable {{{webserver_index_function}}} is the function that is called, when "GET / HTTP/1.0" is called, or it is the function that generates the index.html page (in the above whitelist.lua, {{{index_page()}}} would be called).
+The variable {{{webserver_index_function}}} is the function that is called, when "GET / HTTP/1.0" is called, or it is the function that generates the index.html page (in the above whitelist.lua, {{{WL_index_page()}}} would be called (the "WL`_`" gets preprended).
 
 The HTTP call {{{GET /welcome/user333 HTTP/1.0}}} would be translated to the lua function {{{WL_welcome('user333');}}} and the HTML {{{'<html><h2>HI: user333</h2><img src ="/STATIC/logo.png"/></html>}}} would be returned as a HTTP 200.
 
@@ -50,14 +52,15 @@ The variables {{{webserver_whitelist_address}}} and {{{webserver_whitelist_netma
 
 Together whitelisted lua functions (start w/ "WL`_`") and whitelisted IPs, provide a very crude security framework.
 
-A blog explaining the why, when, and how of the App-Stack can be found [http://jaksprats.wordpress.com/2011/07/13/the-App -stack/ here]
+A blog explaining the why, when, and how of the App-Stack can be found 
+[http://jaksprats.wordpress.com/2011/07/28/the-alchemy-app-stack/ here]
 
 The Actionscript and Jsquery libraries can be found here: _TODO: LINK_
 
 === STATIC FILES ==
 A backdoor for static files has been built in. Any key starting w/ "STATIC/" can be served directly from Alchemy.
 
-So the HTTP request "GET /STATIC/a.gif HTTP/1.0\r\n\r\n" is allowed from the outside world and maps to the Alchemy command "GET STATIC/a.gif"
+So the HTTP request {{{GET /STATIC/a.gif HTTP/1.0\r\n\r\n}}} is allowed from the outside world and maps to the Alchemy command {{{GET STATIC/a.gif}}} and can be populated by calling {{{SET STATIC/a.gif [BLOB]}}}.
 
 === HTTP Interface ===
 HTTP Request Headers are made available in Lua via the associative array {{{HTTP_HEADER[]}}}. If you want the value of the HTTP Request Header 'Host', it is accessible in Lua as {{{HTTP_HEADER['Host']}}}
