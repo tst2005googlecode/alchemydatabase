@@ -6,7 +6,7 @@ Alchemy's AppStack is a combined `DynamicWebserver+Datastore` stack. Dynamic HTM
 
 Turning on {{{webservermode}}} in [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/redis.conf Alchemy's conf file], will activate HTTP serving on Alchemy's listening port. A layer to protect database access from the outside world is provided by only allowing 2 paths to access data:
   * whitelisted-IPs: App-servers whose IP addresses have been whitelisted in {{{redis.conf}}} can directly access Alchemy Database
-  * other-IPs -> whitelisted lua functions: other IP addresses (i.e. external) can only call whitelisted lua functions (which then access the DB), ALL other calls (e.g. GET,SET,INSERT,SELECT) are prohibited.
+  * whitelisted lua functions: other IP addresses (i.e. external/not-whitelisted) can only call whitelisted lua functions (which then access the DB), ALL other calls (e.g. GET,SET,INSERT,SELECT) are prohibited.
 
 Alchemy's AppStack supports both HTTP and redis' protocol, the latter can be accessed in Javascript via a [https://github.com/claus/as3redis Flash object] and has improved performance (up to 50% faster for tiny requests).
 
