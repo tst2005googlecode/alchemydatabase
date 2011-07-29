@@ -69,7 +69,7 @@ HTTP Request Cookies are made available in Lua via the associative array {{{COOK
 
 Setting HTTP Response Headers can be done in Lua via the Lua function {{{SetHttpResponseHeader}}}. Setting the HTTP Response Header 'Expires', would be done by calling {{{SetHttpResponseHeader('Expires', 'Wed, 09 Jun 2021 10:18:14 GMT');}}}. Setting the HTTP Response Cookie 'mycookie' can be done in Lua by calling {{{SetHttpResponseHeader('Set-Cookie', 'mycookie=value_for_mycookie; Expires=Wed, 09 Jun 2021 10:18:14 GMT; path=/;');}}}
 
-HTTP Redirects can be called from Lua via the function {{{SetHttpRedirect(redirect_url);}}}. To redirect to the page 'index', call: {{{SetHttpRedirect('/index_page'); return;}}} and return immediately w/ no return value.
+HTTP Redirects can be called from Lua via the function {{{SetHttpRedirect(redirect_url);}}}. To redirect to the page '/index_page', call: {{{SetHttpRedirect('/index_page'); return;}}} (NOTE: return immediately w/ no return value).
 
 === DEMO ===
 A port of the demo app [http://retwis.antirez.com/ retwis] (written in php) to Alchemy's AppStack Lua can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/docroot/retwis_whitelist.lua here]
