@@ -15,3 +15,5 @@ The documentation is a work in progress.
   * Clients can be found [http://code.google.com/p/alchemydatabase/wiki/Clients here]
 
   * Jaksprats (author) [http://jaksprats.wordpress.com/ blog] discussing the strengths and uses of Alchemy Database
+
+  * An experimental [http://code.google.com/p/alchemydatabase/wiki/AppStack web_server] mode speaks HTTP and calls whitelisted Lua functions to server web pages
