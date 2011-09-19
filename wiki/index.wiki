@@ -17,3 +17,5 @@ The documentation is a work in progress.
   * Jaksprats (author) [http://jaksprats.wordpress.com/ blog] discussing the strengths and uses of Alchemy Database
 
   * An experimental [http://code.google.com/p/alchemydatabase/wiki/AppStack web_server] mode speaks HTTP and calls whitelisted Lua functions to server web pages
+
+  * A draft that lists Alchemy Databases highlights can be found [http://code.google.com/p/alchemydatabase/wiki/HighLights here]
