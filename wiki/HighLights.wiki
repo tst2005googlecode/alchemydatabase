@@ -1,0 +1,35 @@
+
+= DRAFT =
+
+== Memory optimisations ==
+
+  * TEXT columns are lzf compressed if over 20 characters, under 20 characters a homemade compression algorithm (dubbed: sixbit) is sometimes yields modest reductions.
+  * INT + LONG fields are bit packed and algorithms work on the compressed values
+  * INT + LONG Indexes are stored inside their respective Btrees (this includes MultipleColumnIndexes and Unique Indexes)
+  * When possible UPDATEs are done in place (if an update does not change the size of a row, there is no allocation/deallocation needed)
+  * Rows are streams, ALTER TABLE ADD COLUMN is instantaneous
+  * jemalloc is compiled in, which has shown far less memory fragmentation (than glibc malloc, tcmalloc) and even gives freed memory back to the OS
+  * Btree dynamic resizing: Btrees (indexes also) start tiny and then dynamically resize once they have reached a threshold size (helps w/ small tables and indexes w/ few entries)
+
+== Advanced Features ==
+  * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUA_Command LUA command] and DEEP lua embedding provides a turing complete language to manipulate data
+  * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUATRIGGER LUATRIGGER] calls a LUA function containing the INSERTED/DELETED/UPDATED rows contents per INSERT/UPDATE/DELETE
+  *[http://code.google.com/p/alchemydatabase/wiki/CommandReference#LRUINDEX LRUINDEX] adds a column to a tabled (called "LRU") which gets updated each time the row is accessed. (perfect for getting rid of "cold" data -> use a LUATRIGGER to do it automatically).
+  *LFUINDEX -> coming soon
+  *LuaCronJob - a lua script can be run every second w/in the server. Use of this functionality comes w/ a big fat warning sticker: *the cron job is BLOCKING*
+  * ORDER BY INDEX - indexes can store values sorted to another column in the table, instead of to the default PK. Very useful for dashboard updates (e.g. _SELECT `*` from TIMELINE WHERE userid = 999 ORDER BY timestamp LIMIT 10_ -> CREATE INDEX i_t ON TIMELINE (userid) ORDER BY timestamp)
+  * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#Alchemy_Cursors Cursors] allow a long running operation (e.g. a full table scan/update/etc...) to be broken up into batch process. This negates Isolation in ACID, but is often acceptable in given use cases.
+  * SUBPIPE (*TODO: document*) is an external process that subscribes to a Alchemy channel and forwards any messages it receives to another Alchemy instance. Combined w/ LUA & Cursors, long blocking operations can be broken up into batches that are performed iteratively and echoed from the AlchemyServer to the SUBPIPE and back, creating a feedback loop.
+  * Advanced Messaging (*TODO: document*)
+    * Message Command
+    * Lua commands: RemoteMessage, RemotePipe
+    * Lua Pub/sub file-descriptor access
+  * SCION iterator - _SELECT ORDER BY fk LIMIT X OFFSET Y_ has a specialised iterator, all OFFSETs are O(log(N)) to find.
+  * Embeddable - Alchemy Database can be embedded into a C program (or other languages thru C), BUT it is single threaded.
+  * Multiple Output formats (normal[rows], redis-output, stream-output[coming soon])
+  * PURGE command (*TODO: document*) guarantees a master has successfully flushed his replication stream to his slave(s) and then shuts down. Can be used to move AlchemyInstances (slave-promotion) or to do Mitosis on a particular node (i.e. split into 2 to scale better)
+
+== Architecture ==
+  * EventDriven, Non-blocking I/O (includes frontend, replication, publishing, periodic snapshots, aof-writing, etc....)
+  * Detailed table memory usage (per index stats, data stats, btree-overhead stats, per-row-@insert-size stats)
+  * [http://code.google.com/p/alchemydatabase/wiki/AppStack Webserver] - Distributed framework (*TODO: document*)
