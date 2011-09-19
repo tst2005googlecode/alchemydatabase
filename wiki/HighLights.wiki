@@ -4,7 +4,7 @@
 
   * TEXT columns are lzf compressed if over 20 characters, under 20 characters a homemade compression algorithm (dubbed: sixbit) is sometimes yields modest reductions.
   * INT + LONG fields are bit packed and algorithms work on the compressed values
-  * INT + LONG Indexes are stored inside their respective Btrees (this includes MultipleColumnIndexes and Unique Indexes)
+  * INT + LONG Indexes are stored inside their respective Btrees (this includes Multiple Column Indexes and Unique Indexes) - also 2 column tables have been similarly optimised.
   * When possible UPDATEs are done in place (if an update does not change the size of a row, there is no allocation/deallocation needed)
   * Rows are streams, ALTER TABLE ADD COLUMN is instantaneous
   * jemalloc is compiled in, which has shown far less memory fragmentation (than glibc malloc, tcmalloc) and even gives freed memory back to the OS
