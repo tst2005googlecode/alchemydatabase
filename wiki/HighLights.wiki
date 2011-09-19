@@ -1,4 +1,3 @@
-
 = DRAFT =
 
 == Memory optimisations ==
@@ -14,7 +13,7 @@
 == Advanced Features ==
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUA_Command LUA command] and DEEP lua embedding provides a turing complete language to manipulate data
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUATRIGGER LUATRIGGER] calls a LUA function containing the INSERTED/DELETED/UPDATED rows contents per INSERT/UPDATE/DELETE
-  *[http://code.google.com/p/alchemydatabase/wiki/CommandReference#LRUINDEX LRUINDEX] adds a column to a tabled (called "LRU") which gets updated each time the row is accessed. (perfect for getting rid of "cold" data -> use a LUATRIGGER to do it automatically).
+  * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LRUINDEX LRUINDEX] adds a column to a tabled (called "LRU") which gets updated each time the row is accessed. (perfect for getting rid of "cold" data -> use a LUATRIGGER to do it automatically).
   *LFUINDEX -> coming soon
   *LuaCronJob - a lua script can be run every second w/in the server. Use of this functionality comes w/ a big fat warning sticker: *the cron job is BLOCKING*
   * ORDER BY INDEX - indexes can store values sorted to another column in the table, instead of to the default PK. Very useful for dashboard updates (e.g. _SELECT `*` from TIMELINE WHERE userid = 999 ORDER BY timestamp LIMIT 10_ -> CREATE INDEX i_t ON TIMELINE (userid) ORDER BY timestamp)
