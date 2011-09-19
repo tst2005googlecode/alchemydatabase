@@ -138,7 +138,7 @@ and the data returned in the function _getuserdata_ will be output in redis' pro
 == Beyond SQL ==
 SQL is a powerful *standardised* language, adding specific use case optimisations to it, can greatly improve the performance & ease-of-programming of many common OLTP use cases.
 
-== ORDER BY INDEX ==
+=== ORDER BY INDEX ===
 ORDER BY INDEX stores values sorted to the specified column's value (instead of to the default PK's value). This is very useful for dashboard updates as the ORDER BY sorting is done at INSERT time (w/ zero overhead), instead of query time (requires row-buffering + qsort).
 {{{
   CREATE TABLE tweets (pk INT, userid INT, unix_ts INT, message TEST);
@@ -171,7 +171,7 @@ So calling the above command repeatedly, until the return value is less than _10
 <br/>
 <br/>
 
-==LUATRIGGER==
+===LUATRIGGER===
 Luatriggers are lua functions that are run on every SQL INSERT/UPDATE/DELETE.
 
 The syntax for Luatriggers is {{{CREATE LUATRIGGER triggername ON table (column) add_trigger(cols,,,,) [delete_trigger(cols,,,)]}}}
@@ -200,7 +200,7 @@ And the following SQL declarations
 }}}
 Is a very simple way to implement a per fk number-of-rows cap that runs at almost the same speed as a straight INSERT
 
-==LRUINDEX==
+===LRUINDEX===
 the LRUINDEX adds a column to a SQL table, called "lru", which updates the row's column everytime the commands INSERT,REPLACE,UPDATE,SELECT are called on the row in the table.
 
 The syntax for the LRUINDEX is:
