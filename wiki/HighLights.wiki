@@ -20,9 +20,10 @@
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#Alchemy_Cursors Alchemy Cursors] allow a long running operation (e.g. a full table scan/update/etc...) to be broken up into batch process. This negates Isolation in ACID, but is often acceptable in given use cases.
   * SUBPIPE (*TODO: document*) is an external process that subscribes to a Alchemy channel and forwards any messages it receives to another Alchemy instance. Combined w/ LUA & Cursors, long blocking operations can be broken up into batches that are performed iteratively and echoed from the Alchemy Server to the SUBPIPE and back, creating a feedback loop.
   * Advanced Messaging (*TODO: document*)
-    * {{{MESSAGE}}} Command
+    * {{{MESSAGE}}} Command + Lua `Redisify()` 
+    * Slave Knowledge: Lua `IsConnectedToMaster()`
     * Lua commands: `RemoteMessage()`, `RemotePipe()`
-    * Lua Pub/Sub file-descriptor access
+    * Lua Pub/Sub file-descriptor access `SubscribeFD()`, `UnsubscribeFD()`, `GetFDForChannel()`, `CloseFD()`, 
 
 == Miscellaneous ==
   * SCION iterator - _SELECT ORDER BY fk LIMIT X OFFSET Y_ has a specialised iterator, all OFFSETs are O(log(N)) to find. This allows [http://code.google.com/p/alchemydatabase/wiki/CommandReference#Alchemy_Cursors Alchemy Cursors] to run at about the same speed as large blocking operations (SELECT,UPDATE,DELETE), but Alchemy Cursors do not block, they can be tuned to have about a 20% performance hit for other queries when the system is under full load.
