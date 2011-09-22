@@ -71,5 +71,7 @@ Setting HTTP Response Headers can be done in Lua via the Lua function {{{SetHttp
 
 HTTP Redirects can be called from Lua via the function {{{SetHttpRedirect(redirect_url);}}}. To redirect to the page '/index_page', call: {{{SetHttpRedirect('/index_page'); return;}}} (NOTE: return immediately w/ no return value).
 
+Etags are supported via the {{{SetHttp304()}}} call
+
 === DEMO ===
 A port of the demo app [http://retwis.antirez.com/ retwis] (written in php) to Alchemy's AppStack Lua can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/docroot/retwis_whitelist.lua here]
