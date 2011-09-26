@@ -138,6 +138,16 @@ and the data returned in the function _getuserdata_ will be output in redis' pro
 == Beyond SQL ==
 SQL is a powerful *standardised* language, adding specific use case optimisations to it, can greatly improve the performance & ease-of-programming of many common OLTP use cases.
 
+=== CREATE INDEX via BATCH ===
+Creating an Index is a blocking op in AlchemyDB (like all other ops). Creating an index on a very large table (i.e. 20 million rows) can take a prohibitively long time (e.g. 7-30 secs for 20million rows on a 2.8GHz CPU), so Alchemy provides a mechanism to create a single index via a batch. Unlike 
+[http://code.google.com/p/alchemydatabase/wiki/CommandReference#Alchemy_Cursors Alchemy Cursors] creating an index is an ACID compliant operation as the index is not active until the ENTIRE Index has been built.
+To Create an Index via a batch job, simply call 
+{{{
+CREATE INDEX i_t ON t (fk) LIMIT 1000 
+}}}
+Until ZERO rows are returned. When zero rows are returned the Index has been created.
+In practice, creating a HUGE Index via a batch will negatively effect all other read/write ops by about 10-20% at full load (when the load is not full, creating an index via a batch job goes more or less unnoticed).
+
 === ORDER BY INDEX ===
 ORDER BY INDEX stores values sorted to the specified column's value (instead of to the default PK's value). This is very useful for dashboard updates as the ORDER BY sorting is done at INSERT time (w/ zero overhead), instead of query time (requires row-buffering + qsort).
 {{{
