@@ -145,7 +145,7 @@ To Create an Index via a batch job, simply call
 {{{
 CREATE INDEX i_t ON t (fk) LIMIT 1000 
 }}}
-Until ZERO rows are returned. When zero rows are returned the Index has been created.
+repetitively until ZERO rows are returned. When zero rows are returned the Index has been created.
 In practice, creating a HUGE Index via a batch will negatively effect all other read/write ops by about 10-20% at full load (when the load is not full, creating an index via a batch job goes more or less unnoticed).
 
 === ORDER BY INDEX ===
