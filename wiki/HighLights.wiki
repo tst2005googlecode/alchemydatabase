@@ -11,7 +11,7 @@
   * Btree dynamic resizing: Btrees (indexes also) start tiny and then dynamically resize once they have reached a threshold size (helps w/ small tables and indexes w/ few entries)
 
 == Advanced Features ==
-  * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUA_Command LUA command] and DEEP lua embedding provides a turing complete language to manipulate data
+  * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUA_Command LUA command] and DEEP lua embedding provides a turing complete language to manipulate data (far more flexible than RDBMS's procedural languages)
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUATRIGGER LUATRIGGER] calls a LUA function containing the INSERTED/DELETED/UPDATED rows contents per INSERT/UPDATE/DELETE
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LRUINDEX LRUINDEX] adds a column to a tabled (called "LRU") which gets updated each time the row is accessed. (perfect for getting rid of "cold" data -> use a LUATRIGGER to do it automatically).
   * LFUINDEX -> coming soon
