@@ -28,7 +28,7 @@
 
 == Miscellaneous ==
   * Unlimited number of tables, indexes, & columns (allows for NOSQL schema-less like data, combining w/ lua provides a very fast single-node in-memory map-reduce building block)
-  * sqlappendonly writes ALL SQL CRUD to a file in MYSQL format
+  * sqlappendonly writes ALL SQL CRUD to a file in MYSQL format (this file can be piped directly to a mysql-server, add a LUATRIGGER that evicts "cold" data via a LRUINDEX, and Alchemy becomes a RDBMS-Cache w/ relational logic).
   * SCION iterator - _SELECT ORDER BY fk LIMIT X OFFSET Y_ has a specialised iterator, all OFFSETs are O(log(N)) to find. This allows [http://code.google.com/p/alchemydatabase/wiki/CommandReference#Alchemy_Cursors Alchemy Cursors] to run at about the same speed as large blocking operations (SELECT,UPDATE,DELETE), but Alchemy Cursors do not block, they can be tuned to have about a 20% performance hit for other queries when the system is under full load.
   * Embeddable - Alchemy Database can be embedded into a C program (or other languages thru C), BUT it is single threaded.
   * Multiple Output formats (normal-sql-rows, redis-output, stream-output _coming soon_)
