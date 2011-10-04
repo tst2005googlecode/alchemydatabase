@@ -9,6 +9,7 @@
   * Rows are streams, ALTER TABLE ADD COLUMN is instantaneous, empty columns take up almost no space (1-4 bytes)
   * jemalloc is compiled in, which has shown far less memory fragmentation (than glibc malloc, tcmalloc) and even gives freed memory back to the OS
   * Btree dynamic resizing: Btrees (indexes also) start tiny and then dynamically resize once they have reached a threshold size (helps w/ small tables and indexes w/ few entries)
+  * SparseRows: tables w/ 1000s of columns, that are sparsely populated, use a serialised hash table in the row's stream to store column offsets. SparseRows can be OrdersOfMagnitude smaller than full rows (NOTE: useful for unstructured data: just keep adding columns, and SparseRows limit memory usage)
 
 == Advanced Features ==
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUA_Command LUA command] and DEEP lua embedding provides a turing complete language to manipulate data (far more flexible than RDBMS's procedural languages)
@@ -28,7 +29,6 @@
 
 == Miscellaneous ==
   * Unlimited number of tables, indexes, & columns (allows for NOSQL schema-less like data, combining w/ lua provides a very fast single-node in-memory map-reduce building block)
-  * Sparse Rows: a table w/ many columns (e.g. 1000+) will use an alternate row form for rows that are sparsely populated (e.g. 10% full). Sparse rows use a serialised hash-table (remember rows are streams) to find column offsets.
   * sqlappendonly writes ALL SQL CRUD to a file in MYSQL format (this file can be piped directly to a mysql-server, add a LUATRIGGER that evicts "cold" data via a LRUINDEX, and Alchemy becomes a RDBMS-Cache w/ relational logic).
   * SCION iterator - _SELECT ORDER BY fk LIMIT X OFFSET Y_ has a specialised iterator, all OFFSETs are O(log(N)) to find. This allows [http://code.google.com/p/alchemydatabase/wiki/CommandReference#Alchemy_Cursors Alchemy Cursors] to run at about the same speed as large blocking operations (SELECT,UPDATE,DELETE), but Alchemy Cursors do not block, they can be tuned to have about a 20% performance hit for other queries when the system is under full load.
   * Embeddable - Alchemy Database can be embedded into a C program (or other languages thru C), BUT it is single threaded.
