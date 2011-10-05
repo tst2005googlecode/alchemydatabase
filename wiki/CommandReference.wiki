@@ -45,12 +45,13 @@ UNSIGNED INT stores data using 2 bytes when possible. UNSIGNED LONG stores data 
   * {{{DELETE FROM customer WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
   * {{{UPDATE customer SET phone = ‘703-933-1891’, group_id = 4 WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
 
-===Update Expressions===
-  UPDATE expressions currently support the following functionalities {{{(+=, -=, *=, /=, %=, ^=, ||=)}}}
+===SIMPLE Update Expressions===
+  UPDATE expressions currently support the following functionalities {{{(+=, -=, *=, /=, %=, ^=)}}}
 {{{
-UPDATE customer SET phone = phone || ' ext 912', group_id = group_id * 4, age = age + 1 WHERE id = 1
+UPDATE customer SET group_id = group_id * 4, age = age + 1 WHERE id = 1
 }}}
 
+  Simple UPDATEs are done in C, complex UPDATEs are done in LUA.
 ===Where Clause Grammar===
   The First column in the Where Clause determines the Index to use, subsequent columns will "filter" the rows matching the Index Lookup
 {{{
@@ -65,10 +66,9 @@ WHERE fk = 7 ORDER BY col1 DESC, col2, col3 ASC LIMIT 10 OFFSET 100
 Alchemy currently supports denormalised Table Joins, and will soon support Star Schema joins<br/>
 ===Join via single Index===
 {{{
-SELECT customer.name, group.slogan
- FROM customer, group
- WHERE customer.group_id = group.id AND
-       group.id BETWEEN 300 AND = 400
+SELECT c.name, g.slogan
+ FROM customer c, group g
+ WHERE c.group_id = g.id AND g.id BETWEEN 300 AND = 400
        [ORDER BY table.column LIMIT n OFFSET m]
 }}}
 ===EXPLAIN Join-Plan===
@@ -92,37 +92,36 @@ Find unindexed data – _not recommended, should be avoided when possible_
 {{{
 SCAN id, phone FROM customer WHERE name = ‘bill’ AND age BETWEEN 18 AND 25
 }}}
-  _the SCAN command makes it impossible to accidentally do a full table scan w/ SELECT_
+  _the SCAN command makes it impossible to accidentally do a full table scan w/ SELECT, which is worse than in a DiskBased RDBMS because AlchemyDB is single-threaded, so SCANs block during their duration._
 
 ==LUA Command==
 Alchemy Database has embedded [http://www.lua.org/about.html LUA] <br/>
 [http://www.ibm.com/developerworks/linux/library/l-embed-lua/index.html IBM's lua description]: _The Lua programming language is a small scripting language specifically designed to be embedded in other programs. Lua’s C API allows exceptionally clean and simple code both to call Lua from C, and to call C from Lua”_<br/>
 Alchemy Database has embedded Lua in its C-server and C in its embedded Lua :)<br/>
-The speed of embedded LUA commands in Alchemy Database is impressive: [http://groups.google.com/group/redisql-dev/msg/e24027e82e5c2094 benchmark] - TODO UPDATE<br/>
+The speed of embedded LUA commands in Alchemy Database is impressive: simple LUA routines run at about the same speed as simple Alchemy look read/write-ops.
 
 ===embedded LUA "redis()" function===
 The lua function "redis()" will call the Alchemy Database server internally as if it were a client call.<br/>
 Function to set a user's last_login and return his status
 {{{
-  function getset_last_login
-    redis('SET', 'user:123:last_login', 1289597410);
-    return redis('GET', 'user:123:status');"
+  function getset_last_login(userid, ts)
+    redis('SET', 'user:' .. userid .. ':last_login', ts);
+    return redis('GET', 'user:' .. userid .. ':status');"
   end
 }}}
-===alchemy.lua===
-The file [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/tests/lua/alchemy.lua alchemy.lua] contains simplified Alchemy SQL calls<br/>
-Loading alchemy.lua into the Alchemy Database server can be done either by specifiying the "luafilename" in the config file "redis.conf" or by the following command
+===Adding Lua functions at run-time===
+Loading lua files (containing lua functions) into the Alchemy Database server can be done either by specifiying the "luafilename" in the config file "redis.conf" or by the following command
 {{{
-./alchemy-cli CONFIG SET luafilename test/alchemy.lua
+./alchemy-cli CONFIG SET luafilename xyz.lua
 }}}
-The "CONFIG SET luafilename" also provides a simple way to modify lua functions in Alchemy Database w/o server restarts. Modify the commands in alchemy.lua and then load them, this will *reset Lua's state* and the new functions will be in place.<br/>
+The "CONFIG SET luafilename" also provides a simple way to modify lua functions in Alchemy Database w/o server restarts. Modify the commands in xyz.lua and then load them, this will *reset Lua's state* and the new functions will be in place.<br/>
 To *ADD* lua functions to AlchemyDB (at runtime)
 {{{
 ./alchemy-cli CONFIG ADD lua helper.lua
 }}}
 ===calling LUA functions===
 once a lua function has been imported into Alchemy, it is simple to call it. <br/>
-Given the imported lua function 
+Given the imported lua function (e.g. added via "CONFIG ADD")
 {{{
   function getuserdata(arg1, arg2, arg3)
     ...
@@ -158,6 +157,29 @@ Querying this table, using the {{{i_tweets}}} index will return rows PRE-sorted 
 {{{
     SELECT * FROM tweets WHERE userid = 999 ORDER BY unix_ts DESC LIMIT 10
 }}}
+
+=== Complex UPDATEs via lua-rewriting ===
+Complex UPDATEs are rewritten into lua functions and the computation of the UPDATE is done in LUA ... and this is done transparently.
+
+Here is an example (because this is totally confusing)
+Given the complex UPDATE:
+{{{
+    UPDATE updated SET col2=math.random(1000,2000),
+                       col3=((col3 + (col2 * col4))),
+                       col4 = col4 * 10000
+    WHERE fk = 2
+}}}
+The 3 update column statements (col2, col3, col4) are analysed for complexity.
+{{{col2=math.random(1000,2000)}}} -> complex
+{{{col3=((col3 + (col2 * col4)))}}} -> complex
+{{{col4 = col4 * 10000}}} -> simple
+So the update to col4 (the simple one) is done in C, just like in any other RDBMS.
+The complex updates (col2,col3) are rewritten into lua functions.
+e.g. {{{ function luf_2(...) return math.random(1000,2000); end }}} AND
+     {{{ function luf_3(...) local col3 = arg[1]; local col2 = arg[2]; local col4 = arg[3]; return (((col3 + (col2 * col4)))); end}}}
+And LUA the functions {{{luf_2() & luf_3()}} are applied as UPDATEs to each ROW matching the WhereClause.
+
+Again, this sounds both stupid and lazy, but now any UPDATE that can be framed in LUA, can be done to a Relational Database. Writing a UserDefinedFunction, means writing it in LUA, adding the function to AlchemyDB, and then calling it in an UPDATE. ComplexUpdatesViaLuaFunctionRewriting are significantly slower than SimpleUpdatesViaCFunctions (mostly due to interpreting the rewritten lua function, which is only done once per command, not once per updated row), but these UPDATES are truly flexible.
 
 === Alchemy Cursors===
 Since Alchemy is a *single threaded datastore*, long running queries block other queries during their execution.<br/>
