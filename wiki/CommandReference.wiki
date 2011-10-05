@@ -51,7 +51,7 @@ UNSIGNED INT stores data using 2 bytes when possible. UNSIGNED LONG stores data 
 UPDATE customer SET group_id = group_id * 4, age = age + 1 WHERE id = 1
 }}}
 
-  Simple UPDATEs are done in C, complex UPDATEs are done in LUA.
+  Simple UPDATEs are done in C, [http://code.google.com/p/alchemydatabase/wiki/CommandReference?ts=1317055830&updated=CommandReference#Complex_UPDATEs_via_lua-rewriting complex UPDATEs] are done in LUA.
 ===Where Clause Grammar===
   The First column in the Where Clause determines the Index to use, subsequent columns will "filter" the rows matching the Index Lookup
 {{{
@@ -179,7 +179,7 @@ e.g. {{{ function luf_2(...) return math.random(1000,2000); end }}} AND
      {{{ function luf_3(...) local col3 = arg[1]; local col2 = arg[2]; local col4 = arg[3]; return (((col3 + (col2 * col4)))); end}}}
 And LUA the functions {{{luf_2() & luf_3()}} are applied as UPDATEs to each ROW matching the WhereClause.
 
-Again, this sounds both stupid and lazy, but now any UPDATE that can be framed in LUA, can be done to a Relational Database. Writing a UserDefinedFunction, means writing it in LUA, adding the function to AlchemyDB, and then calling it in an UPDATE. ComplexUpdatesViaLuaFunctionRewriting are significantly slower than SimpleUpdatesViaCFunctions (mostly due to interpreting the rewritten lua function, which is only done once per command, not once per updated row), but these UPDATES are truly flexible.
+Again, this sounds both stupid and lazy, but now any UPDATE that can be framed in LUA, can be done to a Relational Database. Writing a UserDefinedFunction, means writing it in LUA, [http://code.google.com/p/alchemydatabase/wiki/CommandReference?ts=1317055830&updated=CommandReference#Adding_Lua_functions_at_run-time adding the function] to AlchemyDB, and then calling it in an UPDATE. ComplexUpdatesViaLuaFunctionRewriting are significantly slower than SimpleUpdatesViaCFunctions (mostly due to interpreting the rewritten lua function, which is only done once per command, not once per updated row), but these UPDATES are truly flexible.
 
 === Alchemy Cursors===
 Since Alchemy is a *single threaded datastore*, long running queries block other queries during their execution.<br/>
