@@ -163,15 +163,14 @@ Complex UPDATEs are rewritten into lua functions and the computation of the UPDA
 
 Here is an example (because this is totally confusing).Given the complex UPDATE:
 {{{
-UPDATE updated SET col2=math.random(1000,2000),
+UPDATE table SET col2=math.random(1000,2000),
                    col3=((col3 + (col2 * col4))),
                    col4 = col4 * 10000
 WHERE fk = 2
 }}}
 The 3 update column statements (col2, col3, col4) are analysed for complexity.
-{{{col2=math.random(1000,2000)}}} -> complex
-{{{col3=((col3 + (col2 * col4)))}}} -> complex
-{{{col4 = col4 * 10000}}} -> simple
+{{{col2=math.random(1000,2000)}}} -> complex, {{{col3=((col3 + (col2 * col4)))}}} -> complex, {{{col4 = col4 * 10000}}} -> simple.
+
 So the update to col4 (the simple one) is done in C, just like in any other RDBMS.
 The complex updates (col2,col3) are rewritten into lua functions.
 {{{
@@ -185,9 +184,9 @@ function luf_3(...)
   return (((col3 + (col2 * col4))));
 end
 }}}
-And LUA the functions {{{luf_2() & luf_3()}}} are applied as UPDATEs to each ROW matching the Where-Clause.
+And these LUA functions {{{luf_2() & luf_3()}}} are applied as UPDATEs to each ROW matching the Where-Clause.
 
-Again, this sounds both stupid and lazy, but now any UPDATE that can be framed in LUA, can be done to a Relational Database. Writing a User-Defined-Function, means writing it in LUA, [http://code.google.com/p/alchemydatabase/wiki/CommandReference?ts=1317055830&updated=CommandReference#Adding_Lua_functions_at_run-time adding the function] to AlchemyDB, and then calling it in an UPDATE. `ComplexUpdatesViaLuaFunctionRewriting` are significantly slower than `SimpleUpdatesViaCFunctions` (mostly due to interpreting the rewritten lua function, which is only done once per command, not once per updated row), but these UPDATES are truly flexible.
+This sounds both stupid and lazy, but now any UPDATE that can be framed in LUA, can be done to a Relational Database. Writing a User-Defined-Function, means writing it in LUA, [http://code.google.com/p/alchemydatabase/wiki/CommandReference?ts=1317055830&updated=CommandReference#Adding_Lua_functions_at_run-time adding the function] to AlchemyDB, and then calling it in an UPDATE. `ComplexUpdatesViaLuaFunctionRewriting` are significantly slower than `SimpleUpdatesViaCFunctions` (mostly due to interpreting the rewritten lua function, which is done once per command, *not* once per updated row), but these UPDATES are truly flexible.
 
 === Alchemy Cursors===
 Since Alchemy is a *single threaded datastore*, long running queries block other queries during their execution.<br/>
