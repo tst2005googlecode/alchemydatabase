@@ -164,8 +164,8 @@ Complex UPDATEs are rewritten into lua functions and the computation of the UPDA
 Here is an example (because this is totally confusing).Given the complex UPDATE:
 {{{
 UPDATE table SET col2=math.random(1000,2000),
-                   col3=((col3 + (col2 * col4))),
-                   col4 = col4 * 10000
+                 col3=((col3 + (col2 * col4))),
+                 col4 = col4 * 10000
 WHERE fk = 2
 }}}
 The 3 update column statements (col2, col3, col4) are analysed for complexity.
