@@ -1,3 +1,6 @@
+ Alchemy Database provides a non-blocking event-driven relational-database, achieving minimal memory overhead in data-storage, that is optimised to do OLTP SQL statements amazingly fast and then throws in the NOSQL Data-store redis PLUS lua scripting to provide a next generation Web-Service Datastore.
+
+
 <br/>
 ==Additional features:==
   # Bindings available in all supported client side languages to import/export tables to/from Mysql (import for speed, export for data-mining)
