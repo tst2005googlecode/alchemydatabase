@@ -161,7 +161,7 @@ Querying this table, using the {{{i_tweets}}} index will return rows PRE-sorted 
 === Complex UPDATEs via lua-rewriting ===
 Complex UPDATEs are rewritten into lua functions and the computation of the UPDATE is done in LUA ... and this is done transparently.
 
-Here is an example (because this is totally confusing).Given the complex UPDATE: [NOTE: SHA1() is shipped w/ AlchemyDB]
+Here is an example (because this is totally confusing).Given the complex UPDATE: (NOTE: the function SHA1() is shipped w/ AlchemyDB)
 {{{
 UPDATE table SET col2=math.random(1000,2000),
                  col3=SHA1((col3 + (col2 * col4))),
@@ -169,7 +169,7 @@ UPDATE table SET col2=math.random(1000,2000),
 WHERE fk = 2
 }}}
 The 3 update column statements (col2, col3, col4) are analysed for complexity.
-{{{col2=math.random(1000,2000)}}} -> complex, {{{col3=SHA1((col3 + (col2 * col4)))}}} -> complex, {{{col4 = col4 * 10000}}} -> simple.
+"`col2=math.random(1000,2000)`" -> complex, "`col3=SHA1((col3 + (col2 * col4)))`" -> complex, "`col4 = col4 * 10000`" -> simple.
 
 So the update to col4 (the simple one) is done in C, just like in any other RDBMS.
 The complex updates (col2,col3) are rewritten into lua functions.
