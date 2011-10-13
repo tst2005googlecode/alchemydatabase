@@ -17,32 +17,32 @@ UNSIGNED INT stores data using 2 bytes when possible. UNSIGNED LONG stores data 
 
 ===Create/Drop Operations:===
   * {{{CREATE TABLE customer (id INT, group_id INT, name TEXT, phone text, age INT);}}}
-  * {{{CREATE INDEX cust_group_ind ON customer (group_id);}}}
-  * {{{CREATE INDEX cust_grp_age_ind ON customer (group_id, age);}}} - Compound Indexes
+  * {{{CREATE INDEX i_cg ON customer (group_id);}}}
+  * {{{CREATE INDEX i_cga ON customer (group_id, age);}}} - Compound Indexes
   * {{{DROP TABLE customer}}}
   * {{{DROP INDEX cust_group_ind}}}
-  * {{{DESC customer}}} - provides detailed memory usage info
-  * {{{DUMP customer}}} - dumps the table to client
+  * {{{DESC customer}}} - lists columns & provides detailed memory usage info
+  * {{{DUMP customer}}} - dumps the table
   * {{{DUMP customer TO MYSQL}}} - dumps the table in mysql format
   * {{{DUMP customer TO FILE fname}}} - dumps the table to the file "fname"
-  * {{{ALTER TABLE customer ADD COLUMN state INT}}} - "Alter Table" is instantaneous, does not physically change rows
+  * {{{ALTER TABLE customer ADD COLUMN state INT}}} - "Alter Table" is instantaneous, does not physically change rows (just the table's metadata)
 
 ===Single Row Operations===
   * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’301-933-1891’,30);}}}
   * {{{SELECT group_id, phone FROM customer WHERE id = 1}}}
   * {{{DELETE FROM customer WHERE id = 1}}}
   * {{{UPDATE customer SET phone = ‘703-933-1891’, group_id = 4 WHERE id = 1}}}
-  * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’301-933-1891’,30) RETURN SIZE;}}} - returns the size of the row, table, and indices
+  * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’301-933-1891’,30) RETURN SIZE;}}} - returns the sizes of the row, table, and indices
   * {{{REPLACE INTO customer VALUES (1,300,’John Doe’,’703-387-7777’,30)}}} 
   * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’703-387-7777’,30) ON DUPLICATE KEY UPDATE SET phone = ’703-387-7777’}}}
   * {{{INSERT INTO customer VALUES (1,300,’John Doe’,’301-933-1891’,30) (2,300,’Jane Smith’,’301-946-2222’,22) (1,300,’John Doe’,’202-933-444’,55)}}} - Bulk Insert
-  * {{{INSERT INTO customer (id, name, phone) VALUES (1,’John Doe’,’301-933-1891’);}}} - Partial Insert, Alchemy rows are streams, so only the data in the row will be stored, no bytes for NULL placeholders
+  * {{{INSERT INTO customer (id, name, phone) VALUES (1,’John Doe’,’301-933-1891’);}}} - Partial Insert, Alchemy rows are streams, so only the data in the row will be stored, only 1-4 bytes (depending on row's stream-length) for NULL placeholders
  
 ===Index Operations===
   * {{{SELECT group_id, phone FROM customer WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
   * {{{SELECT group_id, phone FROM customer WHERE group_id IN (300, 301, 307, 311) [ORDER BY column LIMIT n OFFSET m]}}}
   * {{{DELETE FROM customer WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
-  * {{{UPDATE customer SET phone = ‘703-933-1891’, group_id = 4 WHERE group_id BETWEEN 300 AND 400 [ORDER BY column LIMIT n OFFSET m]}}}
+  * {{{UPDATE customer SET phone = ‘703-933-1891’, group_id = 4 WHERE group_id = 300 [ORDER BY column LIMIT n OFFSET m]}}}
 
 ===SIMPLE Update Expressions===
   UPDATE expressions currently support the following functionalities {{{(+=, -=, *=, /=, %=, ^=)}}}
@@ -51,8 +51,8 @@ UPDATE customer SET group_id = group_id * 4, age = age + 1 WHERE id = 1
 }}}
 
   Simple UPDATEs are done in C, [http://code.google.com/p/alchemydatabase/wiki/CommandReference?ts=1317055830&updated=CommandReference#Complex_UPDATEs_via_lua-rewriting complex UPDATEs] are done in LUA.
+
 ===Where Clause Grammar===
-  The First column in the Where Clause determines the Index to use, subsequent columns will "filter" the rows matching the Index Lookup
 {{{
 WHERE {[pk/fk=X],[pk/fk BETWEEN X AND Y],[pk/fk IN (X,Y,Z)]} {AND [column=X],[column!=X],[column<X],[column<=X],[column>X],[column>=X],[column IN (X,Y,Z)]}*
 }}}
@@ -62,19 +62,19 @@ WHERE fk = 7 ORDER BY col1 DESC, col2, col3 ASC LIMIT 10 OFFSET 100
 }}}
 
 ===JOINS===
-Alchemy currently supports denormalised Table Joins, and will soon support Star Schema joins<br/>
+Alchemy currently supports chained Table Joins, and will soon support tree joins
 ===Join via single Index===
 {{{
 SELECT c.name, g.slogan
  FROM customer c, group g
- WHERE c.group_id = g.id AND g.id BETWEEN 300 AND = 400
+ WHERE c.group_id = g.id AND g.id BETWEEN 300 AND 400
        [ORDER BY table.column LIMIT n OFFSET m]
 }}}
 ===EXPLAIN Join-Plan===
 {{{
 EXPLAIN
  SELECT customer.name, group.slogan FROM customer, group
- WHERE customer.group_id = group.id AND group.id BETWEEN 300 AND = 400
+ WHERE customer.group_id = group.id AND group.id BETWEEN 300 AND 400
 }}}
 
 ===Create table from Join===
@@ -91,7 +91,7 @@ Find unindexed data – _not recommended, should be avoided when possible_
 {{{
 SCAN id, phone FROM customer WHERE name = ‘bill’ AND age BETWEEN 18 AND 25
 }}}
-  _the SCAN command makes it impossible to accidentally do a full table scan w/ SELECT, which is worse than in a DiskBased RDBMS because AlchemyDB is single-threaded, so SCANs block during their duration._
+  _the SCAN command makes it *impossible* to accidentally do a full table scan w/ SELECT, which is worse than in a DiskBased RDBMS because AlchemyDB is single-threaded, so SCANs block during their duration._
 
 ==LUA Command==
 Alchemy Database has embedded [http://www.lua.org/about.html LUA] <br/>
