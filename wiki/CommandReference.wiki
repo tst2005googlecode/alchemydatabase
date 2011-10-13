@@ -115,7 +115,7 @@ Loading lua files (containing lua functions) into the Alchemy Database server ca
 }}}
 The "CONFIG SET luafilename" also provides a simple way to modify lua functions in Alchemy Database w/o server restarts. Modify the commands in xyz.lua and then load them, this will *reset Lua's state* and the new functions will be in place.
 
-To *ADD* lua functions to AlchemyDB (at runtime)
+To *ADD* lua functions to AlchemyDB (at runtime w/o resetting lua's state)
 {{{
 ./alchemy-cli CONFIG ADD lua helper.lua
 }}}
