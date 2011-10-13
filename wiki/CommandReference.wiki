@@ -240,7 +240,7 @@ The following example lua function, does:
 function add_cap(table, fk1)
   cnt = select("count(*)", table, "fk1 = " + fk1); 
   if (cnt > 100) then delete(table, "fk1 = " + fk1 + " LIMIT " + (cnt - 100)); end
-  return "OK";
+  return 1;
 end
 }}}
 And the following SQL declarations
