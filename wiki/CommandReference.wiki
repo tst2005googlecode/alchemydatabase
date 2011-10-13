@@ -223,8 +223,6 @@ while (ret == 1000) {
 }}}
 which will update the variable {{{CursorUpd8tbl}}} on each call (0->1000->2000->3000->...) and will erase the variable {{{CursorUpd8tbl}}} when the final row has been updated.<br/>
 So calling the above command repeatedly, until the return value is less than _1000_ (which signals the final row matching _fk = 1_ has been updated) will complete the long-running-update described above, but in non-blocking chunks of 1000 rows (w/ 1ms sleeps between chunks).
-<br/>
-<br/>
 
 ===LUATRIGGER===
 Luatriggers are lua functions that are run on every SQL INSERT/UPDATE/DELETE.
