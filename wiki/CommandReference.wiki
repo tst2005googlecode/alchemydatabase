@@ -188,6 +188,21 @@ And these LUA functions {{{luf_2() & luf_3()}}} are applied as UPDATEs to each R
 
 This sounds both stupid and lazy, but now any UPDATE that can be framed in LUA, can be done to a Relational Database. Writing a User-Defined-Function, means writing it in LUA, [http://code.google.com/p/alchemydatabase/wiki/CommandReference?ts=1317055830&updated=CommandReference#Adding_Lua_functions_at_run-time adding the function] to AlchemyDB, and then calling it in an UPDATE. `ComplexUpdatesViaLuaFunctionRewriting` are significantly slower than `SimpleUpdatesViaCFunctions` (mostly due to interpreting the rewritten lua function, which is done once per command, *not* once per updated row), but these UPDATES are truly flexible.
 
+===HASHABILITY===
+Alchemy DB supports relational tables that can be used as hash-tables. Since Alchemy's rows are stored as streams, empty columns take up minimal memory overhead, and storing sparse rows can be done efficiently.
+The command
+{{{
+ALTER TABLE tablename ADD HASHABILITY
+}}}
+will allow any column specified in the INSERT declaration to be a new column.
+
+For example give the table `t2` w/ columns `(pk,fk1,fk2)`. Issuing the following 2 commands (after `ADD HASHABILITY`)
+{{{
+  INSERT INTO t2 (pk, fk1, col1)   VALUES (1, 222, 8888)
+  INSERT INTO t2 (pk, fk1, col999) VALUES (1, 222, 99.9999)
+}}}
+Would add the columns `col1 & col999` to the table `t2`. The newly added columns values determine their types, in this example `col1 -> BIGINT UNSIGNED` & `col999 -> FLOAT`
+
 === Alchemy Cursors===
 Since Alchemy is a *single threaded datastore*, long running queries block other queries during their execution.<br/>
 For this reason Alchemy has cursors, similar (but simpler) to SQL cursors.<br/>
@@ -220,13 +235,14 @@ The syntax for Luatriggers is {{{CREATE LUATRIGGER triggername ON table (column)
 NOTE: "del_triggers()" is optional
 
 The following example lua function, does:
-  * {{{SELECT COUNT(*) FROM tbl WHERE fk1 = XXX}}}
-  * if this count is greater than 100, {{{DELETE FROM tbl WHERE fk1 = XXX LIMIT (count-100)}}} -> this delete caps the table at 100 rows per fk1
+  * `SELECT COUNT(*) FROM tbl WHERE fk1 = XXX`
+  * if this count is greater than 100, `DELETE FROM tbl WHERE fk1 = XXX LIMIT (count-100)` -> this delete caps the table at 100 rows per fk1
+  * NOTE: using "table" as the 1st function argument, will pass in the tablename
 {{{
-function add_cap(fk1)
-  cnt = select_count("tbl", "fk1 = " + fk1); 
+function add_cap(table, fk1)
+  cnt = select("count(*)", table, "fk1 = " + fk1); 
   if (cnt > 100) then
-    delete("tbl", "fk1 = " + fk1 + " LIMIT " + (cnt - 100));
+    delete(table, "fk1 = " + fk1 + " LIMIT " + (cnt - 100));
   end
   return "OK";
 end
@@ -235,7 +251,7 @@ And the following SQL declarations
 {{{
   CREATE TABLE tbl (pk INT, fk1 INT, t TEXT)
   CREATE INDEX      i_cap  ON tbl (fk1)
-  CREATE LUATRIGGER lt_cap ON tbl add_cap(fk1)
+  CREATE LUATRIGGER lt_cap ON tbl add_cap(table,fk1)
 }}}
 Is a very simple way to implement a per fk number-of-rows cap that runs at almost the same speed as a straight INSERT
 
