@@ -138,17 +138,17 @@ and the data returned in the function _getuserdata_ will be output in redis' pro
 SQL is a powerful *standardised* language, adding specific use case optimisations to it, can greatly improve the performance & ease-of-programming of many common OLTP use cases.
 
 === CREATE INDEX via BATCH ===
-Creating an Index is a blocking op in AlchemyDB (like all other ops). Creating an index on a very large table (i.e. 20 million rows) can take a prohibitively long time (e.g. 7-30 secs for 20million rows on a 2.8GHz CPU), so Alchemy provides a mechanism to create a single index via a batch. Unlike 
+Creating an Index is a blocking op in AlchemyDB (like all other ops). Creating an index on a very large table (i.e. 20 million rows) can take a prohibitively long time (e.g. 7-30 secs (depending on index repetitiveness) for 20million rows on a 2.8GHz CPU), so Alchemy provides a mechanism to create a single index via a batch. Unlike 
 [http://code.google.com/p/alchemydatabase/wiki/CommandReference#Alchemy_Cursors Alchemy Cursors] creating an index is an ACID compliant operation as the index is not active until the ENTIRE Index has been built.
 To Create an Index via a batch job, simply call 
 {{{
 CREATE INDEX i_t ON t (fk) LIMIT 1000 
 }}}
 repetitively until ZERO rows are returned. When zero rows are returned the Index has been created.
-In practice, creating a HUGE Index via a batch will negatively effect all other read/write ops by about 10-20% at full load (when the load is not full, creating an index via a batch job goes more or less unnoticed).
+In practice, creating a HUGE Index via a batch will negatively effect (during its build) all other read/write ops by about 10-20% at full load (when the load is not full, creating an index via a batch job goes more or less unnoticed).
 
 === ORDER BY INDEX ===
-ORDER BY INDEX stores values sorted to the specified column's value (instead of to the default PK's value). This is very useful for dashboard updates as the ORDER BY sorting is done at INSERT time (w/ zero overhead), instead of query time (requires row-buffering + qsort).
+ORDER BY INDEX stores values sorted to the specified column's value (instead of sorted to the default PK ASC standard in RDBMSes). This is very useful for dashboard updates as the ORDER BY sorting is done at INSERT time (w/ zero overhead), instead of query time (requires row-buffering + qsort). Example:
 {{{
   CREATE TABLE tweets (pk INT, userid INT, unix_ts INT, message TEST);
   CREATE INDEX i_tweets ON tweets (userid) ORDER BY unix_ts
@@ -161,18 +161,19 @@ Querying this table, using the {{{i_tweets}}} index will return rows PRE-sorted 
 === Complex UPDATEs via lua-rewriting ===
 Complex UPDATEs are rewritten into lua functions and the computation of the UPDATE is done in LUA ... and this is done transparently.
 
-Here is an example (because this is totally confusing).Given the complex UPDATE: (NOTE: the function SHA1() is shipped w/ AlchemyDB)
+Here is an example (because this is totally confusing).Given the complex UPDATE: (NOTE: the function SHA1() is baked into AlchemyDB (coded in C))
 {{{
-UPDATE table SET col2=math.random(1000,2000),
-                 col3=SHA1((col3 + (col2 * col4))),
+UPDATE table SET col2 = math.random(1000,2000),
+                 col3 = SHA1((col3 + (col2 * col4))),
                  col4 = col4 * 10000
 WHERE fk = 2
 }}}
 The 3 update column statements (col2, col3, col4) are analysed for complexity.
-"`col2=math.random(1000,2000)`" -> complex, "`col3=SHA1((col3 + (col2 * col4)))`" -> complex, "`col4 = col4 * 10000`" -> simple.
+  *"`col2=math.random(1000,2000)`"   -> complex
+  *"`col3=SHA1((col3+(col2*col4)))`" -> complex
+  *"`col4=col4*10000`"               -> simple.
 
-So the update to col4 (the simple one) is done in C, just like in any other RDBMS.
-The complex updates (col2,col3) are rewritten into lua functions.
+So the update to col4 (the simple one) is done in C (just like in any other RDBMS). The complex updates (col2,col3) are rewritten into lua functions.
 {{{
 function luf_2(...) return math.random(1000,2000); end
 }}}
@@ -186,7 +187,7 @@ end
 }}}
 And these LUA functions {{{luf_2() & luf_3()}}} are applied as UPDATEs to each ROW matching the Where-Clause.
 
-This sounds both stupid and lazy, but now any UPDATE that can be framed in LUA, can be done to a Relational Database. Writing a User-Defined-Function, means writing it in LUA, [http://code.google.com/p/alchemydatabase/wiki/CommandReference?ts=1317055830&updated=CommandReference#Adding_Lua_functions_at_run-time adding the function] to AlchemyDB, and then calling it in an UPDATE. `ComplexUpdatesViaLuaFunctionRewriting` are significantly slower than `SimpleUpdatesViaCFunctions` (mostly due to interpreting the rewritten lua function, which is done once per command, *not* once per updated row), but these UPDATES are truly flexible.
+This sounds both stupid and lazy, but now any UPDATE that can be written in LUA, can be done to a Relational Database. Writing a User-Defined-Function, means writing it in LUA, [http://code.google.com/p/alchemydatabase/wiki/CommandReference?ts=1317055830&updated=CommandReference#Adding_Lua_functions_at_run-time adding the function] to AlchemyDB, and then calling it in an UPDATE. `ComplexUpdatesViaLuaFunctionRewriting` are significantly slower than `SimpleUpdatesViaCFunctions` (mostly due to interpreting the rewritten LUA function, which is done once per command, *not* once per updated row), but these UPDATES are truly flexible.
 
 ===HASHABILITY===
 Alchemy DB supports relational tables that can be used as hash-tables. Since Alchemy's rows are stored as streams, empty columns take up minimal memory overhead, and storing sparse rows can be done efficiently.
