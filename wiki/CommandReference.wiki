@@ -13,7 +13,6 @@ Datetime should be represented as a UNSIGNED INT/LONG or FLOAT<br/>
 TEXT uses variable length storage and compression and can be substituted for any VARCHAR() or CHAR().<br/>
 UNSIGNED INT stores data using 2 bytes when possible. UNSIGNED LONG stores data using 2 or 4 bytes when possible.
 
-
 ==Supported SQL==
 
 ===Create/Drop Operations:===
@@ -228,9 +227,9 @@ So calling the above command repeatedly, until the return value is less than _10
 Luatriggers are lua functions that are run on every SQL INSERT/UPDATE/DELETE.
 
 The syntax for Luatriggers is {{{CREATE LUATRIGGER triggername ON table (column) add_trigger(cols,,,,) [delete_trigger(cols,,,)]}}}
-  * On INSERT {{{add_trigger(cols,,,,)}}} is called and the values of the inserted columns replace "(cols,,,,)" in the function call
-  * On UPDATE {{{add_trigger(cols,,,,)}}} is called, then "del_triggers(cols,,,)" is called
-  * On DELETE {{{del_triggers(cols,,,)}}} is called
+  * On INSERT `add_trigger(cols,,,,)` is called and the values of the inserted columns replace "(cols,,,,)" in the function call
+  * On UPDATE `add_trigger(cols,,,,)` is called, then `del_triggers(cols,,,)` is called
+  * On DELETE `del_triggers(cols,,,)` is called
 NOTE: "del_triggers()" is optional
 
 The following example lua function, does:
@@ -240,9 +239,7 @@ The following example lua function, does:
 {{{
 function add_cap(table, fk1)
   cnt = select("count(*)", table, "fk1 = " + fk1); 
-  if (cnt > 100) then
-    delete(table, "fk1 = " + fk1 + " LIMIT " + (cnt - 100));
-  end
+  if (cnt > 100) then delete(table, "fk1 = " + fk1 + " LIMIT " + (cnt - 100)); end
   return "OK";
 end
 }}}
