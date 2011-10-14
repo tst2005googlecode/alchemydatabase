@@ -176,8 +176,6 @@ The 3 update column statements (col2, col3, col4) are analysed for complexity.
 So the update to col4 (the simple one) is done in C (just like in any other RDBMS). The complex updates (col2,col3) are rewritten into lua functions.
 {{{
 function luf_2(...) return math.random(1000,2000); end
-}}}
-{{{
 function luf_3(...)
   local col3 = arg[1];
   local col2 = arg[2];
