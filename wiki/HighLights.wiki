@@ -1,16 +1,6 @@
 #labels Featured
 = DRAFT =
 
-== Memory optimisations ==
-  * Sparse-Rows: tables w/ 1000s of columns, store sparsely populated rows in an optimised format, using a serialised hash table in the row's stream to store column offsets. Sparse-Rows can be Orders-Of-Magnitude smaller than full rows (NOTE: useful for unstructured data: just keep adding columns, and Sparse-Rows limit memory usage)
-  * TEXT columns are lzf compressed if over 20 characters, under 20 characters a homemade compression algorithm (dubbed: sixbit) sometimes yields modest reductions.
-  * INT + LONG fields are bit packed and algorithms work on the compressed values
-  * INT + LONG Indexes are stored inside their respective Btrees (this includes Multiple Column Indexes and Unique Indexes) - also 2 column [INT|LONG] tables have been similarly optimised.
-  * When possible UPDATEs are done in place (if an update does not change the size of a row, there is no allocation/deallocation needed)
-  * Rows are streams, ALTER TABLE ADD COLUMN is instantaneous, empty columns take up almost no space (1-4 bytes)
-  * Btree dynamic resizing: Btrees (indexes also) start tiny and then dynamically resize once they have reached a threshold size (helps w/ small tables and indexes w/ few entries)
-  * jemalloc is compiled in, which has shown far less memory fragmentation (than glibc malloc, tcmalloc) and even gives freed memory back to the OS
-
 == Advanced Features ==
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUA_Command LUA command] and DEEP lua embedding provides a turing complete language to manipulate data (far more flexible than RDBMS's procedural languages)
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#CREATE_INDEX_via_BATCH CREATE INDEX via BATCH] allow the "CREATE INDEX" call to be called in batches. The Index is not active until it is completely built. This allows the non-blocking building of HUGE indexes.
@@ -28,6 +18,16 @@
     * Slave Knowledge: Lua `IsConnectedToMaster()`
     * Lua commands: `RemoteMessage()`, `RemotePipe()`
     * Lua Pub/Sub file-descriptor access `SubscribeFD()`, `UnsubscribeFD()`, `GetFDForChannel()`, `CloseFD()`, 
+
+== Memory optimisations ==
+  * Sparse-Rows: tables w/ 1000s of columns, store sparsely populated rows in an optimised format, using a serialised hash table in the row's stream to store column offsets. Sparse-Rows can be Orders-Of-Magnitude smaller than full rows (NOTE: useful for unstructured data: just keep adding columns, and Sparse-Rows limit memory usage)
+  * TEXT columns are lzf compressed if over 20 characters, under 20 characters a homemade compression algorithm (dubbed: sixbit) sometimes yields modest reductions.
+  * INT + LONG fields are bit packed and algorithms work on the compressed values
+  * INT + LONG Indexes are stored inside their respective Btrees (this includes Multiple Column Indexes and Unique Indexes) - also 2 column [INT|LONG] tables have been similarly optimised.
+  * When possible UPDATEs are done in place (if an update does not change the size of a row, there is no allocation/deallocation needed)
+  * Rows are streams, ALTER TABLE ADD COLUMN is instantaneous, empty columns take up almost no space (1-4 bytes)
+  * Btree dynamic resizing: Btrees (indexes also) start tiny and then dynamically resize once they have reached a threshold size (helps w/ small tables and indexes w/ few entries)
+  * jemalloc is compiled in, which has shown far less memory fragmentation (than glibc malloc, tcmalloc) and even gives freed memory back to the OS
 
 == Miscellaneous ==
   * Unlimited number of tables, indexes, & columns (allows for NOSQL schema-less like data, combining w/ lua provides a very fast single-node in-memory map-reduce building block)
