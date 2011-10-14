@@ -4,7 +4,6 @@ The documentation is a work in progress.
 
   * Alchemy Database can do a lot of things, check out [http://code.google.com/p/alchemydatabase/wiki/CommandReference CommandReference]
   * Alchemy Database is VERY fast, scales well when joining or when using multiple indexes, check out [http://code.google.com/p/alchemydatabase/wiki/Benchmarks Benchmarks]
-  * Ways to unleash the power of Alchemy Database, w/ examples in code :) check out [http://code.google.com/p/alchemydatabase/wiki/Examples Examples]
 
   * Want to write a client, or extend an existing one, best to have a firm grasp of the [http://code.google.com/p/alchemydatabase/wiki/Protocol Alchemy Database Protocol]
 
