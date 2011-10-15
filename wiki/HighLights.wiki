@@ -11,7 +11,6 @@
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUATRIGGER LUATRIGGER] calls a LUA function containing the INSERTED/DELETED/UPDATED rows contents per INSERT/UPDATE/DELETE
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LRUINDEX LRUINDEX] adds a column to a tabled (called "LRU") which gets updated w/ the current timestamp every time the row is accessed. (perfect for getting rid of "old" data -> use a LUATRIGGER to do it automatically).
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LFUINDEX LFUINDEX] adds a column to a tabled (called "LFU") which gets incremented every time the row is accessed. (perfect for getting rid of "unpopular" data).
-  * LFUINDEX -> coming soon
   * `LuaCronJob` - a lua script can be run every second w/in the server. Use of this functionality comes w/ a big fat warning sticker: *the cron job is BLOCKING*
   * SUBPIPE (*TODO: document*) is an external process that subscribes to a Alchemy channel and forwards any messages it receives to another Alchemy instance. Combined w/ LUA & Cursors, long blocking operations can be broken up into batches that are performed iteratively and echoed from the Alchemy Server to the SUBPIPE and back, creating a feedback loop.
   * Advanced Messaging (*TODO: document*)
