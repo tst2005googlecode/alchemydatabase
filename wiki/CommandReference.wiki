@@ -251,7 +251,7 @@ And the following SQL declarations
 Is a very simple way to implement a per fk number-of-rows cap that runs at almost the same speed as a straight INSERT
 
 ===LRUINDEX===
-the LRUINDEX adds a column to a SQL table, called "LRU", which gets updated w/ the current timestamp everytime the commands INSERT,REPLACE,UPDATE,SELECT are called on the row.
+the LRUINDEX adds a column to a SQL table, called "LRU" (stands for `LeastRecentlyUsed`), which gets updated w/ the current timestamp everytime the commands INSERT,REPLACE,UPDATE,SELECT are called on the row.
 
 The syntax for the LRUINDEX is:
 {{{
@@ -265,7 +265,7 @@ Combining a LRUINDEX and a LUATRIGGER is an easy way to add LRU-caching to a rel
 NOTE: the LRUINDEX has a minimum granularity of 1 second under high load and 5 seconds under low load -> to minimise sparse indexing.
 
 ===LFUINDEX===
-the LFUINDEX adds a column to a SQL table, called "LFU", which is incremented everytime the commands INSERT,REPLACE,UPDATE,SELECT are called on the row.
+the LFUINDEX adds a column to a SQL table, called "LFU" (stands for `LeastFrequentlyUsed`), which is incremented everytime the commands INSERT,REPLACE,UPDATE,SELECT are called on the row.
 
 The syntax for the LFUINDEX is:
 {{{
