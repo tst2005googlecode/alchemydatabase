@@ -1,4 +1,3 @@
-#labels Featured
 = Alchemy Database Benchmark results =
 
 *Hardware*<br/>
