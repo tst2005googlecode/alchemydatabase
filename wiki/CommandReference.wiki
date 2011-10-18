@@ -202,6 +202,8 @@ For example give the table `t2` w/ columns `(pk,fk1,fk2)`. Issuing the following
 }}}
 Would add the columns `col1 & col999` to the table `t2`. The newly added columns values determine their types, in this example `col1 -> BIGINT UNSIGNED` & `col999 -> FLOAT`
 
+This means Alchemy uses SQL to store/retrieve unstructured data (also referred to as Poly Structured Data) and all relational properties/operations can be applied to this data (this is another hybrid property of AlchemyDB)
+
 === Alchemy Cursors===
 Since Alchemy is a *single threaded datastore*, long running queries block other queries during their execution.<br/>
 For this reason Alchemy has cursors, similar (but simpler) to SQL cursors.<br/>
