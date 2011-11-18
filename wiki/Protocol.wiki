@@ -23,7 +23,7 @@ Alchemy Database responses are 100% redis compliant (e.g. CREATE TABLE -> +OK, S
   # UPDATE has 6 arguments "UPDATE table SET col1=val1,col2=val2,,, WHERE where_clause"
   # DELETE has 5 arguments "DELETE FROM table WHERE where_clause"
   # SCANSELECT has 6 arguments "SCANSELECT column1,column2,,, FROM tbl WHERE where_clause"
-  # LUA has 1+ arguments "LUA function_name [arg1 arg2 ...]"
+  # LUA has 1+ arguments "LUA function_name [arg1 arg2 arg3 etc]"
  
 Optional Syntaxes
   # DUMP can also dump to Mysql format, where it has 5 aguments "DUMP table_name TO MYSQL mysql_table_name"
