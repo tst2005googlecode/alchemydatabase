@@ -91,7 +91,7 @@ Find unindexed data – _not recommended, should be avoided when possible_
 {{{
 SCAN id, phone FROM customer WHERE name = ‘bill’ AND age BETWEEN 18 AND 25
 }}}
-  _the SCAN command makes it *impossible* to accidentally do a full table scan w/ SELECT, which is worse than in a DiskBased RDBMS because AlchemyDB is single-threaded, so SCANs block during their duration._
+  _the SCAN command makes it *impossible* to accidentally do a full table scan w/ SELECT, which is worse than in a Disk-Based RDBMS because AlchemyDB is single-threaded, so SCANs block during their duration._
 
 ==LUA Command==
 Alchemy Database has embedded [http://www.lua.org/about.html LUA] <br/>
