@@ -18,6 +18,7 @@ TEXT uses variable length storage and compression and can be substituted for any
   * {{{CREATE TABLE customer (id INT, group_id INT, name TEXT, phone text, age INT);}}}
   * {{{CREATE INDEX i_cg ON customer (group_id);}}}
   * {{{CREATE INDEX i_cga ON customer (group_id, age);}}} - Compound Indexes
+  * {{{CREATE UNIQUE INDEX iu_cg ON customer (group_id);}}}
   * {{{DROP TABLE customer}}}
   * {{{DROP INDEX cust_group_ind}}}
   * {{{DESC customer}}} - lists columns & provides detailed memory usage info
