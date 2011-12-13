@@ -30,7 +30,7 @@
   * Rows are streams, ALTER TABLE ADD COLUMN is instantaneous, empty columns take up almost no space (1-4 bytes, 0 when the row itself has been converted to a hash-table)
   * Btree dynamic resizing: Btrees (indexes also) start tiny and then dynamically resize once they have reached a threshold size (helps w/ small tables and indexes w/ few entries)
   * jemalloc is compiled in, which has shown far less memory fragmentation (than glibc malloc, tcmalloc) and even gives freed memory back to the OS
-  *COMING SOON: slab allocator for all btree nodes
+  * COMING SOON: slab allocator for all btree nodes
 
 == Miscellaneous ==
   * Unlimited number of tables, indexes, & columns (allows for NOSQL schema-less like data, add in [http://code.google.com/p/alchemydatabase/wiki/CommandReference#HASHABILITY HASHABILITY] and using lua functions can yield a  very fast single-node in-memory map-reduce building block)
