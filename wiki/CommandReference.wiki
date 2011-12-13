@@ -10,8 +10,7 @@ Alchemy Database supports:
 ==NOTES==
 Supported SQL data types are currently UNSIGNED INT, UNSIGNED LONG, U128 (128 bit INTEGER), TEXT, and FLOAT.<br/>
 Datetime should be represented as a UNSIGNED INT/LONG or FLOAT<br/>
-TEXT uses variable length storage and compression and can be substituted for any VARCHAR() or CHAR().<br/>
-UNSIGNED INT stores data using 2 bytes when possible. UNSIGNED LONG stores data using 2 or 4 bytes when possible.
+TEXT uses variable length storage and compression and can be substituted for any VARCHAR(), CHAR(), BLOB, etc....<br/>
 
 ==Supported SQL==
 
