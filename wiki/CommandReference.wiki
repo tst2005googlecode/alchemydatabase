@@ -108,17 +108,13 @@ Function to set a user's last_login and return his status
     return redis('GET', 'user:' .. userid .. ':status');"
   end
 }}}
-===Adding Lua functions at run-time===
-Loading lua files (containing lua functions) into the Alchemy Database server can be done either by specifiying the "luafilename" in the config file "redis.conf" or by the following command
-{{{
-./alchemy-cli CONFIG SET luafilename xyz.lua
-}}}
-The "CONFIG SET luafilename" also provides a simple way to modify lua functions in Alchemy Database w/o server restarts. Modify the commands in xyz.lua and then load them, this will *reset Lua's state* and the new functions will be in place.
 
-To *ADD* lua functions to AlchemyDB (at runtime w/o resetting lua's state)
+===Adding Lua functions at run-time===
+Loading lua files (containing lua functions) into the Alchemy Database server can be done either by specifiying the "luafilename" in the config file "redis.conf" or by the following command:
 {{{
 ./alchemy-cli CONFIG ADD lua helper.lua
 }}}
+
 ===calling LUA functions===
 once a lua function has been imported into Alchemy, it is simple to call it. <br/>
 Given the imported lua function (e.g. added via "CONFIG ADD")
