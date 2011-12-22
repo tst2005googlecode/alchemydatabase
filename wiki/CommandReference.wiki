@@ -274,6 +274,20 @@ After the LFUINDEX command is called, the tables columns are `pk INT, c1 INT, c2
 
 NOTE: the LFUINDEX stores log2(num_accesses) -> to minimise sparse indexing.
 
+===PREPARED_STATEMENTS===
+Prepared statements have 2 main benefits in SQL
+  # reduce network I/O for repetitive queries
+  # boost performance by skipping SQL parsing 
+{{{
+  PREPARE P_RQ AS SELECT id,name,salary,division FROM employee WHERE division = $1 ORDER BY name
+  EXECUTE P_RQ 22
+}}}
+  will run:
+{{{
+  SELECT id,name,salary,division FROM employee WHERE division = 22 ORDER BY name
+}}}
+The intended use-case for Prepared Statements in AlchemyDB is to give that last little bit of performance boost in Alchemy's embedded version.
+
 ==REDIS Commands==
 redis supports commands to deal with many data structures, including (strings, sets, lists, sorted-sets, and hash tables)<br/>
 redis' project home page *[http://redis.io/ here]*<br/>
