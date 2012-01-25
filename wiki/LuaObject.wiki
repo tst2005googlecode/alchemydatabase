@@ -11,7 +11,7 @@ To create a LuaObject Column, declare the column as type LUAOBJ:
 
 Inserting into a LuaObject column is done in as a lua table construction
 {{{
-    INSERT INTO TABLE users (1,44555, {name='BILL',age=32,groupid=999,height=70,weight=180})
+    INSERT INTO TABLE users (1,44555,{name='BILL',age=32,groupid=999,height=70,weight=180})
     INSERT INTO TABLE users (2,44555,{name='Jane',age=22,groupid=888)
 }}}
 Note: in the 2nd INSERT info.height & info.weight are not defined, which is ok, as the lua-object works something like a document (i.e. it has no defined structure).
