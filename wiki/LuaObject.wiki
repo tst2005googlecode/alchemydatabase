@@ -1,0 +1,59 @@
+# Lua Object Column Type
+
+Alchemy Database has a column type called "LUAOBJ" which contains a [http://lua-users.org/wiki/TablesTutorial lua table]. [http://www.lua.org/about.html Lua] is a turing complete  embedded language, and lua tables can hold pretty much any type of data (including functions).
+
+Alchemy Database uses the power of Lua to embed a LUAOBJECT into a relational table row (as a column) and the result akin to either an extremely powerful ObjectDatabase or DocumentStore.
+
+To create a LuaObject Column, declare the column as type LUAOBJ:
+{{{
+   CREATE TABLE users (userid INT, zipcode INT, info LUAOBJ)
+}}}
+
+Inserting into a LuaObject column is done in as a lua table construction
+{{{
+    INSERT INTO TABLE users (1,44555, {name='BILL',age=32,groupid=999,height=70,weight=180})
+    INSERT INTO TABLE users (2,44555,{name='Jane',age=22,groupid=888)
+}}}
+Note: in the 2nd INSERT info.height & info.weight are not defined, which is ok, as the lua-object works something like a document (i.e. it has no defined structure).
+
+Elements within a LuaObject can be indexed, w/ dot-notation indexing
+{{{
+  CREATE INDEX i_users_i_a ON users (info.age)
+  CREATE INDEX i_users_i_g ON users (info.groupid)
+}}}
+Now the following queries would return ['BILL' & 'Jane'] respectively
+{{{
+  SELECT info.name WHERE info.age = 35
+  SELECT info.name WHERE info.groupid = 888
+}}}
+Dot-notation indexes should be viewed as more temporary indexes than normal indexes (i.e. throwaways). It is recommended practice, that if you use a dot-notation index heavily, to just break it out into a normal index, which performs somewhat better.
+
+This functionality already has the functionality of a basic DocumentStore or ObjectDatabase.
+
+In AlchemyDB, Lua is integrated much deeper, all the way into SQL.
+
+To define a lua function in AlchemyDB, a string of Lua can be passed to Alchemy, which is then interpreted (and can define a function for later use)
+{{{
+   INTERPRET LUA "function has_coupon(info, code) if (info.coupon_code != nil && info.coupon_code == code) return 1; else return 0; end; end"
+}}}
+Note: this function sees if a particular luaobject column has the field "coupon_code" defined, and then checks to see if it matches the coupon_code from the function call.
+
+The following query now becomes possible
+{{{
+  SELECT info.name FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123')
+}}}
+The function "has_coupon()" will be run on every row w/ zipcode 44555, and ONLY those rows having "info.coupon_code='XYZ123'" they will be returned.
+
+Besides adding lua functionality in the where-clause, it is also possible to call lua from
+  * SELECT Column Clause
+{{{
+    SELECT string.len(info.age) FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123')
+}}}
+  * UPDATE Set Column Clause
+{{{
+  UPDATE users SET info.score=compute_score_from_many_variables(info) WHERE ...
+}}}
+  * ORDER BY Clause
+{{{
+    SELECT string.len(info.age) FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123') ORDER BY info.height * info.weight 
+}}}
