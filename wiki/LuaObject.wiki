@@ -16,19 +16,19 @@ Inserting into a LuaObject column is done in as a lua table construction
 }}}
 Note: in the 2nd INSERT info.height & info.weight are not defined, which is ok, as the lua-object works something like a document (i.e. it has no defined structure).
 
-Elements within a LuaObject can be indexed, w/ dot-notation indexing
+Elements within a LuaObject can be indexed, w/ Dot-Notation-Indexing
 {{{
   CREATE INDEX i_users_i_a ON users (info.age)
   CREATE INDEX i_users_i_g ON users (info.groupid)
 }}}
-Now the following queries would return ['BILL' & 'Jane'] respectively
+Now the following queries would use the previous indexes and return ['BILL' & 'Jane'] respectively
 {{{
   SELECT info.name WHERE info.age = 35
   SELECT info.name WHERE info.groupid = 888
 }}}
-Dot-notation indexes should be viewed as more temporary indexes than normal indexes (i.e. throwaways). It is recommended practice, that if you use a dot-notation index heavily, to just break it out into a normal index, which performs somewhat better.
+In the author's humble opinion, Dot-Notation-Indexes should be viewed as 2nd class citizens when compared to normal indexes. It is recommended practice, that if you use a dot-notation index heavily, to just break it out into a normal index, which perform slightly better as the overhead of passing data between C & Lua is avoided.
 
-This functionality already has the functionality of a basic Document-Store or Object-Database. In AlchemyDB, Lua is integrated much deeper, all the way into SQL.
+The described functionality already has the functionality of a basic Document-Store or Object-Database, and technically more as Lua supports arbitrary nesting of tables and Lua has scores of libraries already written and tested in production for up to 20 years. Since Lua provides so much, AlchemyDB made the choice to integrate Lua all the way into SQL.
 
 To define a lua function in AlchemyDB, a string of Lua can be passed to Alchemy, which is then interpreted (and can define a function for later use)
 {{{
