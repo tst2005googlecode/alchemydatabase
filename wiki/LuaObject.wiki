@@ -2,7 +2,7 @@
 
 Alchemy Database has a column type called "LUAOBJ" which contains a [http://lua-users.org/wiki/TablesTutorial lua table]. [http://www.lua.org/about.html Lua] is a turing complete  embedded language, and lua tables can hold pretty much any type of data (including functions).
 
-Alchemy Database uses the power of Lua to embed a LUAOBJECT into a relational table row (as a column) and the result akin to either an extremely powerful ObjectDatabase or DocumentStore.
+Alchemy Database uses the power of Lua to embed a LUAOBJECT into a relational table row (as a column) and the result akin to either an extremely powerful Object-Database or Document-Store.
 
 To create a LuaObject Column, declare the column as type LUAOBJ:
 {{{
