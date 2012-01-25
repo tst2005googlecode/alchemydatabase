@@ -28,9 +28,7 @@ Now the following queries would return ['BILL' & 'Jane'] respectively
 }}}
 Dot-notation indexes should be viewed as more temporary indexes than normal indexes (i.e. throwaways). It is recommended practice, that if you use a dot-notation index heavily, to just break it out into a normal index, which performs somewhat better.
 
-This functionality already has the functionality of a basic DocumentStore or ObjectDatabase.
-
-In AlchemyDB, Lua is integrated much deeper, all the way into SQL.
+This functionality already has the functionality of a basic Document-Store or Object-Database. In AlchemyDB, Lua is integrated much deeper, all the way into SQL.
 
 To define a lua function in AlchemyDB, a string of Lua can be passed to Alchemy, which is then interpreted (and can define a function for later use)
 {{{
