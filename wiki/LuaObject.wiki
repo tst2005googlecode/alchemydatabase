@@ -68,4 +68,4 @@ Besides adding Lua functionality in the where-clause, it is also possible to cal
     SELECT format_name(info) FROM users WHERE zipcode = 44555 ORDER BY string.sub(info.lname,1,3)
 }}}
 
-These examples are pretty lame, but hopefully it is clear that combining Lua & SQL in such a way provides a highly flexible DML (implemented highly efficiently using Lua's virtual stack) that logically fits within the relational model.
+These examples are pretty lame, but hopefully it is clear that combining Lua & SQL in such a way provides a highly flexible DML (implemented highly efficiently using Lua's virtual stack) that logically fits within the relational model. The goal here is to be able to do the exact operations you want to do on your data as efficiently as possible and not have to tweak & bend them to fit into SQL.
