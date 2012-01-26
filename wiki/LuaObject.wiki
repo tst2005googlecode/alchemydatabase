@@ -35,7 +35,7 @@ This integration is best described w/ some examples, as it is a syntactic mixing
 
 First define a lua function in AlchemyDB: a string of Lua can be passed to Alchemy, which is then interpreted (and remains defined in the Lua universe for later use)
 {{{
-   INTERPRET LUA "function has_coupon(info, code) if (info.coupon ~= nil and info.coupon == code) then return 1; else return 0; end; end"
+   INTERPRET_LUA "function has_coupon(info, code) if (info.coupon ~= nil and info.coupon == code) then return 1; else return 0; end; end"
 }}}
 Note: this function sees if a particular luaobject column has the field "coupon_code" defined, and then checks to see if it matches the coupon_code from the function call.
 
@@ -49,7 +49,8 @@ The function "has_coupon()" will be run on every row w/ zipcode 44555, and ONLY 
 Besides adding lua functionality in the where-clause, it is also possible to call lua from:
   * SELECT Column Clause
 {{{
-    SELECT sha1(info.name) FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123')
+    INTERPRET_LUA "function format_name(t) return string.sub(t.fname, 1, 1) .. '. ' .. t.lname; end"
+    SELECT format_name(info) FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123')
 }}}
   * UPDATE Set Column Clause
 {{{
