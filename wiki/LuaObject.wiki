@@ -65,8 +65,8 @@ Besides adding lua functionality in the where-clause, it is also possible to cal
 }}}
   * ORDER BY Clause
 {{{
-    SELECT sha1(info.name) FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123') ORDER BY (info.height * info.weight) 
+    SELECT format_name(info) FROM users WHERE zipcode = 44555 ORDER BY format_name(info) DESC
 }}}
-NOTE: in the previous examples: the functions (sha1 & compute_score_from_many_variables) need to be previously defined (normally via INTERPRETLUA)
+NOTE: in the previous examples: the functions (sha1 & compute_score_from_many_variables) need to be previously defined (normally via INTERPRET_LUA)
 
 These examples are pretty lame, but hopefully it is clear that combining Lua & SQL in such a way provides both a highly flexible DML & also a highly efficient Data-Store.
