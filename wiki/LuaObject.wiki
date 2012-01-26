@@ -1,4 +1,4 @@
-# Lua Object Column Type
+=Lua Object Column Type=
 
 Alchemy Database has a column type called "LUAOBJ" which contains a [http://lua-users.org/wiki/TablesTutorial lua table]. [http://www.lua.org/about.html Lua] is a turing complete  embedded language, and lua tables can hold pretty much any type of data (including functions).
 
