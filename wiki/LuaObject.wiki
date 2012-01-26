@@ -21,7 +21,8 @@ Elements within a LuaObject can be indexed, w/ Dot-Notation-Indexing
   CREATE INDEX i_users_i_a ON users (info.age)
   CREATE INDEX i_users_i_g ON users (info.groupid)
 }}}
-Now the following queries would use the previous indexes and return ['BILL' & 'Jane'] respectively
+
+The following queries would use the previous indexes and return ['BILL' & 'Jane'] respectively
 {{{
   SELECT info.name WHERE info.age = 32
   SELECT info.name WHERE info.groupid = 888
