@@ -41,7 +41,7 @@ Note: this function sees if a particular luaobject column has the field "coupon_
 
 The following query now becomes possible
 {{{
-  CREATE INDEX i_u_zip ON users "(zipcode)"
+  CREATE INDEX i_u_zip ON users (zipcode)
   SELECT info.name FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123')
 }}}
 The function "has_coupon()" will be run on every row w/ zipcode 44555, and ONLY those rows having "info.coupon_code='XYZ123'" they will be returned.
