@@ -1,6 +1,6 @@
 =Lua Object Column Type=
 
-Alchemy Database has a column type called "LUAOBJ" which contains a [http://lua-users.org/wiki/TablesTutorial lua table]. [http://www.lua.org/about.html Lua] is a turing complete  embedded language, and lua tables can be efficiently used to store almost any data structure (even ones w/ functions :)
+Alchemy Database has a column type called "LUAOBJ" which contains a [http://lua-users.org/wiki/TablesTutorial lua table]. [http://www.lua.org/about.html Lua] is a turing complete  embedded language, and Lua tables can be efficiently used to store almost any data structure (even ones w/ functions, aka objects :)
 
 Alchemy Database combines the relational logic of a RDBMS w/ the power of Lua tables and functions and the resulting data-store resembles both an Object-Database and a Document-Store.
 
@@ -9,7 +9,7 @@ To create a LuaObject Column, declare the column as type LUAOBJ:
    CREATE TABLE users (userid INT, zipcode INT, info LUAOBJ)
 }}}
 
-Inserting data into a LuaObject column is done as a lua table construction (e.g. `tbl={...}`)
+Inserting data into a LuaObject column is done as a Lua table construction (e.g. `tbl={...}`)
 {{{
   INSERT INTO users (userid, zipcode, info) VALUES (1,44555,{fname='BILL',lname='DOE',age=32,groupid=999,height=70,weight=180})
   INSERT INTO users (userid, zipcode, info) VALUES (2,44555,{fname='Jane',lname='Smith',age=22,groupid=888,coupon='XYZ123'})
@@ -33,7 +33,7 @@ The described functionality already yields a basic Document-Store or Object-Data
 
 This integration is best described w/ some examples, as it is a syntactic mixing of SQL, Lua Tables, and Lua functions.
 
-First define a lua function in AlchemyDB: a string of Lua can be passed to Alchemy, which is then interpreted (and remains defined in the Lua universe for later use)
+First define a Lua function in AlchemyDB: a string of Lua can be passed to Alchemy, which is then interpreted (and remains defined in the Lua universe for later use)
 {{{
    INTERPRET_LUA "function has_coupon(info, code) if (info.coupon ~= nil and info.coupon == code) then return 1; else return 0; end; end"
 }}}
@@ -46,7 +46,7 @@ The following query now becomes possible
 }}}
 The function "has_coupon()" will be run on every row w/ zipcode 44555, and ONLY those rows having "info.coupon_code='XYZ123'" they will be returned.
 
-Besides adding lua functionality in the where-clause, it is also possible to call lua from:
+Besides adding Lua functionality in the where-clause, it is also possible to call Lua from:
   * SELECT Column Clause
 {{{
     INTERPRET_LUA "function format_name(t) return string.sub(t.fname, 1, 1) .. '. ' .. t.lname; end"
