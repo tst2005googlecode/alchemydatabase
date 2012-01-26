@@ -52,9 +52,16 @@ Besides adding lua functionality in the where-clause, it is also possible to cal
     INTERPRET_LUA "function format_name(t) return string.sub(t.fname, 1, 1) .. '. ' .. t.lname; end"
     SELECT format_name(info) FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123')
 }}}
-  * UPDATE Set Column Clause
+  * UPDATE Set Clause
 {{{
-  UPDATE users SET info.score=compute_score_from_many_variables(info) WHERE ...
+   INTERPRET_LUA "function generate_coupon() return 'XYZ' .. math.random(1,999); end"
+   UPDATE users SET info.coupon = generate_coupon() WHERE userid = 1
+}}}
+  * Complex UPDATEs via SELECTs
+{{{
+    INTERPRET_LUA "weight_gain_per_year={}; weight_gain_per_year[20]=1; weight_gain_per_year[25]=2; weight_gain_per_year[30]=3; weight_gain_per_year[35]=4; weight_gain_per_year[40]=5; weight_gain_per_year[45]=5; weight_gain_per_year[50]=4; weight_gain_per_year[55]=3; weight_gain_per_year[60]=2;"
+    INTERPRET_LUA "function update_weight(info) for k, v in pairs(weight_gain_per_year) do if (k > info.age) then info.weight = info.weight + v; return true; end; end; return false; end"
+    SELECT "update_weight(info)" FROM users WHERE "userid = 1"
 }}}
   * ORDER BY Clause
 {{{
