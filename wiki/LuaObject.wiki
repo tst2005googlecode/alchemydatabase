@@ -70,7 +70,7 @@ Besides adding Lua functionality in the where-clause, it is also possible to cal
 
 These examples are pretty lame, but hopefully it is clear that combining Lua & SQL in such a way provides a highly flexible DML (implemented highly efficiently using Lua's virtual stack) that logically fits within the relational model. The goal here is to be able to do the exact operations you want to do on your data as efficiently as possible and not have to tweak & bend them to fit into SQL.
 
-== Internals ==
+== Lua Internals ==
 ===Direct Lua Access to Lua-Objects===
 AlchemyDB stores each LuaObject column in Lua's universe. Each row's LuaObject Column is stored as a Lua Table that is addressable as `ASQL[tblname][columnname][pk]`. If we took the above example, where the table "users" has the LuaObject "info", and userid=1, the LuaObject is stored in a table at `ASQL["users"]["info"][1]`. Manipulating the LUAOBJ table's values directly in Lua is OK (e.g. setting `ASQL["users"]["info"][1].newfield=7` is OK)  and will not corrupt the database, but do not modify any data in the `ASQL[tblname][columnname][pk]` tree as this tree represents the raw database (e.g. do NOT do: `ASQL["users"]["info"]=nil`, as this deletes ALL `users.info` LUAOBJ's).
 
