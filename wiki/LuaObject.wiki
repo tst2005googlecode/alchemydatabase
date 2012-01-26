@@ -26,7 +26,7 @@ Now the following queries would use the previous indexes and return ['BILL' & 'J
   SELECT info.name WHERE info.age = 32
   SELECT info.name WHERE info.groupid = 888
 }}}
-In the author's humble opinion, Dot-Notation-Indexes should be viewed as 2nd class citizens when compared to normal indexes. It is recommended practice, that if you use a dot-notation index heavily, to just break it out into a normal index, which perform slightly better as the overhead of passing data between C & Lua is avoided.
+In the author's humble opinion, Dot-Notation-Indexes should be viewed as slightly inferior when compared to normal indexes. It is recommended practice, that if you use a Dot-Notation-Index heavily, to break it out into a normal SQL index, which perform slightly better as the overhead of passing data between C & Lua is avoided.
 
 The described functionality already has the functionality of a basic Document-Store or Object-Database, and technically more as Lua supports arbitrary nesting of tables and Lua has scores of libraries already written and tested in production for up to 20 years. Since Lua provides so much, AlchemyDB made the choice to integrate Lua all the way into SQL.
 
