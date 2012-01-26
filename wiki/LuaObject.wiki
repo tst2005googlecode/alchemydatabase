@@ -28,9 +28,11 @@ Now the following queries would use the previous indexes and return ['BILL' & 'J
 }}}
 In the author's humble opinion, Dot-Notation-Indexes should be viewed as slightly inferior when compared to normal indexes. It is recommended practice, that if you use a Dot-Notation-Index heavily, to break it out into a normal SQL index, which perform slightly better as the overhead of passing data between C & Lua is avoided and Dot-Notation-Indexes currently have limitations (no ORDER BY DNIs or JOINs on DNIs).
 
-The described functionality already has the functionality of a basic Document-Store or Object-Database, and technically more as Lua supports arbitrary nesting of tables and Lua has scores of libraries already written and tested in production for up to 20 years. Since Lua provides so much, AlchemyDB made the choice to integrate Lua all the way into SQL.
+The described functionality already yields a basic Document-Store or Object-Database, and technically more as Lua supports arbitrary nesting of tables and Lua has scores of libraries already written and tested in production for up to 20 years. Since Lua provides so much, AlchemyDB made the choice to integrate Lua all the way into SQL.
 
-To define a lua function in AlchemyDB, a string of Lua can be passed to Alchemy, which is then interpreted (and can define a function for later use)
+This integration is best described w/ some examples, as it is a syntactic mixing of SQL, Lua Tables, and Lua functions.
+
+First define a lua function in AlchemyDB: a string of Lua can be passed to Alchemy, which is then interpreted (and remains defined in the Lua universe for later use)
 {{{
    INTERPRET LUA "function has_coupon(info, code) if (info.coupon_code != nil && info.coupon_code == code) return 1; else return 0; end; end"
 }}}
@@ -42,10 +44,10 @@ The following query now becomes possible
 }}}
 The function "has_coupon()" will be run on every row w/ zipcode 44555, and ONLY those rows having "info.coupon_code='XYZ123'" they will be returned.
 
-Besides adding lua functionality in the where-clause, it is also possible to call lua from
+Besides adding lua functionality in the where-clause, it is also possible to call lua from:
   * SELECT Column Clause
 {{{
-    SELECT string.len(info.age) FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123')
+    SELECT sha1(info.name) FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123')
 }}}
   * UPDATE Set Column Clause
 {{{
@@ -53,5 +55,8 @@ Besides adding lua functionality in the where-clause, it is also possible to cal
 }}}
   * ORDER BY Clause
 {{{
-    SELECT string.len(info.age) FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123') ORDER BY info.height * info.weight 
+    SELECT sha1(info.name) FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123') ORDER BY (info.height * info.weight) 
 }}}
+NOTE: in the previous examples: the functions (sha1 & compute_score_from_many_variables) need to be previously defined (normally via INTERPRETLUA)
+
+These examples are pretty lame, but hopefully it is clear that combining Lua & SQL in such a way provides both a highly flexible DML & also a highly efficient Data-Store.
