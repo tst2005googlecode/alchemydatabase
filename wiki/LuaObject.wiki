@@ -61,11 +61,11 @@ Besides adding lua functionality in the where-clause, it is also possible to cal
 {{{
     INTERPRET_LUA "weight_gain_per_year={}; weight_gain_per_year[20]=1; weight_gain_per_year[25]=2; weight_gain_per_year[30]=3; weight_gain_per_year[35]=4; weight_gain_per_year[40]=5; weight_gain_per_year[45]=5; weight_gain_per_year[50]=4; weight_gain_per_year[55]=3; weight_gain_per_year[60]=2;"
     INTERPRET_LUA "function update_weight(info) for k, v in pairs(weight_gain_per_year) do if (k > info.age) then info.weight = info.weight + v; return true; end; end; return false; end"
-    SELECT "update_weight(info)" FROM users WHERE "userid = 1"
+    SELECT update_weight(info) FROM users WHERE userid = 1
 }}}
   * ORDER BY Clause
 {{{
-    SELECT format_name(info) FROM users WHERE "zipcode = 44555 ORDER BY string.sub(info.fname,1,3)
+    SELECT format_name(info) FROM users WHERE zipcode = 44555 ORDER BY string.sub(info.fname,1,3)
 }}}
 
 These examples are pretty lame, but hopefully it is clear that combining Lua & SQL in such a way provides a highly flexible DML (implemented highly efficiently using Lua's virtual stack) that logically fits within the relational model.
