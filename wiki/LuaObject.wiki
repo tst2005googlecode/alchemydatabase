@@ -16,7 +16,7 @@ Inserting data into a LuaObject column is done as a Lua table construction (e.g.
 }}}
 Note: in the 2nd INSERT `info.height & info.weight` are not defined, which is ok, as the lua-object has no defined structure.
 
-Elements within a LuaObject can be indexed, w/ Dot-Notation-Indexing
+Elements within a LuaObject can be indexed, w/ Dot-Notation-Indexing (NOTE: the final argument specifies a data type for the index)
 {{{
   CREATE INDEX i_users_i_a ON users (info.age) LONG
   CREATE INDEX i_users_i_g ON users (info.groupid) LONG
