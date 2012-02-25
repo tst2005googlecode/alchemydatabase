@@ -9,12 +9,13 @@ To create a LuaObject Column, declare the column as type LUAOBJ:
    CREATE TABLE users (userid INT, zipcode INT, info LUAOBJ)
 }}}
 
-Inserting data into a LuaObject column is done as a Lua table construction (e.g. `tbl={...}`)
+Inserting data into a LuaObject column is done in JSON.
 {{{
-  INSERT INTO users (userid, zipcode, info) VALUES (1,44555,{fname='BILL',lname='DOE',age=32,groupid=999,height=70,weight=180})
-  INSERT INTO users (userid, zipcode, info) VALUES (2,44555,{fname='Jane',lname='Smith',age=22,groupid=888,coupon='XYZ123'})
-}}}
+$CLI INSERT INTO users "(userid, zipcode, info)" VALUES "(1,44555,{'fname':'BILL','lname':'DOE','age':32,'groupid':999,'height':70,'weight':180})"
+  $CLI INSERT INTO users "(userid, zipcode, info)" VALUES "(2,44555,{'fname':'Jane','lname':'Smith','age':22,'groupid':888,'coupon':'XYZ123'})"
+  $CLI CREATE INDEX i_users_i_a ON users "(info.age)" LONG}}}
 Note: in the 2nd INSERT `info.height & info.weight` are not defined, which is ok, as the lua-object has no defined structure.
+The JSON is decoded and stored as a Lua Table, allowing simple manipulation via Lua functions.
 
 Elements within a LuaObject can be indexed, w/ Dot-Notation-Indexing (NOTE: the final argument specifies a data type for the index)
 {{{
@@ -70,6 +71,8 @@ Besides adding Lua functionality in the where-clause, it is also possible to cal
 
 These examples are pretty lame, but hopefully it is clear that combining Lua & SQL in such a way provides a highly flexible DML (implemented highly efficiently using Lua's virtual stack) that logically fits within the relational model. The goal here is to be able to do the exact operations you want to do on your data as efficiently as possible and not have to tweak & bend them to fit into SQL.
 
+A better example of how powerful these constructs are is explained in [http://code.google.com/p/alchemydatabase/wiki/LuaGraphDB AlchemyDB's GraphDB] implementation
+
 == Lua Internals ==
 ===Direct Lua Access to Lua-Objects===
 AlchemyDB stores each LuaObject column in Lua's universe. Each row's LuaObject Column is stored as a Lua Table that is addressable as `ASQL[tblname][columnname][pk]`. If we took the above example, where the table "users" has the LuaObject "info", and userid=1, the LuaObject is stored in a table at `ASQL["users"]["info"][1]`. Manipulating the LUAOBJ table's values directly in Lua is OK (e.g. setting `ASQL["users"]["info"][1].newfield=7` is OK)  and will not corrupt the database, but do not modify any data in the `ASQL[tblname][columnname][pk]` tree as this tree represents the raw database (e.g. do NOT do: `ASQL["users"]["info"]=nil`, as this deletes ALL `users.info` LUAOBJ's).
@@ -78,3 +81,9 @@ AlchemyDB stores each LuaObject column in Lua's universe. Each row's LuaObject C
 AlchemyDB did some Lua voodoo (combo of __index & __newindex meta-method trickery) to ensure that if a Dot-Notation-Indexed value is changed directly in Lua, the change will be reflected in Alchemy's indexes. This can be reworded as: changing the value of a Dot-Notation-Indexed field directly in Lua will cause an update-index-trigger in Alchemy. An example of this would be (setting `ASQL["users"]["info"][1].age=55` would cause an update-trigger to the "i_users_i_a" index, and a subsequent SQL query: `SELECT * FROM users WHERE info.age=55` would return the row w/ userid=1)
 
 This ensures data consistency between Lua & the RDBMS and means the developer does not have to worry about where he changes data, his changes will be reflected in both Lua & via SQL.
+
+===Persistence===
+And data residing in the ASQL tree will be persisted to disk and there is also a special Lua Table called "UserData" that will be persisted to Disk (e.g. setting "UserData.sometable = {key='mkey'; value=33;};" will persist if you shutdown and start AlchemyDB
+
+===ACID===
+LuaObj column types have the same ACID property as any column in AlchemyDB. If a Alchemy command involving many rows encounters an error halfway, NONE of the LuaObj operations will be applied.
