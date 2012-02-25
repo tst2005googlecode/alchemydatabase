@@ -1,6 +1,6 @@
 =Lua Object Column Type=
 
-*WARNING* this functionality is brand new and only available from the "master" branch in github. It has been tested, but since it covers such an impossibly large test space, it has not been tested enough.
+*WARNING* this functionality is brand new and only available from the "master" branch in [https://github.com/JakSprats/Alchemy-Database github]. It has been tested, but since it covers such an impossibly large test space, it has not been tested enough.
 
 Alchemy Database has a column type called "LUAOBJ" which contains a [http://lua-users.org/wiki/TablesTutorial Lua table]. [http://www.lua.org/about.html Lua] is a turing complete  embedded language, and Lua tables can be efficiently used to store almost any data structure (even ones w/ functions, aka objects :)
 
@@ -15,7 +15,6 @@ Inserting data into a LuaObject column is done in JSON.
 {{{
   $CLI INSERT INTO users "(userid, zipcode, info)" VALUES "(1,44555,{'fname':'BILL','lname':'DOE','age':32,'groupid':999,'height':70,'weight':180})"
   $CLI INSERT INTO users "(userid, zipcode, info)" VALUES "(2,44555,{'fname':'Jane','lname':'Smith','age':22,'groupid':888,'coupon':'XYZ123'})"
-  $CLI CREATE INDEX i_users_i_a ON users "(info.age)" LONG
 }}}
 Note: in the 2nd INSERT `info.height & info.weight` are not defined, which is ok, as the lua-object has no defined structure.
 The JSON is decoded and stored as a Lua Table, allowing simple manipulation via Lua functions.
