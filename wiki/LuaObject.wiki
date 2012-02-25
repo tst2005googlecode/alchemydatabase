@@ -47,7 +47,7 @@ The following query now becomes possible
   CREATE INDEX i_u_zip ON users (zipcode)
   SELECT info.name FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123')
 }}}
-The function "has_coupon()" will be run (at LuaStackCall + byte-code speed) on every row w/ zipcode 44555, and ONLY those rows having "info.coupon_code='XYZ123'" will be returned.
+The function "has_coupon()" will be run (at Lua-Stack-Call + byte-code speed) on every row w/ zipcode 44555, and ONLY those rows having "info.coupon_code='XYZ123'" will be returned.
 
 Besides adding Lua functionality in the where-clause, it is also possible to call Lua from:
   * SELECT Column Clause
