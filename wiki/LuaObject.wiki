@@ -11,7 +11,7 @@ To create a LuaObject Column, declare the column as type LUAOBJ:
 
 Inserting data into a LuaObject column is done in JSON.
 {{{
-$CLI INSERT INTO users "(userid, zipcode, info)" VALUES "(1,44555,{'fname':'BILL','lname':'DOE','age':32,'groupid':999,'height':70,'weight':180})"
+  $CLI INSERT INTO users "(userid, zipcode, info)" VALUES "(1,44555,{'fname':'BILL','lname':'DOE','age':32,'groupid':999,'height':70,'weight':180})"
   $CLI INSERT INTO users "(userid, zipcode, info)" VALUES "(2,44555,{'fname':'Jane','lname':'Smith','age':22,'groupid':888,'coupon':'XYZ123'})"
   $CLI CREATE INDEX i_users_i_a ON users "(info.age)" LONG
 }}}
@@ -88,3 +88,15 @@ And data residing in the ASQL tree will be persisted to disk and there is also a
 
 ===ACID===
 LuaObj column types have the same ACID property as any column in AlchemyDB. If a Alchemy command involving many rows encounters an error halfway, NONE of the LuaObj operations will be applied.
+
+==Alternate Insert Syntaxes==
+LuaObj columns can be instantiated via Lua Function calls
+{{{
+  INSERT INTO doc VALUES (1,111, nested_lua(10,9.99,'text'))
+]]]
+The final column in the table "doc" will be the return value of the already interpreted Lua function: "nested_lua()".
+
+LuaObj columns can also be instantiated by evaluating Lua statements. In the next example, the Lua is so complex, it makes sense to simply eval() it in Lua, instead of trying to parse it in C, and then pass over the parse tree to Lua via Lua's stack
+{{{
+  INSERT INTO doc VALUES (2,111, nested_lua(45*77+100-math.sqrt(99)))
+}}}
