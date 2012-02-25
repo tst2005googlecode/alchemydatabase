@@ -1,6 +1,6 @@
 = The Alchemy AppStack =
 
-*WARNING: Alchemy's AppStack is VERY experimental*
+*WARNING: Alchemy's AppStack is experimental, it has been tested, but it needs more testing*
 
 Alchemy's AppStack is a combined `DynamicWebserver+Datastore` stack. Dynamic HTML webpages are create via [http://www.lua.org/about.html LUA] functions that access data via an embedded Alchemy Database.
 
