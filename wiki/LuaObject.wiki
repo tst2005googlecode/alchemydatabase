@@ -40,7 +40,7 @@ The first step is to define a Lua function in AlchemyDB: a string of Lua can be 
 {{{
    INTERPRET LUA "function has_coupon(info, code) if (info.coupon ~= nil and info.coupon == code) then return 1; else return 0; end; end"
 }}}
-Note: this function sees if a particular luaobject column has the field "coupon_code" defined, and then checks to see if it matches the coupon_code from the function call.
+_Note: this function sees if a particular luaobject column has the field "coupon_code" defined, and then checks to see if it matches the coupon_code from the function call._
 
 The following query now becomes possible
 {{{
