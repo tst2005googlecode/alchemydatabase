@@ -1,6 +1,7 @@
+#labels Featured
 =Lua Object Column Type=
 
-*WARNING* this functionality is brand new and only available from the "master" branch in [https://github.com/JakSprats/Alchemy-Database github]. It has been tested, but since it covers such an impossibly large test space, it has not been tested enough.
+*START WARNING* this functionality is brand new and only available from the "master" branch in [https://github.com/JakSprats/Alchemy-Database github]. It has been tested, but since it covers such an impossibly large test space, it has not been tested enough. *END WARNING*
 
 Alchemy Database has a column type called "LUAOBJ" which contains a [http://lua-users.org/wiki/TablesTutorial Lua table]. [http://www.lua.org/about.html Lua] is a turing complete  embedded language, and Lua tables can be efficiently used to store almost any data structure (even ones w/ functions, aka objects :)
 
