@@ -30,7 +30,7 @@ The following queries would use the previous indexes and return ['BILL' & 'Jane'
   SELECT info.name FROM users WHERE info.age = 32
   SELECT info.name FROM users WHERE info.groupid = 888
 }}}
-In the author's humble opinion, Dot-Notation-Indexes should be viewed as slightly inferior when compared to normal indexes. It is recommended practice, that if you use a Dot-Notation-Index heavily, to break it out into a normal SQL index, which perform slightly better as the overhead of passing data between C & Lua is avoided and Dot-Notation-Indexes currently have limitations (e.g. no JOINs on DNIs).
+_In the author's humble opinion, Dot-Notation-Indexes should be viewed as slightly inferior when compared to normal indexes. It is recommended practice, that if you use a Dot-Notation-Index heavily, to break it out into a normal SQL index, which perform slightly better as the overhead of passing data between C & Lua is avoided and Dot-Notation-Indexes currently have limitations (e.g. no JOINs on DNIs)._
 
 The described functionality already yields a basic Document-Store or Object-Database, and technically more as Lua supports arbitrary nesting of tables and Lua has scores of libraries already written and tested (some in production going on 20 years). Since Lua is so powerful,flexible,efficient, & natural-to-embed, it made sense to integrate Lua as deeply as possible into SQL, to achieve a variant of SQL that has the benefits of a full programming language.
 
