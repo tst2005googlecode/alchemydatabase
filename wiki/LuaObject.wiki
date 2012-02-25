@@ -91,7 +91,7 @@ This ensures data consistency between Lua & the RDBMS and means the developer do
 Any data residing in the `ASQL[]` tree will be persisted to disk and there is also a special Lua Table called `UserData[]` that will be persisted to Disk (e.g. setting `UserData.sometable = {key='mkey'; value=33;};` will persist if you shutdown and start AlchemyDB). This is useful for users who use Lua itself to store data, (which is encouraged, _if the use-case fits_).
 
 ===ACID===
-`LuaObj` column types have the same ACID property as any column in AlchemyDB. If an Alchemy write command involving many rows (e.g. RangeUpdate) encounters an error halfway, NONE of the `LuaObj` operations will be applied, the same goes if an INSERT encounters a Unique-Constraint-Violation.
+`LuaObj` column types have the same ACID property as any column in AlchemyDB. If an Alchemy write command involving many rows (e.g. Range-Update) encounters an error halfway, NONE of the `LuaObj` operations will be applied, the same goes if an INSERT encounters a Unique-Constraint-Violation.
 
 ==Alternate Insert Syntaxes==
 `LuaObj` columns can be initialised via Lua Function calls
