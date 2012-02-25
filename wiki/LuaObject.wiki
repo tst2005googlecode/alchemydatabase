@@ -35,7 +35,7 @@ The described functionality already yields a basic Document-Store or Object-Data
 
 This integration is best described w/ some examples, as it is a syntactic mixing of SQL, Lua Tables, and Lua functions.
 
-First define a Lua function in AlchemyDB: a string of Lua can be passed to Alchemy, which is then interpreted (and remains defined in the Lua universe for later use)
+First define a Lua function in AlchemyDB: a string of Lua can be passed to Alchemy, which is then interpreted (and remains defined in the Lua universe as byte-code (or even machine code w/ LuaJIT) for subsequent calls)
 {{{
    INTERPRET LUA "function has_coupon(info, code) if (info.coupon ~= nil and info.coupon == code) then return 1; else return 0; end; end"
 }}}
@@ -46,7 +46,7 @@ The following query now becomes possible
   CREATE INDEX i_u_zip ON users (zipcode)
   SELECT info.name FROM users WHERE zipcode = 44555 AND has_coupon(info, 'XYZ123')
 }}}
-The function "has_coupon()" will be run on every row w/ zipcode 44555, and ONLY those rows having "info.coupon_code='XYZ123'" will be returned.
+The function "has_coupon()" will be run (at byte-code speed) on every row w/ zipcode 44555, and ONLY those rows having "info.coupon_code='XYZ123'" will be returned.
 
 Besides adding Lua functionality in the where-clause, it is also possible to call Lua from:
   * SELECT Column Clause
@@ -70,7 +70,9 @@ Besides adding Lua functionality in the where-clause, it is also possible to cal
     SELECT format_name(info) FROM users WHERE zipcode = 44555 ORDER BY string.sub(info.lname,1,3)
 }}}
 
-These examples are pretty lame, but hopefully it is clear that combining Lua & SQL in such a way provides a highly flexible DML (implemented highly efficiently using Lua's virtual stack) that logically fits within the relational model. The goal here is to be able to do the exact operations you want to do on your data as efficiently as possible and not have to tweak & bend them to fit into SQL.
+It is *VERY* important to note that this implementation makes it impossible to have interpretable Lua functions at runtime, all functions must be defined beforehand (which converts them to byte-code or machine-code) and subsequent calls are done in C via Lua's stack, which is very efficient.
+
+These examples are pretty lame, but hopefully it is clear that mixing Lua into SQL in such a way provides a highly flexible DML (implemented highly efficiently using Lua's virtual stack) that logically fits within the relational model. The goal here is to be able to do the exact operations you want to do on your data as efficiently as possible and not have to tweak & bend them to fit into SQL.
 
 A better example of how powerful these constructs are is explained in [http://code.google.com/p/alchemydatabase/wiki/LuaGraphDB AlchemyDB's GraphDB] implementation
 
@@ -93,7 +95,7 @@ LuaObj column types have the same ACID property as any column in AlchemyDB. If a
 LuaObj columns can be instantiated via Lua Function calls
 {{{
   INSERT INTO doc VALUES (1,111, nested_lua(10,9.99,'text'))
-]]]
+}}}
 The final column in the table "doc" will be the return value of the already interpreted Lua function: "nested_lua()".
 
 LuaObj columns can also be instantiated by evaluating Lua statements. In the next example, the Lua is so complex, it makes sense to simply eval() it in Lua, instead of trying to parse it in C, and then pass over the parse tree to Lua via Lua's stack
