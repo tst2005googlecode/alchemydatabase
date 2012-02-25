@@ -14,8 +14,8 @@ To create a LuaObject Column, declare the column as type LUAOBJ:
 
 Inserting data into a LuaObject column is done in JSON.
 {{{
-  $CLI INSERT INTO users "(userid, zipcode, info)" VALUES "(1,44555,{'fname':'BILL','lname':'DOE','age':32,'groupid':999,'height':70,'weight':180})"
-  $CLI INSERT INTO users "(userid, zipcode, info)" VALUES "(2,44555,{'fname':'Jane','lname':'Smith','age':22,'groupid':888,'coupon':'XYZ123'})"
+  INSERT INTO users "(userid, zipcode, info)" VALUES "(1,44555,{'fname':'BILL','lname':'DOE','age':32,'groupid':999,'height':70,'weight':180})"
+  INSERT INTO users "(userid, zipcode, info)" VALUES "(2,44555,{'fname':'Jane','lname':'Smith','age':22,'groupid':888,'coupon':'XYZ123'})"
 }}}
 Note: in the 2nd INSERT `info.height & info.weight` are not defined, which is ok, as the lua-object has no defined structure.
 The JSON is decoded and stored as a Lua Table, allowing simple manipulation via Lua functions.
