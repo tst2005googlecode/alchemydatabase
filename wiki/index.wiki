@@ -17,4 +17,6 @@ The documentation is a work in progress.
 
   * An experimental [http://code.google.com/p/alchemydatabase/wiki/AppStack web_server] mode speaks HTTP and calls whitelisted Lua functions to server web pages
 
+  * Document-Store & Object-Database functionality have been added to AlchemyDB via the [http://code.google.com/p/alchemydatabase/wiki/LuaObject LuaObj] column
+
   * A draft that lists Alchemy Databases highlights can be found [http://code.google.com/p/alchemydatabase/wiki/HighLights here]
