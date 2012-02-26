@@ -1,5 +1,8 @@
 #labels Phase-Deploy
 ==CLIENTS:==
+
+===*NOTE:* AlchemyDB has recently added a REST API, and will be DEPRECATING all of these clients.===
+
 *FEATURED*
   # Ruby client: http://github.com/JakSprats/redis-rb
   # Java Client: https://github.com/JakSprats/jedis 
