@@ -107,5 +107,24 @@ The final column in the table "doc" will be the return value of the already inte
 
 As w/ JSON `LuaObj` initialisations, all data is ultimately stored in Lua Tables.
 
-=TODO=
-Document nested LuaObjects and how to SELECT & UPDATE them.
+==Nested Updates==
+Nested UPDATEs and SELECTs are supported, here is an example:
+{{{
+  INTERPRET LUA "function cubed(n) return n * n * n; end function nest_json(num) return '{\'DEEP\':{\'A\':{\'B\':{\'C\':' .. cubed(num) .. '}}}}'; end"
+  CREATE TABLE users (userid INT, zipcode INT, info LUAOBJ)
+  INSERT INTO users VALUES (1, 3333, {'nest':{'x':{'y':{'z':5}}}});
+  SELECT * FROM users WHERE userid=1
+     RETURNS: 1,3333,{'nest':{'x':{'y':{'z':5}}}}
+  UPDATE users SET info.nest.x.y.A = nest_json(info.nest.x.y.z) WHERE userid=1
+  SELECT * FROM users WHERE userid=1
+     RETURNS: 1,3333,{'nest':{\"x\":{\"y\":{\"A\":\"{'DEEP':{'A':{'B':{'C':125}}}}','z':5}}}}
+  UPDATE users SET info.nest.x.y = {'K':{'L':777}} WHERE userid=1
+  SELECT * FROM users WHERE userid=1
+     RETURNS: 1,3333,{'nest':{'x':{'y':{'K':{'L':777}}}}}
+  UPDATE users SET info.nest.x.y.z = 100 WHERE userid=1
+  SELECT * FROM users WHERE userid=1
+     RETURNS: 1,3333,{'nest':{'x':{'y':{'K':{'L':777},'z':100}}}}
+  UPDATE users SET info.nest.x.y.z = info.nest.x.y.z + info.nest.x.y.z * 100 WHERE userid=1
+  SELECT * FROM users WHERE userid=1
+     RETURNS: 1,3333,'{'nest':{'x':{'y':{'K':{'L':777},'z':10100}}}}
+}}}
