@@ -117,7 +117,7 @@ Nested UPDATEs and SELECTs are supported, here is an example:
      RETURNS: 1,3333,{'nest':{'x':{'y':{'z':5}}}}
   UPDATE users SET info.nest.x.y.A = nest_json(info.nest.x.y.z) WHERE userid=1
   SELECT * FROM users WHERE userid=1
-     RETURNS: 1,3333,{'nest':{'x':{'y':{'A':'{'DEEP':{'A':{'B':{'C':125}}}}','z':5}}}}
+     RETURNS: 1,3333,{'nest':{'x':{'y':{'A':{'DEEP':{'A':{'B':{'C':125}}}},'z':5}}}}
   UPDATE users SET info.nest.x.y = {'K':{'L':777}} WHERE userid=1
   SELECT * FROM users WHERE userid=1
      RETURNS: 1,3333,{'nest':{'x':{'y':{'K':{'L':777}}}}}
