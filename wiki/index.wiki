@@ -7,11 +7,11 @@ The documentation is a work in progress.
 
   * Want to write a client, or extend an existing one, best to have a firm grasp of the [http://code.google.com/p/alchemydatabase/wiki/Protocol Alchemy Database Protocol]
 
-  * Stable releases packed up into hearty [http://code.google.com/p/alchemydatabase/downloads/list Code Tarballs]
-  * Development branch code, fork at will via [https://github.com/JakSprats/Alchemy-Database Github]
+  * Development branch code, fork at will via [https://github.com/JakSprats/Alchemy-Database Github] - *RECOMMENDATION:* use github
 
+  * ANCIENT Stable releases packed up into hearty [http://code.google.com/p/alchemydatabase/downloads/list Code Tarballs]
 
-  * Clients can be found [http://code.google.com/p/alchemydatabase/wiki/Clients here]
+  * [http://code.google.com/p/alchemydatabase/wiki/Clients Client] source-code-tarballs + git-repo-links. *NOTE:* AlchemyDB has recently added a REST API, and will be DEPRECATING all of these clients.
 
   * Jaksprats (author) [http://jaksprats.wordpress.com/ blog] discussing the strengths and uses of Alchemy Database
 
