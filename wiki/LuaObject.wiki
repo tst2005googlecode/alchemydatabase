@@ -110,14 +110,15 @@ As w/ JSON `LuaObj` initialisations, all data is ultimately stored in Lua Tables
 ==Nested Updates==
 Nested UPDATEs and SELECTs are supported, here is an example:
 {{{
-  INTERPRET LUA "function cubed(n) return n * n * n; end function nest_json(num) return '{\'DEEP\':{\'A\':{\'B\':{\'C\':' .. cubed(num) .. '}}}}'; end"
+  INTERPRET LUA "function cubed(n) return n * n * n; end" 
+  INTERPRET LUA "function nested_table(num) local t = {}; t['DEEP']={}; t['DEEP']['a']={} t['DEEP']['a']['b']={}; t['DEEP']['a']['b']['c']=cubed(num); return t; end"
   CREATE TABLE users (userid INT, zipcode INT, info LUAOBJ)
   INSERT INTO users VALUES (1, 3333, {'nest':{'x':{'y':{'z':5}}}});
   SELECT * FROM users WHERE userid=1
      RETURNS: 1,3333,{'nest':{'x':{'y':{'z':5}}}}
-  UPDATE users SET info.nest.x.y.A = nest_json(info.nest.x.y.z) WHERE userid=1
+  UPDATE users SET info.nest.x.y.TABLE = nested_table(info.nest.x.y.z) WHERE userid=1
   SELECT * FROM users WHERE userid=1
-     RETURNS: 1,3333,{'nest':{'x':{'y':{'A':{'DEEP':{'A':{'B':{'C':125}}}},'z':5}}}}
+     RETURNS: 1,3333,{'nest':{'x':{'y':{'TABLE':{'DEEP':{'a':{'b':{'c':125}}}},'z':5}}}}
   UPDATE users SET info.nest.x.y = {'K':{'L':777}} WHERE userid=1
   SELECT * FROM users WHERE userid=1
      RETURNS: 1,3333,{'nest':{'x':{'y':{'K':{'L':777}}}}}
