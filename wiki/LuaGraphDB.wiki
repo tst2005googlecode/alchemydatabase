@@ -14,7 +14,56 @@ A `Relationship` can also have a `Property` associated to it, for instance if Ja
 == Lua implementation ==
 AlchemyDB implements a GraphDB using Lua for logic and SQL for indexing. The code can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/core/graph.lua here].  And examples, showing depth-first traversals, breadth-first traversals, and short-path algorithms can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/core/example_user_cities.lua here].
 
+== Examples==
+Here is an example, that contains some cities and some fictional distances between them and finds the shortest route from Washington D.C. to San Francisco.
+
+_NOTE: in this particular use-case it made sense to have all APIs in Lua. SQL takes place in the Lua Routines. The LUATRIGGER is used to create a CityName->PK lookup table contained (and used) completely in Lua_
+
+Definitions for the functions `addSqlCityRowAndNode(), addCityDistance(), & shortestPathByCityName()` can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/core/example_user_cities.lua#L64-87 here.]. They are all fairly simple routines that make the API simpler for the programmer, and are good examples of how server-side scripting can not only encapsulate funcitonality, but also avoid unnecessary AppServer->DBServer calls.
+{{{
+  INTERPRET LUAFILE "core/graph.lua";
+  INTERPRET LUAFILE "core/example_user_cities.lua";
+  CREATE TABLE cities (pk INT, lo LUAOBJ, name TEXT)
+  CREATE LUATRIGGER lt_cities ON cities INSERT add_city(name, pk)
+  CREATE LUATRIGGER lt_cities ON cities DELETE del_city(name)
+  LUAFUNC addSqlCityRowAndNode 10 'Washington D.C.' 'DC'
+  LUAFUNC addSqlCityRowAndNode 20 'New York City' 'NYC'
+  LUAFUNC addSqlCityRowAndNode 30 'San Francisco' 'SF'
+  LUAFUNC addSqlCityRowAndNode 40 'Chicago' 'CHI'
+  LUAFUNC addSqlCityRowAndNode 50 'Cheyenne' 'CHE'
+  LUAFUNC addSqlCityRowAndNode 60 'Atlanta' 'ATL'
+  LUAFUNC addSqlCityRowAndNode 70 'Dallas' 'DAL'
+  LUAFUNC addSqlCityRowAndNode 80 'Albuquerque' 'ALB'
+  LUAFUNC addSqlCityRowAndNode 90 'Lexington' 'LEX'
+  LUAFUNC addSqlCityRowAndNode 100 'St. Louis' 'STL'
+  LUAFUNC addSqlCityRowAndNode 110 'Kansas City' 'KC'
+  LUAFUNC addSqlCityRowAndNode 120 'Denver' 'DEN'
+  LUAFUNC addSqlCityRowAndNode 130 'Salt Lake City' 'SLC'
+
+  LUAFUNC addCityDistance 'Washington D.C.' 'Chicago'        200
+  LUAFUNC addCityDistance 'Chicago'         'San Francisco'  500 # = 700
+  LUAFUNC addCityDistance 'Chicago'         'Cheyenne'       200
+  LUAFUNC addCityDistance 'Cheyenne'        'San Francisco'  200 # = 600
+
+  LUAFUNC addCityDistance 'Washington D.C.' 'Atlanta'        100
+  LUAFUNC addCityDistance 'Atlanta'         'Dallas'         100
+  LUAFUNC addCityDistance 'Dallas'          'San Francisco'  300 # = 500
+  LUAFUNC addCityDistance 'Dallas'          'Albuquerque'    100
+  LUAFUNC addCityDistance 'Albuquerque'     'San Francisco'  100 # = 400
+
+  LUAFUNC addCityDistance 'Washington D.C.' 'Lexington'       50
+  LUAFUNC addCityDistance 'Lexington'       'St. Louis'       50
+  LUAFUNC addCityDistance 'St. Louis'       'Kansas City'     50
+  LUAFUNC addCityDistance 'Kansas City'     'Denver'          50
+  LUAFUNC addCityDistance 'Denver'          'Salt Lake City'  50
+  LUAFUNC addCityDistance 'Salt Lake City'  'San Francisco'   50
+
+  LUAFUNC shortestPathByCityName 'cities' 'Washington D.C.' 'San Francisco' 'RELATIONSHIP_COST.WEIGHT'             
+}}}
+
 == Pure Lua Function Indexes ==
+*TODO*: need an example code for these
+
 Graph Databases often have the ability to index specific relationships. For instance, the relationship: `users who have visited NYC` can be indexed. And looking up users who have visited NYC is an efficient index lookup. Alchemy introduced a pure lua function index for this purpose. It is up to the developer to maintain this index in his lua routines. 
 
 Using the example of indexing the relationship: `users who have visited NYC` the developer should add new primary keys to this index every time a user creates a relationship `VISITS->NYC`. Deleting this relationship doesnt really make much sense, but if a user could somehow UN-visit NYC, then his primary key should be deleted from this index. The explanation so far has been an oversimplification: every time a user visits a city (assuming users are in the SQL table: `users` and cities are in the SQL table: `cities`) the call: `alchemySetIndexByName('visits_index', cities.pk, user.pk)`. This allows later calls to get all users.PKs who have visited city w/ cities.PK=X possible.
