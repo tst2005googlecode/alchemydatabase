@@ -1,6 +1,6 @@
 = Alchemy's Graph Database =
 
-A [http://en.wikipedia.org/wiki/Graph_database Graph Database] uses graph structures with nodes, edges, and properties to represent and store data. AlchemyDB modeled its Graph Database after [http://neo4j.org/ Neo4j].
+A [http://en.wikipedia.org/wiki/Graph_database Graph Database] uses graph structures with nodes, edges, and properties to represent and store data. AlchemyDB modeled its Graph Database after [http://neo4j.org/ Neo4j]. The purpose of building a GraphDB into AlchemyDB was two fold: first: it is nice to be able to graph traversals on your data, so "embedding" a GraphDB is a nice add-on, second: it provides an example of how AlchemyDB's mix of Lua & SQL is simple-to-use, highly-flexible, & very efficient. AlchemyDB can be thought of as a platform, where you can add all sorts of custom functionality to your RDBMS.
 
 == Basics ==
 A `Node` stores data. A `Node` can have `Relationships` to other Nodes. An example would be `James -> KNOWS -> Jill`. Here, "James" & "Jill" are the `Nodes` and `KNOWS` is the `Relationship`.
