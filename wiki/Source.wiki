@@ -1,4 +1,5 @@
-  * Stable releases packed up into hearty [http://code.google.com/p/alchemydatabase/downloads/list Code Tarballs]
-  * Development branch code, fork at will via [https://github.com/JakSprats/Alchemy-Database Github]
+  * Development branch code, fork at will via [https://github.com/JakSprats/Alchemy-Database Github] - *RECOMMENDATION:* use github
 
-  * [http://code.google.com/p/alchemydatabase/wiki/Clients Client] source-code-tarballs + git-repo-links
+  * ANCIENT Stable releases packed up into hearty [http://code.google.com/p/alchemydatabase/downloads/list Code Tarballs]
+
+  * [http://code.google.com/p/alchemydatabase/wiki/Clients Client] source-code-tarballs + git-repo-links. *NOTE:* AlchemyDB has recently added a REST API, and will be DEPRECATING all of these clients.
