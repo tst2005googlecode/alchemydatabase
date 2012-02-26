@@ -106,3 +106,6 @@ The final column in the table "doc" will be the return value of the already inte
 }}}
 
 As w/ JSON `LuaObj` initialisations, all data is ultimately stored in Lua Tables.
+
+=TODO=
+Document nested LuaObjects and how to SELECT & UPDATE them.
