@@ -1,4 +1,3 @@
-
 = Alchemy's Graph Database =
 
 A [http://en.wikipedia.org/wiki/Graph_database Graph Database] uses graph structures with nodes, edges, and properties to represent and store data. AlchemyDB modeled its Graph Database after [http://neo4j.org/ Neo4j].
@@ -16,9 +15,9 @@ A `Relationship` can also have a `Property` associated to it, for instance if Ja
 AlchemyDB implements a GraphDB using Lua for logic and SQL for indexing. The code can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/core/graph.lua here].  And examples, showing depth-first traversals, breadth-first traversals, and short-path algorithms can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/core/example_user_cities.lua here].
 
 == Pure Lua Function Indexes ==
-GraphDatabases often have the ability to index specific relationships. For instance, the relationship: `users who have visited NYC` can be indexed. And looking up users who have visited NYC is an efficient index lookup. Alchemy introduced a pure lua function index for this purpose. It is up to the developer to maintain this index in his lua routines. 
+Graph Databases often have the ability to index specific relationships. For instance, the relationship: `users who have visited NYC` can be indexed. And looking up users who have visited NYC is an efficient index lookup. Alchemy introduced a pure lua function index for this purpose. It is up to the developer to maintain this index in his lua routines. 
 
-Using the example of indexing the relationship: `users who have visited NYC` the developer should add new primary keys to this index every time a user creates a relationship `VISITS->NYC`. Deleting this relationship doesnt really make much sense, but if a user could somehow UN-visit NYC, then his primary key should be deleted from this index. The explanation so far has been an oversimplification: every time a user visits a city (assuming users are in the SQL table: `users` and cities are in the SQL table: `citites`) the call: `alchemySetIndex('visits_index', cities.pk, user.pk)`. This allows later calls to get all users who have visited city w/ pk=X possible.
+Using the example of indexing the relationship: `users who have visited NYC` the developer should add new primary keys to this index every time a user creates a relationship `VISITS->NYC`. Deleting this relationship doesnt really make much sense, but if a user could somehow UN-visit NYC, then his primary key should be deleted from this index. The explanation so far has been an oversimplification: every time a user visits a city (assuming users are in the SQL table: `users` and cities are in the SQL table: `cities`) the call: `alchemySetIndexByName('visits_index', cities.pk, user.pk)`. This allows later calls to get all users.PKs who have visited city w/ cities.PK=X possible.
 
 Here is Alchemy's syntax for the Pure Lua Function Index:
 {{{
