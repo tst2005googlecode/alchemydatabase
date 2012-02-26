@@ -19,6 +19,6 @@ The documentation is a work in progress.
 
   * Document-Store & Object-Database functionality have been added to AlchemyDB via the [http://code.google.com/p/alchemydatabase/wiki/LuaObject LuaObj] column
 
-* [http://code.google.com/p/alchemydatabase/wiki/LuaGraphDB A Graph Database] built on AlchemyDB. SQL for indexing and Lua for graph-traversal logic.
+  * [http://code.google.com/p/alchemydatabase/wiki/LuaGraphDB A Graph Database] built on AlchemyDB. SQL for indexing and Lua for graph-traversal logic.
 
   * A draft that lists Alchemy Databases highlights can be found [http://code.google.com/p/alchemydatabase/wiki/HighLights here]
