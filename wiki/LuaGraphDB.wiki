@@ -58,7 +58,7 @@ Definitions for the functions `addSqlCityRowAndNode(), addCityDistance(), & shor
   LUAFUNC addCityDistance 'St. Louis'       'Kansas City'     50
   LUAFUNC addCityDistance 'Kansas City'     'Denver'          50
   LUAFUNC addCityDistance 'Denver'          'Salt Lake City'  50
-  LUAFUNC addCityDistance 'Salt Lake City'  'San Francisco'   50
+  LUAFUNC addCityDistance 'Salt Lake City'  'San Francisco'   50 # = 300
 
   LUAFUNC shortestPathByCityName 'cities' 'Washington D.C.' 'San Francisco' 'RELATIONSHIP_COST.WEIGHT'             
 }}}
