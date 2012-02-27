@@ -68,36 +68,6 @@ Definitions for the functions `addSqlCityRowAndNode(), addCityDistance(), & shor
   LUAFUNC shortestPathByCityName 'cities' 'Washington D.C.' 'San Francisco' 'RELATIONSHIP_COST.WEIGHT'             
 }}}
 
-== Pure Lua Function Indexes ==
-*TODO*: need an example code for these
-
-Graph Databases often have the ability to index specific relationships. For instance, the relationship: `users who have visited NYC` can be indexed. And looking up users who have visited NYC is an efficient index lookup. Alchemy introduced a pure lua function index for this purpose. It is up to the developer to maintain this index in his lua routines. 
-
-Using the example of indexing the relationship: `users who have visited NYC` the developer should add new primary keys to this index every time a user creates a relationship `VISITS->NYC`. Deleting this relationship doesnt really make much sense, but if a user could somehow UN-visit NYC, then his primary key should be deleted from this index. The explanation so far has been an oversimplification: every time a user visits a city (assuming users are in the SQL table: `users` and cities are in the SQL table: `cities`) the call: `alchemySetIndexByName('visits_index', cities.pk, user.pk)`. This allows later calls to get all users.PKs who have visited city w/ cities.PK=X possible.
-
-Here is Alchemy's syntax for the Pure Lua Function Index:
-{{{
-   CREATE INDEX indexname ON tablename "(whereclausetoken())" TYPE constructUserGraphHooks destructUserGraphHooks
-}}}
-TYPE can be any column type: (e.g. INT,TEXT,FLOAT,etc..)
-
-`whereclausetoken()` is used in SQL where clauses to directly access the Pure-Lua-Function-Index.
-
-Examples:
-{{{
-  SELECT \* FROM tablename WHERE whereclausetoken() = 7
-  SELECT \* FROM tablename WHERE whereclausetoken() BETWEEN 2 AND 5
-  SELECT \* FROM tablename WHERE whereclausetoken() IN (3,7,9)
-}}}
-
-`constructUserGraphHooks` is a lua function that should place hooks into your Lua environment and "Construct" the Index.
-
-`destructUserGraphHooks` is a lua function responsible for destructing the Index.
-
-The Lua functions that the hooks can use to call into Alchemy's RDBMS are:
-{{{
-  alchemySetIndexByName(), alchemyUpdateIndexByName(), alchemyDeleteIndexByName()
-}}}
 
 == USERS EXAMPLE ==
 This example has _"USERS"_ who _"KNOW"_ each other and who _"VIEWED_PIC"_ each other.
@@ -190,6 +160,16 @@ At the end of the example, the query for _Users who have visited Washington D.C_
   SELECT hometown, get_fof(lo) FROM users WHERE relindx() = 30
 }}}
 
+== Usage of Pure Lua Function Indexes ==
+AlchemyDB has a feature called [http://code.google.com/p/alchemydatabase/wiki/CommandReference#Pure_Lua_Function_Index Pure Lua Function Indexes].
+
+In the above example, the "Pure Lua Function Index" is used to index the very nested relationship of a `USER -> HAS_VISITED -> CITY`, which exists in the GraphDB, and must be made to exist in the relational database.
+
+Once indexed, looking up users who have visited NYC is an efficient index lookup.
+
+Using the example of indexing the relationship: `users who have visited NYC` the developer should add new primary keys to this index every time a user creates a relationship `VISITS->NYC`. Deleting this relationship doesnt really make much sense, but if a user could somehow UN-visit NYC, then his primary key should be deleted from this index. This is an oversimplification: every time a user visits a city (assuming users are in the SQL table: `users` and cities are in the SQL table: `cities`) the call: `alchemySetIndexByName('visits_index', cities.pk, user.pk)` should be made. This allows later calls to get all users.PKs who have visited city w/ cities.PK=X possible (e.g. all users who have visited NYC).
+
+The intended use case of the "Pure Lua Function Index" is to index data that is not relational, but is better indexed by a function.
 
 = MORE TO COME =
-Tired again, I will write more tomorrow :)
+Muy cansado, I will write more tomorrow :)
