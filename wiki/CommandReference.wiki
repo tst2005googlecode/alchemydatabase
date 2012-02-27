@@ -110,21 +110,22 @@ Function to set a user's last_login and return his status
 }}}
 
 ===Adding Lua functions at run-time===
-Loading lua files (containing lua functions) into the Alchemy Database server can be done either by specifiying the "luafilename" in the config file "redis.conf" or by the following command:
+Loading lua files (containing lua functions) into the Alchemy Database server can be done either by loading lua files of individual lines of lua.
 {{{
 ./alchemy-cli INTERPRET LUAFILE "helper.lua"
+./alchemy-cli INTERPRET LUA "function echo(x) return x; end"
 }}}
 
 ===calling Lua functions via LUAFUNC===
 once a lua function has been imported into Alchemy, it is simple to call it. <br/>
-Given the imported lua function (e.g. added via "CONFIG ADD")
+As an example, suppose the following function has been added to AlchemyDB's Lua universe via a "INTERPRET" call:
 {{{
   function getuserdata(arg1, arg2, arg3)
     ...
     return redis('GET', arg3');
   end
 }}}
-The Alchemy Database call will define the function name and its 3 arguments
+To then call the function 'getuserdata' w/ the 3 arguments it needs, the command "LUAFUNC" is used:
 {{{
    LUAFUNC getuserdata 'session_777' 'user_123' 'last_login'
 }}}
