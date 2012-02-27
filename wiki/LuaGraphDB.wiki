@@ -19,7 +19,7 @@ A `Relationship` can also have a `Property` associated to it, for instance if Ja
 == Lua implementation ==
 AlchemyDB implements a GraphDB using Lua for logic and SQL for indexing. GraphDB functionality is available both at the SQL level and at the Lua function level. GraphDB nodes are embedded into AlchemyDB's [http://code.google.com/p/alchemydatabase/wiki/LuaObject LuaObj] column type, which is how they achieve schemaless storage.
 
-The core code can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/core/graph.lua here].  Examples, showing depth-first traversals, breadth-first traversals, and short-path algorithms can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/core/example_user_cities.lua here].
+The core code for the GraphDB can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/core/graph.lua here].  Examples, showing depth-first traversals, breadth-first traversals, and short-path algorithms can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/core/example_user_cities.lua here].
 
 == Examples==
 Here is an example, that contains some cities and some fictional distances between them and finds the shortest route from Washington D.C. to San Francisco.
