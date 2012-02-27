@@ -1,8 +1,10 @@
 = Alchemy's Graph Database =
 
-A [http://en.wikipedia.org/wiki/Graph_database Graph Database] uses graph structures with nodes, edges, and properties to represent and store data. AlchemyDB modeled its Graph Database after [http://neo4j.org/ Neo4j]. The purpose of building a GraphDB into AlchemyDB was two fold: first: it is nice to be able to graph traversals on your data, so "embedding" a GraphDB is a nice add-on, second: it provides an example of how AlchemyDB's mix of Lua & SQL is simple-to-use, highly-flexible, & very efficient. AlchemyDB can be thought of as a platform, where you can add all sorts of custom functionality to your RDBMS.
+A [http://en.wikipedia.org/wiki/Graph_database Graph Database] uses graph structures with nodes, edges, and properties to represent and store data. AlchemyDB modeled its Graph Database implementation after [http://neo4j.org/ Neo4j] (which is a BAD-ASS GraphDB). 
 
-== Basics ==
+The purpose of building a GraphDB into AlchemyDB was two fold: *first*: it is nice to be able to do graph traversals on your data, so "embedding" a GraphDB is a wonderful add-on, *second*: it provides an example of how AlchemyDB's mix of Lua & SQL is simple-to-use, highly-flexible, very efficient, & can be used as a data-platform. A Data Platform is a data-store that is made to be extensible. Adding a GraphDB to AlchemyDB was done using AlchemyDB's existing tools.
+
+== GraphDB Basics ==
 A `Node` stores data. A `Node` can have `Relationships` to other Nodes. An example would be `James -> KNOWS -> Jill`. Here, "James" & "Jill" are the `Nodes` and `KNOWS` is the `Relationship`.
 
 `Node`s can also have `Properties`, which are unstructured key-value data attached to the Node. `James` could have the `Property: ['job-title'='manager']`. 'Jill' could have the `Property: ['hobby'='swimming']`.
