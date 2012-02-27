@@ -13,10 +13,7 @@ The documentation is a work in progress.
 
   * An experimental [http://code.google.com/p/alchemydatabase/wiki/AppStack web_server] mode speaks HTTP and calls whitelisted Lua functions to server web pages
 
-  * Document-Store & Object-Database functionality have been added to AlchemyDB via the [  * ANCIENT Stable releases packed up into hearty [http://code.google.com/p/alchemydatabase/downloads/list Code Tarballs]
-
-  * [http://code.google.com/p/alchemydatabase/wiki/Clients Client] source-code-tarballs + git-repo-links. *NOTE:* AlchemyDB has recently added a REST API, and will be DEPRECATING all of these clients.
- LuaTable] column
+  * Document-Store & Object-Database functionality have been added to AlchemyDB via the [http://code.google.com/p/alchemydatabase/wiki/LuaTableColumnType LuaTable] column
 
   * A [http://code.google.com/p/alchemydatabase/wiki/LuaGraphDB Graph Database] built on AlchemyDB. SQL for indexing and Lua for graph-traversal logic.
 
