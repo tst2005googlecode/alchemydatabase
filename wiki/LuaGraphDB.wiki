@@ -79,14 +79,14 @@ Once the relationships have been defined, the following two graph traversals are
 
 These traversals demonstrate the GraphDB's API, which can be grouped into:
   * Breadth & Depth First Search Members:
-    # EDGE_EVAL:
-    # EXPANDER: 
-    # ALL_RELATIONSHIP_EXPANDER:
-    # UNIQUENESS.
-    # MIN_DEPTH & MAX_DEPTH
+    # EDGE_EVAL: function that decides if the graph traversal should continue by passing back different values [Evaluation.INCLUDE_AND_CONTINUE, Evaluation.INCLUDE_AND_PRUNE,Evaluation.EXCLUDE_AND_CONTINUE, Evaluation.EXCLUDE_AND_PRUNE]
+    # EXPANDER: function that decides in which direction the graph traversal should go in: [Direction.OUTGOING,Direction.INCOMING,Direction.BOTH]
+    # ALL_RELATIONSHIP_EXPANDER: function usage is similar to EXPANDER, but evaluate across ALL the relationships a node has, whereas EXPANDER evaluates a single relationship.
+    # UNIQUENESS: function that decides whether a node should be traversed more than once, options:[Uniqueness.NODE_GLOBAL,Uniqueness.NONE,Uniqueness.PATH_GLOBAL]
+    # MIN_DEPTH & MAX_DEPTH: self explanatory, often the depth of a relationship is a determining factor.
   * Shortest Path Members:
-    # NODE_DELTA:
-    # RELATIONSHIP_COST:
+    # NODE_DELTA: function that accesses two nodes and performs a delta on them which equates to a cost
+    # RELATIONSHIP_COST: function that uses a Relationship property to represent a cost of traversing this relationship
 
 At the end of the example, the query for _Users who have visited Washington D.C_ is made. The Indexing of Graph Relationships is accomplished via AlchemyDB's Pure Lua Function Index, which leaves the Index add/delete/updating to be done in Lua (in user defined routines), but allows the Index to be queries in SQL.
 
