@@ -1,6 +1,6 @@
 = Alchemy's Graph Database =
 
-A [http://en.wikipedia.org/wiki/Graph_database Graph Database] uses graph structures with nodes, edges, and properties to represent and store data. AlchemyDB modeled its Graph Database implementation after [http://neo4j.org/ Neo4j] (which is a BAD-ASS GraphDB). 
+A [http://en.wikipedia.org/wiki/Graph_database Graph Database] uses graph structures with nodes, edges, and properties to represent and store data. AlchemyDB modeled its Graph Database implementation after [http://neo4j.org/ Neo4j], the best of breed in GraphDBs.
 
 The purpose of building a GraphDB into AlchemyDB was two fold: 
   # it is nice to be able to do graph traversals on your data, so "embedding" a GraphDB is a wonderful add-on,
