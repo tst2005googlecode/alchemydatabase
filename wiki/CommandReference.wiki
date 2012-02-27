@@ -281,6 +281,35 @@ After the LFUINDEX command is called, the tables columns are `pk INT, c1 INT, c2
 
 NOTE: the LFUINDEX stores log2(num_accesses) -> to minimise sparse indexing.
 
+===Pure Lua Function Index ===
+With the depth of Lua's integration, it makes sense to have indexes that are populated (add,delete,update) solely in Lua. In other words it is up to the developer to populate the indexes. With the (via lua functions) populated indexes, it is possible to make SQL queries against them. This provides for highly flexible (albeit development intensive indexes).
+
+To create a Pure Lua Function Index, run the following command:
+{{{
+   CREATE INDEX indexname ON tablename "(whereclausetoken())" TYPE constructUserGraphHooks destructUserGraphHooks
+}}}
+TYPE can be any column type: (e.g. INT,TEXT,FLOAT,etc..)
+
+`whereclausetoken()` is used in SQL where clauses to directly access the Pure-Lua-Function-Index.
+
+Examples:
+{{{
+  SELECT \* FROM tablename WHERE whereclausetoken() = 7
+  SELECT \* FROM tablename WHERE whereclausetoken() BETWEEN 2 AND 5
+  SELECT \* FROM tablename WHERE whereclausetoken() IN (3,7,9)
+}}}
+
+`constructUserGraphHooks` is a lua function that should place hooks into your Lua environment and "Construct" the Index.
+
+`destructUserGraphHooks` is a lua function responsible for destructing the Index.
+
+The Lua functions that the hooks can use to call into Alchemy's RDBMS (to populate the index) are:
+{{{
+  alchemySetIndexByName(), alchemyUpdateIndexByName(), alchemyDeleteIndexByName()
+}}}
+
+Indexes populated in Lua can contain complicated logic, and can be used to index nested data structures.
+
 ===PREPARED_STATEMENTS===
 Prepared statements have 2 main benefits in SQL
   # reduce network I/O for repetitive queries
