@@ -74,7 +74,7 @@ This example has _"USERS"_ who _"KNOW"_ each other and who _"VIEWED_PIC"_ each o
 These _"USERS"_ can also _"HAS_VISITED"_ different _"CITIES"_.
 
 Once the relationships have been defined, the following two graph traversals are done:
-  # Friends-Of-Friends who have seen my picture (w/ Breadth-First-Search & Depth-First-Search
+  # Friends-Of-Friends who have seen my picture (w/ Breadth-First-Search & Depth-First-Search)
   # Friends-Of-Friends who have seen each other's picture AND seen my picture
 
 These traversals demonstrate the GraphDB's API, which can be grouped into:
@@ -116,22 +116,22 @@ At the end of the example, the query for _Users who have visited Washington D.C_
   LUAFUNC addNodeRelationShipByPK 'users' 6 "VIEWED_PIC" 'users' 1
   LUAFUNC addNodeRelationShipByPK 'users' 5 "VIEWED_PIC" 'users' 7
 
-  # 'BFS: FOF who have seen my picture'
+  # 'BreadthFirstSearch: FOF who have seen my picture'
   LUAFUNC traverseByPK BFS "users" 1 "REPLY.NODENAME_AND_PATH"
                                      "EXPANDER.FOF"
                                      "UNIQUENESS.PATH_GLOBAL"
                                      "EDGE_EVAL.FOF"
 
-  # 'BFS: FriendsANDPictureSeen-OfFriends  who have seen my picture'
-  LUAFUNC traverseByPK BFS "users" 1 "REPLY.NODENAME_AND_PATH"
-                                     "ALL_RELATIONSHIP_EXPANDER.FOF"
-                                     "UNIQUENESS.PATH_GLOBAL"
-                                     "EDGE_EVAL.FOF"
-
-  # 'DFS: FOF who have seen my picture'
+  # 'DepthFirstSearch: FOF who have seen my picture'
   LUAFUNC traverseByPK DFS "users" 1 "REPLY.NODENAME_AND_PATH" 
                                      "EXPANDER.FOF"            
                                      "UNIQUENESS.PATH_GLOBAL"  
+                                     "EDGE_EVAL.FOF"
+
+  # 'BreadthFirstSearch: FriendsANDPictureSeen-OfFriends  who have seen my picture'
+  LUAFUNC traverseByPK BFS "users" 1 "REPLY.NODENAME_AND_PATH"
+                                     "ALL_RELATIONSHIP_EXPANDER.FOF"
+                                     "UNIQUENESS.PATH_GLOBAL"
                                      "EDGE_EVAL.FOF"
 
   # WASHINGTON
