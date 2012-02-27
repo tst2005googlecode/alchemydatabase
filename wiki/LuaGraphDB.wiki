@@ -5,7 +5,7 @@ A [http://en.wikipedia.org/wiki/Graph_database Graph Database] uses graph struct
 The purpose of building a GraphDB into AlchemyDB was two fold: 
   # it is nice to be able to do graph traversals on your data, so "embedding" a GraphDB is a wonderful add-on,
   # it provides an example of how AlchemyDB's mix of Lua & SQL is simple-to-use, highly-flexible, very efficient, & can be used as a data-platform. 
-A Data Platform is a data-store that is made to be extensible. Adding a GraphDB to AlchemyDB was done using AlchemyDB's existing tools.
+A Data Platform is a data-store that is made to be extensible. Adding a GraphDB to AlchemyDB was done using AlchemyDB's existing tools, AlchemyDB needs no additional functionality to be able to build a powerful GraphDB.
 
 == GraphDB Basics ==
 A `Node` stores data. A `Node` can have `Relationships` to other Nodes. An example would be `James -> KNOWS -> Jill`. Here, "James" & "Jill" are the `Nodes` and `KNOWS` is the `Relationship`.
