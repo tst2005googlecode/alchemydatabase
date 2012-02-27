@@ -99,5 +99,81 @@ The Lua functions that the hooks can use to call into Alchemy's RDBMS are:
   alchemySetIndexByName(), alchemyUpdateIndexByName(), alchemyDeleteIndexByName()
 }}}
 
+== USERS EXAMPLE ==
+This example has _"USERS"_ who _"KNOW"_ each other and who _"VIEWED_PIC"_ each other.
+These _"USERS"_ can also _"HAS_VISITED"_ _"CITIES"_.
+
+At the end of the example, the query for _Users who have visited Washington D.C_ is made. The Indexing of Graph Relationships is accomplished via AlchemyDB's Pure Lua Function Index, which leaves the Index add/delete/updating to be done in Lua (in user defined routines), but allows the Index to be queries in SQL.
+
+{{{
+  CREATE TABLE users (pk INT, hometown INT, lo LUAOBJ)
+  CREATE INDEX lf_users ON users (relindx()) LONG constructUserGraphHooks destructUserGraphHooks
+
+  LUAFUNC addSqlUserRowAndNode 1 10 'A'
+  LUAFUNC addSqlUserRowAndNode 2 10 'B'
+  LUAFUNC addSqlUserRowAndNode 3 20 'C'
+  LUAFUNC addSqlUserRowAndNode 4 20 'D'
+  LUAFUNC addSqlUserRowAndNode 5 30 'E'
+  LUAFUNC addSqlUserRowAndNode 6 30 'F'
+  LUAFUNC addSqlUserRowAndNode 7 30 'G'
+
+  LUAFUNC addNodeRelationShipByPK 'users' 1 "KNOWS" 'users' 2
+  LUAFUNC addNodeRelationShipByPK 'users' 2 "KNOWS" 'users' 4
+  LUAFUNC addNodeRelationShipByPK 'users' 4 "KNOWS" 'users' 7
+  LUAFUNC addNodeRelationShipByPK 'users' 1 "KNOWS" 'users' 3
+  LUAFUNC addNodeRelationShipByPK 'users' 3 "KNOWS" 'users' 5
+  LUAFUNC addNodeRelationShipByPK 'users' 3 "KNOWS" 'users' 6
+
+  LUAFUNC addNodeRelationShipByPK 'users' 1 "VIEWED_PIC" 'users' 2
+  LUAFUNC addNodeRelationShipByPK 'users' 2 "VIEWED_PIC" 'users' 4
+  LUAFUNC addNodeRelationShipByPK 'users' 4 "VIEWED_PIC" 'users' 1
+
+  LUAFUNC addNodeRelationShipByPK 'users' 6 "VIEWED_PIC" 'users' 1
+  LUAFUNC addNodeRelationShipByPK 'users' 5 "VIEWED_PIC" 'users' 7
+
+  # 'BFS: FOF who have seen my picture'
+  LUAFUNC traverseByPK BFS "users" 1 "REPLY.NODENAME_AND_PATH"
+                                     "EXPANDER.FOF"
+                                     "UNIQUENESS.PATH_GLOBAL"
+                                     "EDGE_EVAL.FOF"
+
+  # 'BFS: FriendsANDPictureSeen-OfFriends  who have seen my picture'
+  LUAFUNC traverseByPK BFS "users" 1 "REPLY.NODENAME_AND_PATH"
+                                     "ALL_RELATIONSHIP_EXPANDER.FOF"
+                                     "UNIQUENESS.PATH_GLOBAL"
+                                     "EDGE_EVAL.FOF"
+
+  # 'DFS: FOF who have seen my picture'
+  LUAFUNC traverseByPK DFS "users" 1 "REPLY.NODENAME_AND_PATH" 
+                                     "EXPANDER.FOF"            
+                                     "UNIQUENESS.PATH_GLOBAL"  
+                                     "EDGE_EVAL.FOF"
+
+  # WASHINGTON
+  LUAFUNC addNodeRelationShipByPK 'users' 1 "HAS_VISITED" 'cities' 10
+  LUAFUNC addNodeRelationShipByPK 'users' 4 "HAS_VISITED" 'cities' 10
+  LUAFUNC addNodeRelationShipByPK 'users' 7 "HAS_VISITED" 'cities' 10
+
+  # NYC
+  LUAFUNC addNodeRelationShipByPK 'users' 1 "HAS_VISITED" 'cities' 20
+  LUAFUNC addNodeRelationShipByPK 'users' 2 "HAS_VISITED" 'cities' 20
+  LUAFUNC addNodeRelationShipByPK 'users' 3 "HAS_VISITED" 'cities' 20
+  # SAN FRAN
+  LUAFUNC addNodeRelationShipByPK 'users' 1 "HAS_VISITED" 'cities' 30
+  LUAFUNC addNodeRelationShipByPK 'users' 2 "HAS_VISITED" 'cities' 30
+  LUAFUNC addNodeRelationShipByPK 'users' 4 "HAS_VISITED" 'cities' 30
+
+  # Users who have VISITed DC (using Pure Lua Function)
+  SELECT lo.node.__name FROM users WHERE relindx() = 10
+
+  # Unvisit DC for one user
+  LUAFUNC deleteNodeRelationShipByPK 'users' 7 "HAS_VISITED" 'cities' 10
+
+  # Users who have VISITed DC
+  SELECT lo.node.__name FROM users WHERE relindx() = 10
+
+  SELECT hometown, get_fof(lo) FROM users WHERE relindx() = 30
+}}}
+
 = MORE TO COME =
 I am tired, I will write more tomorrow :)
