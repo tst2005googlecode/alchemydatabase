@@ -1,5 +1,7 @@
 = Alchemy's Graph Database =
 
+*NOTE*: it may be worth reading a broad overview of the extent to which Lua has been integrated into AlchemyDB [http://code.google.com/p/alchemydatabase/wiki/LuaIntegration here].
+
 A [http://en.wikipedia.org/wiki/Graph_database Graph Database] uses graph structures with nodes, edges, and properties to represent and store data. AlchemyDB modeled its Graph Database implementation after [http://neo4j.org/ Neo4j], the best of breed in GraphDBs.
 
 The purpose of building a GraphDB into AlchemyDB was two fold: 
