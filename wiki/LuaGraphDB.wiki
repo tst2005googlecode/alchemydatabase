@@ -172,4 +172,4 @@ Using the example of indexing the relationship: `users who have visited NYC` the
 The intended use case of the "Pure Lua Function Index" is to index data that is not relational, but is better indexed by a function.
 
 = MORE TO COME =
-Muy cansado, I will write more tomorrow :)
+Muy cansado, escribo mas manyana
