@@ -190,5 +190,6 @@ At the end of the example, the query for _Users who have visited Washington D.C_
   SELECT hometown, get_fof(lo) FROM users WHERE relindx() = 30
 }}}
 
+
 = MORE TO COME =
-I am tired, I will write more tomorrow :)
+Tired again, I will write more tomorrow :)
