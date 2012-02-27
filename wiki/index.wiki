@@ -19,6 +19,6 @@ The documentation is a work in progress.
 
   * A draft that lists Alchemy Databases highlights can be found [http://code.google.com/p/alchemydatabase/wiki/HighLights here]
 
-  * ANCIENT Stable releases packed up into hearty [http://code.google.com/p/alchemydatabase/downloads/list Code Tarballs]
+  * ANCIENT heavily deprecated Stable releases packed up into hearty [http://code.google.com/p/alchemydatabase/downloads/list Code Tarballs] *RECOMMENDATION:* use github link above
 
   * [http://code.google.com/p/alchemydatabase/wiki/Clients Client] source-code-tarballs + git-repo-links. *NOTE:* AlchemyDB has recently added a REST API, and will be DEPRECATING all of these clients.
