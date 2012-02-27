@@ -23,10 +23,10 @@ Lua has been integrated into AlchemyDB in basically every way that made sense fo
   A SQL index can be declared, that is accessible in the where-clause of a SQL command, but who is populated solely via user defined lua functions.
 
 == LUATABLE column type ==
-  A column type capable of storing anything a LuaTable can store. This opens up unstructured data and nested documents on the per-row level
+  A column type capable of storing anything a Lua-Table can store. This opens up unstructured data and nested documents on the per-row level
 
 == SQL INSERT ==
-  Inserting a row into a table w/ a LUATABLE column type can insert the column via [JSON, a lua function, a lua eval()]
+  Inserting a row into a table w/ a `LUATABLE` column type can insert the column via [JSON, a lua function, a lua eval()]
 
 == SQL SELECT ==
   Lua functions are callable in a SELECT call, in the following sections [column-list, where-clause-predicates, order-by-columns]. The last two are also possible for SQL DELETEs and UPDATEs
@@ -42,4 +42,4 @@ Lua has been integrated into AlchemyDB in basically every way that made sense fo
 
 
 ===NOTES===
-The only place interpretation of Lua is possible is via the 2 "INTERPRET" commands. On INSERTs, if the LuaTable value is JSON it is decoded into a Lua table. On SELECTs, if the where-clause-predicate lua function is a complex function call (i.e. nested) then the entire function call will be passed to lua and eval()ed {which is interpretation}, but the function will be saved, and will later be callable w/o interpretation by pattern matching subsequent calls.
+The only place interpretation of Lua is possible is via the 2 "INTERPRET" commands. On INSERTs, if the `LUATABLE` value is JSON it is decoded into a Lua table. On SELECTs, if the where-clause-predicate lua function is a complex function call (i.e. nested) then the entire function call will be passed to lua and eval()ed {which is interpretation}, but the function will be saved, and will later be callable w/o interpretation by pattern matching subsequent calls.
