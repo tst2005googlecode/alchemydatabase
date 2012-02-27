@@ -24,7 +24,7 @@ The core code for the GraphDB can be found [https://github.com/JakSprats/Alchemy
 == Examples==
 Here is an example, that contains some cities and some fictional distances between them and finds the shortest route from Washington D.C. to San Francisco.
 
-_NOTE: in this particular use-case it made sense to have all APIs in Lua. SQL takes place in the Lua Routines. The LUATRIGGER is used to create a City-Name to PK lookup table contained (and used) completely in Lua_
+_NOTE: in this particular use-case it made sense to have all APIs in Lua & the Lua routines call SQL. The [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUATRIGGER LUATRIGGER] is used to create a `City-Name to PK lookup table` contained (and used) completely in Lua_
 
 Definitions for the functions `addSqlCityRowAndNode(), addCityDistance(), & shortestPathByCityName()` can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/core/example_user_cities.lua#L64-87 here.]. They are all fairly simple routines that make the API simpler for the programmer, and are good examples of how server-side scripting can not only encapsulate funcitonality, but also avoid unnecessary App-Server to DB-Server calls.
 {{{
