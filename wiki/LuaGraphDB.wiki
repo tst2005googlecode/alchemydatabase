@@ -79,7 +79,7 @@ Here is Alchemy's syntax for the Pure Lua Function Index:
 {{{
    CREATE INDEX indexname ON tablename "(whereclausetoken())" TYPE constructUserGraphHooks destructUserGraphHooks
 }}}
-TYPE can be any ColumnType: (e.g. INT,TEXT,FLOAT,etc..)
+TYPE can be any column type: (e.g. INT,TEXT,FLOAT,etc..)
 
 `whereclausetoken()` is used in SQL where clauses to directly access the Pure-Lua-Function-Index.
 
@@ -101,7 +101,22 @@ The Lua functions that the hooks can use to call into Alchemy's RDBMS are:
 
 == USERS EXAMPLE ==
 This example has _"USERS"_ who _"KNOW"_ each other and who _"VIEWED_PIC"_ each other.
-These _"USERS"_ can also _"HAS_VISITED"_ _"CITIES"_.
+These _"USERS"_ can also _"HAS_VISITED"_ different _"CITIES"_.
+
+Once the relationships have been defined, the following two graph traversals are done:
+  # Friends-Of-Friends who have seen my picture (w/ Breadth-First-Search & Depth-First-Search
+  # Friends-Of-Friends who have seen each other's picture AND seen my picture
+
+These traversals demonstrate the GraphDB's API, which can be grouped into:
+  * Breadth & Depth First Search Members:
+    # EDGE_EVAL:
+    # EXPANDER: 
+    # ALL_RELATIONSHIP_EXPANDER:
+    # UNIQUENESS.
+    # MIN_DEPTH & MAX_DEPTH
+  * Shortest Path Members:
+    # NODE_DELTA:
+    # RELATIONSHIP_COST:
 
 At the end of the example, the query for _Users who have visited Washington D.C_ is made. The Indexing of Graph Relationships is accomplished via AlchemyDB's Pure Lua Function Index, which leaves the Index add/delete/updating to be done in Lua (in user defined routines), but allows the Index to be queries in SQL.
 
