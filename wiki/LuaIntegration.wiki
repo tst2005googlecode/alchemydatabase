@@ -1,7 +1,6 @@
-= AlchemyDB's Lua Integration =
-
 *DRAFT* This is very much a work in progress
 
+= AlchemyDB's Lua Integration =
 
 Lua has been integrated into AlchemyDB in basically every way that made sense for an important use case. The following is a list of how and where and maybe even why it was integrated
 
