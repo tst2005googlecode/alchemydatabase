@@ -1,4 +1,3 @@
-#labels Featured
 =Lua Object Column Type=
 
 *START WARNING->*(this functionality is brand new and only available from the "master" branch in [https://github.com/JakSprats/Alchemy-Database github]. It has been tested, but since it covers such an impossibly large test space, it has not been tested enough)*<-END WARNING*
