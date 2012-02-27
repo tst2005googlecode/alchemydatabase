@@ -93,7 +93,7 @@ SCAN id, phone FROM customer WHERE name = ‘bill’ AND age BETWEEN 18 AND 25
 }}}
   _the SCAN command makes it *impossible* to accidentally do a full table scan w/ SELECT, which is worse than in a Disk-Based RDBMS because AlchemyDB is single-threaded, so SCANs block during their duration._
 
-==LUA Command==
+==LUAFUNC Command==
 Alchemy Database has embedded [http://www.lua.org/about.html LUA] <br/>
 [http://www.ibm.com/developerworks/linux/library/l-embed-lua/index.html IBM's lua description]: _The Lua programming language is a small scripting language specifically designed to be embedded in other programs. Lua’s C API allows exceptionally clean and simple code both to call Lua from C, and to call C from Lua”_<br/>
 Alchemy Database has embedded Lua in its C-server and C in its embedded Lua :)<br/>
@@ -112,10 +112,10 @@ Function to set a user's last_login and return his status
 ===Adding Lua functions at run-time===
 Loading lua files (containing lua functions) into the Alchemy Database server can be done either by specifiying the "luafilename" in the config file "redis.conf" or by the following command:
 {{{
-./alchemy-cli CONFIG ADD lua helper.lua
+./alchemy-cli INTERPRET LUAFILE "helper.lua"
 }}}
 
-===calling LUA functions===
+===calling Lua functions via LUAFUNC===
 once a lua function has been imported into Alchemy, it is simple to call it. <br/>
 Given the imported lua function (e.g. added via "CONFIG ADD")
 {{{
@@ -126,7 +126,7 @@ Given the imported lua function (e.g. added via "CONFIG ADD")
 }}}
 The Alchemy Database call will define the function name and its 3 arguments
 {{{
-   LUA getuserdata 'session_777' 'user_123' 'last_login'
+   LUAFUNC getuserdata 'session_777' 'user_123' 'last_login'
 }}}
 and the data returned in the function _getuserdata_ will be output in redis' protocol (to be read by the client)
 
