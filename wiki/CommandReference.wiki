@@ -3,7 +3,7 @@
 
 Alchemy Database supports:
   # [http://code.google.com/p/alchemydatabase/wiki/CommandReference#Supported_SQL An OLTP optimised subset of SQL]
-  # [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUA_Command embedded LUA w/ client-server functionality]
+  # [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUAFUNC_Command embedded LUA w/ client-server functionality]
   # [http://code.google.com/p/alchemydatabase/wiki/CommandReference#Beyond_SQL Extensions to SQL designed to optimise common OLTP use cases]
   # [http://code.google.com/p/alchemydatabase/wiki/CommandReference#REDIS_Commands ALL redis commands]<br/>
 
