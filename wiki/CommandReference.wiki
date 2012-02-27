@@ -223,11 +223,18 @@ So calling the above command repeatedly, until the return value is less than _10
 ===LUATRIGGER===
 Luatriggers are lua functions that are run on every SQL INSERT/UPDATE/DELETE.
 
-The syntax for Luatriggers is {{{CREATE LUATRIGGER triggername ON table (column) add_trigger(cols,,,,) [delete_trigger(cols,,,)]}}}
+The syntax for Luatriggers is 
+{{{
+  CREATE LUATRIGGER triggername ON table INSERT add_trigger(cols,,,,)
+  CREATE LUATRIGGER triggername ON table DELETE del_trigger(cols,,,,)
+  CREATE LUATRIGGER triggername ON table PREUPDATE preup_trigger(cols,,,,)
+  CREATE LUATRIGGER triggername ON table POSTUPDATE postup_trigger(cols,,,,)
+]}}}
+These 4 cases cover all state changes that take place in an indexes lifetime.
+
   * On INSERT `add_trigger(cols,,,,)` is called and the values of the inserted columns replace "(cols,,,,)" in the function call
-  * On UPDATE `add_trigger(cols,,,,)` is called, then `del_triggers(cols,,,)` is called
   * On DELETE `del_triggers(cols,,,)` is called
-NOTE: "del_triggers()" is optional
+  * On UPDATE the PREUPDATE function is called before any changes are applied (i.e. w/ the old row's values) and then the changes are applied and the POSTUPDATE function is called (w/ the new row's values).
 
 The following example lua function, does:
   * `SELECT COUNT(*) FROM tbl WHERE fk1 = XXX`
@@ -244,7 +251,7 @@ And the following SQL declarations
 {{{
   CREATE TABLE tbl (pk INT, fk1 INT, t TEXT)
   CREATE INDEX      i_cap  ON tbl (fk1)
-  CREATE LUATRIGGER lt_cap ON tbl add_cap(table,fk1)
+  CREATE LUATRIGGER lt_cap ON tbl INSERT add_cap(table,fk1)
 }}}
 Is a very simple way to implement a per fk number-of-rows cap that runs at almost the same speed as a straight INSERT
 
