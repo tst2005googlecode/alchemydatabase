@@ -202,10 +202,11 @@ Would add the columns `col1 & col999` to the table `t2`. The newly added columns
 This means Alchemy uses SQL to store/retrieve unstructured data (also referred to as Poly Structured Data) and all relational properties/operations can be applied to this data (this is another hybrid property of AlchemyDB)
 
 === Alchemy Cursors===
-Since Alchemy is a *single threaded datastore*, long running queries block other queries during their execution.<br/>
+Since Alchemy is a *single threaded datastore*, long running queries block other queries during their execution.
+
 For this reason Alchemy has cursors, similar (but simpler) to SQL cursors.<br/>
-Alchemy Cursors use the construct _"ORDER BY pk/fk LIMIT X OFFSET *variable*"_ to store cursor state in _*variable*_ between cursor calls.<br/>
-<br/>
+Alchemy Cursors use the construct _"ORDER BY pk/fk LIMIT X OFFSET *variable*"_ to store cursor state in _*variable*_ between cursor calls.
+
 An example of a long-running-update could be 
 {{{
 UPDATE tbl SET col=X WHERE fk = 1
