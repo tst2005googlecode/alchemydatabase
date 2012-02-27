@@ -229,7 +229,7 @@ The syntax for Luatriggers is
   CREATE LUATRIGGER triggername ON table DELETE del_trigger(cols,,,,)
   CREATE LUATRIGGER triggername ON table PREUPDATE preup_trigger(cols,,,,)
   CREATE LUATRIGGER triggername ON table POSTUPDATE postup_trigger(cols,,,,)
-]}}}
+]}}
 These 4 cases cover all state changes that take place in an indexes lifetime.
 
   * On INSERT `add_trigger(cols,,,,)` is called and the values of the inserted columns replace "(cols,,,,)" in the function call
