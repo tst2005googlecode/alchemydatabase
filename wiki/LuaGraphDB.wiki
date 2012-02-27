@@ -12,7 +12,7 @@ A `Node` stores data. A `Node` can have `Relationships` to other Nodes. An examp
 
 `Node`s can also have `Properties`, which are unstructured key-value data attached to the Node. `James` could have the `Property: ['job-title'='manager']`. 'Jill' could have the `Property: ['hobby'='swimming']`.
 
-GraphDB's excel at queries like: _Find ALL the managers who know people whose hobby is swimming_. Doing this type of query in SQL is awkward and easy to mess up.
+GraphDB's excel at queries like: _Find ALL the managers who know people whose hobby is swimming_. Doing this type of query in SQL is awkward, unnecessarily complicated, and easy to mess up.
 
 A `Relationship` can also have a `Property` associated to it, for instance if James knows Jill since 2005, then the relationship would have the `Property:` ('since'=2005) and can be visually represented as `Relationship: James -> KNOWS (since:2005) -> Jill`
 
