@@ -2,17 +2,17 @@
 
 Lua has been integrated into AlchemyDB in basically every way that made sense for an important use case. The following is a list of how and where and maybe even why it was integrated
 
-  # ==INTERPET LUAFILE filename==
+==INTERPET LUAFILE==
     Load a file full of lua into AlchemyDB's lua universe, and it will be interpreted to byte-code (or if LuaJIT is installed, parts of it _may_ be turned into machine-code).
 
-  # == INTERPRET LUA "lua-lua-lua-lua" ==
+== INTERPRET LUA ==
     Load a line of Lua into AlchemyDB's lua universe, and it will be interpreted to byte-code (or if LuaJIT is installed, parts of it _may_ be turned into machine-code).
 
-  # == LUAFUNC functionname args ==
+== LUAFUNC functionname args ==
     Once you have interpreted some Lua, you need to be able to call it from your client and have its return value returned to your client
 
-  # == LUA CRON ==
+== LUA CRON ==
     AlchemyDB has a config file setting to run a lua function every 100ms. Usage can be handy, but is discouraged, because the function BLOCKS.
 
-  # == LUATRIGGER ==
+== LUATRIGGER ==
     Similar to a RDBMS trigger, Alchemy will call a lua function when you INSERT,DELETE,UPDATE a SQL row and pass this function the contents of the row.
