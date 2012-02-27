@@ -2,7 +2,7 @@
 
 = AlchemyDB's Lua Integration =
 
-Lua has been integrated into AlchemyDB in basically every way that made sense for an important use case. The following is a list of how and where and maybe even why it was integrated
+[http://www.lua.org/about.html Lua] has been integrated into AlchemyDB in basically every way that made sense for an important use case. The following is a list of how and where and maybe even why it was integrated
 
 ==INTERPET LUAFILE==
     Load a file full of lua into AlchemyDB's lua universe, and it will be interpreted to byte-code (or if LuaJIT is installed, parts of it _may_ be turned into machine-code).
@@ -17,7 +17,7 @@ Lua has been integrated into AlchemyDB in basically every way that made sense fo
     AlchemyDB has a config file setting to run a lua function every 100ms. Usage can be handy, but is discouraged, because the function BLOCKS.
 
 == LUATRIGGER ==
-    Similar to a RDBMS trigger, Alchemy will call a lua function when you INSERT,DELETE,UPDATE a SQL row and pass this function the contents of the row.
+   [http://code.google.com/p/alchemydatabase/wiki/CommandReference?ts=1330364119&updated=CommandReference#LUATRIGGER ->] Similar to a RDBMS trigger, Alchemy will call a lua function when you INSERT,DELETE,UPDATE a SQL row and pass this function the contents of the row.
 
 == Pure Lua Function Index ==
   A SQL index can be declared, that is accessible in the where-clause of a SQL command, but who is populated solely via user defined lua functions.
