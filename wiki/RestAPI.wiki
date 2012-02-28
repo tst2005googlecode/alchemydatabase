@@ -1,4 +1,3 @@
-
 *DRAFT*: written in great haste
 
 = REST API =
@@ -14,13 +13,6 @@ To activate the REST API, use the following command
   ./alchemy-cli CONFIG SET rest_api_mode yes
 }}}
 
-To activate and define AlchemyDB's Lua Override Response Functions, use the following 3 commands
-{{{
-  ./alchemy-cli CONFIG SET lua_output_start output_start_http;
-  ./alchemy-cli CONFIG SET lua_output_cnames output_cnames_http;
-  ./alchemy-cli CONFIG SET lua_output_row output_row_http;
-  ./alchemy-cli CONFIG SET OUTPUTMODE LUA
-}}}
 
 Here are some example REST API Queries, for queries uploading data (e.g. INSERT) the post-body can be used as the final argument to the command
 {{{
@@ -43,3 +35,46 @@ Here is a list of AlchemyDB's SQL commands as REST API requests
 
 Alchemy's protocol is described [http://code.google.com/p/alchemydatabase/wiki/Protocol here], the mapping of arguments in this protocol to number of '/' in the REST API is 1-to-1
 
+== Lua Override Response Functions ==
+Response's default to being returned in redis' protocol but can be overridden by user defined functions.
+
+To activate and define AlchemyDB's Lua Override Response Functions, use the following 3 commands
+{{{
+  ./alchemy-cli CONFIG SET lua_output_start output_start_http;
+  ./alchemy-cli CONFIG SET lua_output_cnames output_cnames_http;
+  ./alchemy-cli CONFIG SET lua_output_row output_row_http;
+  ./alchemy-cli CONFIG SET OUTPUTMODE LUA
+}}}
+The function defined by `lua_output_start` is called before the response row's are output, w/ a single argument representing the number of rows in the response.
+
+The function defines by `lua_output_cnames` handles the outputting of the column names, and is called after `lua_output_start` and before the first call to `lua_output_row`
+
+The function defined by `lua_output_row` is called for each ROW returned by the SELECT statement and each argument to the function is the value of a column (that was specified in the SELECT column list)
+
+*NOTE*: `lua_output_row` will later recieve a single argument, which is a lua-table w/ all the columns in it.
+
+Example Lua Override Response Functions can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/core/internal.lua#L241-261 here] and look like this:
+{{{
+RowCounter = 0;
+function output_start_http(card)
+    RowCounter = 0;
+    return "nrows=" .. card .. ';\r\n';
+end
+local function output_delim_http(...)
+   local printResult = '';
+   for i,v in ipairs(arg) do
+     if (string.len(printResult) > 0) then printResult = printResult .. ","; end
+     printResult = printResult .. tostring(v);
+   end
+   return printResult .. ';\r\n';
+end
+function output_cnames_http(...)
+   return 'ColumnNames=' .. output_delim_http(...);
+end
+function output_row_http(...)
+  RowCounter = RowCounter + 1;
+  return 'row[' .. RowCounter .. ']=' .. output_delim_http(...);
+end
+}}}
+
+The Lua Override Response Functions allow you to write your own response protocols for SQL SELECT responses.
