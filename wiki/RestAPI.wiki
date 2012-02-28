@@ -1,0 +1,45 @@
+
+*DRAFT*: written in great haste
+
+= REST API =
+
+AlchemyDB has switched to using a REST API. 
+
+The mechanism to turn a AlchemyDB/redis request into a HTTP request is pretty simple. The request "GET XYZ" is written in redis' protocol as `*2\r\n$3\r\nGET\r\n$1\r\nXYZ\r\n`. In the Rest API it is simply `http://server:ip/GET/XYZ`.
+
+By default responses are returned in redis' protocol, (e.g. the response of "I AM XYZ" would be `$8\r\nI AM XYZ\r\n`). SQL SELECT responses can be written in custom protocols using AlchemyDB's Lua Override Response Functions.
+
+To activate the REST API, use the following command
+{{{
+  ./alchemy-cli CONFIG SET rest_api_mode yes
+}}}
+
+To activate and define AlchemyDB's Lua Override Response Functions, use the following 3 commands
+{{{
+  ./alchemy-cli CONFIG SET lua_output_start output_start_http;
+  ./alchemy-cli CONFIG SET lua_output_cnames output_cnames_http;
+  ./alchemy-cli CONFIG SET lua_output_row output_row_http;
+  ./alchemy-cli CONFIG SET OUTPUTMODE LUA
+}}}
+
+Here are some example REST API Queries, for queries uploading data (e.g. INSERT) the post-body can be used as the final argument to the command
+{{{
+  curl -D - 127.0.0.1:6379"/DROP/TABLE/rest"
+  curl -D - -d "(pk INT, fk INT, col TEXT)" 127.0.0.1:6379/CREATE/TABLE/rest/
+  curl -D - 127.0.0.1:6379"/CREATE/INDEX/i_rest/ON/rest/(fk)"
+  curl -D - -d "(,2,'TOPDAWG')/RETURN SIZE" "127.0.0.1:6379/INSERT/INTO/rest/VALUES/"
+  curl -D - -d "(,2,'TEST')/RETURN SIZE" "127.0.0.1:6379/INSERT/INTO/rest/VALUES/"
+  curl -D - 127.0.0.1:6379/SCAN/\*/FROM/rest
+}}}
+
+Here is a list of AlchemyDB's SQL commands as REST API requests
+  * `http://server:port/CREATE/TABLE/users/(pk INT, fk INT, name TEXT, age INT)`
+  * `http://server:port/CREATE/INDEX/indexname/ON/tbl/(column)
+  * `http://server:port/INSERT/INTO/users/VALUES/(1,1,'bill',22)`
+  * `http://server:port/INSERT/INTO/users/VALUES/(2,1,'jane',20)`
+  * `http://server:port/SELECT/*/FROM/users/WHERE/pk =2`
+  * `http://server:port/UPDATE/users/SET/age=age + 1/WHERE/pk=700`
+  * `http://server:port/DELETE/FROM/users/WHERE/fk IN (3,4,5)`
+
+Alchemy's protocol is described [http://code.google.com/p/alchemydatabase/wiki/Protocol here], the mapping of arguments in this protocol to number of '/' in the REST API is 1-to-1
+
