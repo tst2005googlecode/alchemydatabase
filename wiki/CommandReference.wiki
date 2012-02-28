@@ -99,13 +99,13 @@ Alchemy Database has embedded [http://www.lua.org/about.html LUA] <br/>
 Alchemy Database has embedded Lua in its C-server and C in its embedded Lua :)<br/>
 The speed of embedded LUA commands in Alchemy Database is impressive: simple LUA routines run at about the same speed as simple Alchemy look read/write-ops.
 
-===embedded LUA "redis()" function===
-The lua function "redis()" will call the Alchemy Database server internally as if it were a client call.<br/>
+===embedded LUA "alchemy()" function===
+The lua function "alchemy()" will call the Alchemy Database server internally as if it were a client call.<br/>
 Function to set a user's last_login and return his status
 {{{
   function getset_last_login(userid, ts)
-    redis('SET', 'user:' .. userid .. ':last_login', ts);
-    return redis('GET', 'user:' .. userid .. ':status');"
+    alchemy('SET', 'user:' .. userid .. ':last_login', ts);
+    return alchemy('GET', 'user:' .. userid .. ':status');"
   end
 }}}
 
@@ -122,7 +122,7 @@ As an example, suppose the following function has been added to AlchemyDB's Lua 
 {{{
   function getuserdata(arg1, arg2, arg3)
     ...
-    return redis('GET', arg3');
+    return alchemy('GET', arg3');
   end
 }}}
 To then call the function 'getuserdata' w/ the 3 arguments it needs, the command "LUAFUNC" is used:
