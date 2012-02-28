@@ -81,7 +81,7 @@ Once the relationships have been defined, the following two graph traversals are
   # Friends-Of-Friends who have seen my picture (w/ Breadth-First-Search & Depth-First-Search)
   # Friends-Of-Friends who have seen each other's picture AND seen my picture
 
-Traversal are guided by various functions that the user supplies to the traversal to tell it how to proceed. The traversals above demonstrate the GraphDB's API, which can be grouped into:
+Traversal are guided by various functions that the user supplies to the traversal to tell it how to proceed. The traversals below demonstrate the GraphDB's API, which can be grouped into:
   * Breadth & Depth First Search Members:
     # EDGE_EVAL: function that decides if the graph traversal should continue by passing back different values [Evaluation.INCLUDE_AND_CONTINUE, Evaluation.INCLUDE_AND_PRUNE,Evaluation.EXCLUDE_AND_CONTINUE, Evaluation.EXCLUDE_AND_PRUNE]
     # EXPANDER: function that decides in which direction the graph traversal should go in: [Direction.OUTGOING,Direction.INCOMING,Direction.BOTH]
