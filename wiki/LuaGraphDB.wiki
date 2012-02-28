@@ -90,6 +90,8 @@ These traversals demonstrate the GraphDB's API, which can be grouped into:
     # NODE_DELTA: function that accesses two nodes and performs a delta on them which equates to a cost
     # RELATIONSHIP_COST: function that uses a Relationship property to represent a cost of traversing this relationship
 
+The functionality of these API arguments follows the principles outlined in this Neo4j [http://docs.neo4j.org/chunked/stable/tutorial-traversal-concepts.html chapter]. They explain it better than I can.
+
 At the end of the example, the query for _Users who have visited Washington D.C_ is made. The Indexing of Graph Relationships is accomplished via AlchemyDB's Pure Lua Function Index, which leaves the Index add/delete/updating to be done in Lua (in user defined routines), but allows the Index to be queries in SQL.
 
 {{{
