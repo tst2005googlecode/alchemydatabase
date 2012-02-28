@@ -99,7 +99,7 @@ Alchemy Database has embedded [http://www.lua.org/about.html LUA] <br/>
 Alchemy Database has embedded Lua in its C-server and C in its embedded Lua :)<br/>
 The speed of embedded LUA commands in Alchemy Database is impressive: simple LUA routines run at about the same speed as simple Alchemy look read/write-ops.
 
-===embedded LUA "alchemy()" function===
+=== LUA alchemy() function===
 The lua function "alchemy()" will call the Alchemy Database server internally as if it were a client call.<br/>
 Function to set a user's last_login and return his status
 {{{
