@@ -79,7 +79,7 @@ Once the relationships have been defined, the following two graph traversals are
   # Friends-Of-Friends who have seen my picture (w/ Breadth-First-Search & Depth-First-Search)
   # Friends-Of-Friends who have seen each other's picture AND seen my picture
 
-These traversals demonstrate the GraphDB's API, which can be grouped into:
+Traversal are guided by various functions that the user supplies to the traversal to tell it how to proceed. The traversals above demonstrate the GraphDB's API, which can be grouped into:
   * Breadth & Depth First Search Members:
     # EDGE_EVAL: function that decides if the graph traversal should continue by passing back different values [Evaluation.INCLUDE_AND_CONTINUE, Evaluation.INCLUDE_AND_PRUNE,Evaluation.EXCLUDE_AND_CONTINUE, Evaluation.EXCLUDE_AND_PRUNE]
     # EXPANDER: function that decides in which direction the graph traversal should go in: [Direction.OUTGOING,Direction.INCOMING,Direction.BOTH]
@@ -90,7 +90,12 @@ These traversals demonstrate the GraphDB's API, which can be grouped into:
     # NODE_DELTA: function that accesses two nodes and performs a delta on them which equates to a cost
     # RELATIONSHIP_COST: function that uses a Relationship property to represent a cost of traversing this relationship
 
-The functionality of these API arguments follows the principles outlined in this Neo4j [http://docs.neo4j.org/chunked/stable/tutorial-traversal-concepts.html chapter]. They explain it better than I can.
+The functionality of these API arguments follows the principles outlined in this Neo4j [http://docs.neo4j.org/chunked/stable/tutorial-traversal-concepts.html chapter]. They explain it better than I can, I *recommend* reading it. Here is an excerpt of the 3 most important concepts:
+{{{
+  Expanders — define what to traverse, typically in terms of relationships direction and type.
+  Uniqueness — visit nodes (relationships, paths) only once.
+  Evaluator — decide what to return and whether to stop or continue traversal beyond the current position. 
+}}}
 
 At the end of the example, the query for _Users who have visited Washington D.C_ is made. The Indexing of Graph Relationships is accomplished via AlchemyDB's Pure Lua Function Index, which leaves the Index add/delete/updating to be done in Lua (in user defined routines), but allows the Index to be queries in SQL.
 
@@ -176,4 +181,4 @@ Using the example of indexing the relationship: `users who have visited NYC` the
 The intended use case of the "Pure Lua Function Index" is to index data that is not relational, but is better indexed by a function.
 
 = MORE TO COME =
-Muy cansado, escribo mas manyana
+This is all brand new, so it is a work in progress, stay tuned :)
