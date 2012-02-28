@@ -4,7 +4,7 @@
 
 With release 0.2 AlchemyDB has switched to using a REST API. 
 
-The mechanism to turn a AlchemyDB/redis request into a HTTP request is pretty simple. The request "GET XYZ" is written in redis' protocol as `*2\r\n$3\r\nGET\r\n$1\r\nXYZ\r\n`. In the Rest API it is simply `http://server:ip/GET/XYZ`.
+The mechanism to turn a AlchemyDB/redis request into a HTTP request is pretty simple. The request "GET XYZ" is written in redis' protocol as `*2\r\n$3\r\nGET\r\n$1\r\nXYZ\r\n`. In the Rest API it is simply `http://server:ip/GET/XYZ`
 
 By default responses are returned in redis' protocol, (e.g. the response of "I AM XYZ" would be `$8\r\nI AM XYZ\r\n`). SQL SELECT responses can be written in custom protocols using AlchemyDB's [http://code.google.com/p/alchemydatabase/wiki/RestAPI?ts=1330441177&updated=RestAPI#Lua_Override_Response_Functions Lua Override Response Functions].
 
