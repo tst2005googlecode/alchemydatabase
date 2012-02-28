@@ -51,7 +51,7 @@ The function defines by `lua_output_cnames` handles the outputting of the column
 
 The function defined by `lua_output_row` is called for each ROW returned by the SELECT statement and each argument to the function is the value of a column (that was specified in the SELECT column list)
 
-*NOTE*: `lua_output_row` will later recieve a single argument, which is a lua-table w/ all the columns in it.
+*NOTE*: Both `lua_output_cnames` and `lua_output_row` will later recieve a single argument, which is a lua-table w/ all the column-names and columns-values in it. This is a more efficient means of passing data between C and Lua.
 
 Example Lua Override Response Functions can be found [https://github.com/JakSprats/Alchemy-Database/blob/master/redis_unstable/src/core/internal.lua#L241-261 here] and look like this:
 {{{
