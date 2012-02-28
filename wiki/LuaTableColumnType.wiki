@@ -1,7 +1,7 @@
 #labels Featured
 =Lua Table Column Type=
 
-*START WARNING->*(this functionality is brand new and only available from the "master" branch in [https://github.com/JakSprats/Alchemy-Database github]. It has been tested, but since it covers such an impossibly large test space, it has not been tested enough)*<-END WARNING*
+*START WARNING->*(this functionality is brand new and only available from the "master" or "release_0.2+" branch in [https://github.com/JakSprats/Alchemy-Database github]. It has been tested, but since it covers such an impossibly large test space, it has not been tested enough)*<-END WARNING*
 
 *NOTE*: it may be worth reading a broad overview of the extent to which Lua has been integrated into AlchemyDB [http://code.google.com/p/alchemydatabase/wiki/LuaIntegration here].
 
