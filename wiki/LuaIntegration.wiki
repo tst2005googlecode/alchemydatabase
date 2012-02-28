@@ -37,8 +37,8 @@
 ==AppStack==
   [http://code.google.com/p/alchemydatabase/wiki/AppStack ->] AlchemyDB has an integrated HTTP server, that can call lua functions that return HTML pages
 
-==Response Protocol functions==
-  Lua functions can be defined to reformat the responses of SQL SELECT calls, enabling a developer to come up w/ a customer line protocol (via REST).
+==Lua Override Response Functions ==
+  [http://code.google.com/p/alchemydatabase/wiki/RestAPI?ts=1330441177&updated=RestAPI#Lua_Override_Response_Functions ->] Lua functions can be defined to reformat the responses of SQL SELECT calls, enabling a developer to come up w/ a customer line protocol (via REST).
 
 
 ===NOTES===
