@@ -34,7 +34,7 @@ The following queries would use the previous indexes and return ['BILL' & 'Jane'
 }}}
 _In the author's humble opinion, Dot-Notation-Indexes should be viewed as slightly inferior when compared to normal indexes. It is recommended practice, that if you use a Dot-Notation-Index heavily, to break it out into a normal SQL index, which perform slightly better as the overhead of passing data between C & Lua is avoided and Dot-Notation-Indexes currently have limitations (e.g. no JOINs on DNIs)._
 
-This is the basic formula for how Lua was mixed into SQL in AlchemyDB. AlchemyDB also allows direct Lua access (via the `LUAFUNC` call) and Lua functions can call the function `redis(,,,,)` which makes requests back into the database ... so the integration of Lua is cyclical on all levels.
+This is the basic formula for how Lua was mixed into SQL in AlchemyDB. AlchemyDB also allows direct Lua access (via the `LUAFUNC` call) and Lua functions can call the function `alchemy(,,,,)` which makes requests back into the database ... so the integration of Lua is cyclical on all levels.
 
 This integration is best described w/ some examples, as it is a syntactic mixing of SQL, Lua Tables, and Lua functions.
 
