@@ -1,5 +1,7 @@
 = Alchemy's Graph Database =
 
+*START WARNING->*(this functionality is brand new and only available from the "master" or "release_0.2+" branch in [https://github.com/JakSprats/Alchemy-Database github]. It has been tested, but since it covers such an impossibly large test space, it has not been tested enough)*<-END WARNING*
+
 *NOTE*: it may be worth reading a broad overview of the extent to which Lua has been integrated into AlchemyDB [http://code.google.com/p/alchemydatabase/wiki/LuaIntegration here].
 
 A [http://en.wikipedia.org/wiki/Graph_database Graph Database] uses graph structures with nodes, edges, and properties to represent and store data. AlchemyDB modeled its Graph Database implementation after [http://neo4j.org/ Neo4j], the best of breed in GraphDBs (for an excellent intro to Neo4j, read [http://docs.neo4j.org/chunked/stable/graphdb-neo4j.html this]).
