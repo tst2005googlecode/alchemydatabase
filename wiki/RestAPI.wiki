@@ -36,7 +36,7 @@ Here is a list of AlchemyDB's SQL commands as REST API requests
 Alchemy's protocol is described [http://code.google.com/p/alchemydatabase/wiki/Protocol here], the mapping of arguments in this protocol to number of '/' in the REST API is 1-to-1
 
 == Lua Override Response Functions ==
-Response's default to being returned in redis' protocol but can be overridden by user defined functions.
+SQL SELECT response's default to being returned in redis' protocol but can be overridden by user defined functions.
 
 To activate and define AlchemyDB's Lua Override Response Functions, use the following 3 commands
 {{{
