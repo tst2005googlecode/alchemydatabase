@@ -16,12 +16,13 @@ To activate the REST API, use the following command
 Here are some example REST API Queries, for queries uploading data (e.g. INSERT) the post-body can be used as the final argument to the command
 {{{
   curl -D - 127.0.0.1:6379"/DROP/TABLE/rest"
-  curl -D - -d "(pk INT, fk INT, col TEXT)" 127.0.0.1:6379/CREATE/TABLE/rest/
+  curl -D - -d "(pk INT, fk INT, col TEXT)" 127.0.0.1:6379"/CREATE/TABLE/rest/"
   curl -D - 127.0.0.1:6379"/CREATE/INDEX/i_rest/ON/rest/(fk)"
   curl -D - -d "(,2,'TOPDAWG')/RETURN SIZE" "127.0.0.1:6379/INSERT/INTO/rest/VALUES/"
   curl -D - -d "(,2,'TEST')/RETURN SIZE" "127.0.0.1:6379/INSERT/INTO/rest/VALUES/"
   curl -D - 127.0.0.1:6379"/SCAN/*/FROM/rest"
 }}}
+_NOTE: the usage of double quotes above is to avoid bash expansion_
 
 Here is a list of AlchemyDB's SQL commands as REST API requests
   * `http://server:port/CREATE/TABLE/users/(pk INT, fk INT, name TEXT, age INT)`
