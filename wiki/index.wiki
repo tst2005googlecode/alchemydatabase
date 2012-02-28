@@ -6,7 +6,6 @@ The documentation is a work in progress.
   * Alchemy Database is VERY fast, scales well when joining or when using multiple indexes, check out [http://code.google.com/p/alchemydatabase/wiki/Benchmarks Benchmarks]
 
   * Starting at release 0.2, AlchemyDB uses a REST API, described [http://code.google.com/p/alchemydatabase/wiki/RestAPI here]
-
   * Still Want to write a client, or extend an existing one, best to have a firm grasp of the [http://code.google.com/p/alchemydatabase/wiki/Protocol Alchemy Database Protocol]
 
   * Development branch code, fork at will via [https://github.com/JakSprats/Alchemy-Database Github] - *RECOMMENDATION:* use github
