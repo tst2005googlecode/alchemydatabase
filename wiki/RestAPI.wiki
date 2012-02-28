@@ -47,7 +47,7 @@ To activate and define AlchemyDB's Lua Override Response Functions, use the foll
 }}}
 The function defined by `lua_output_start` is called before the response row's are output, w/ a single argument representing the number of rows in the response.
 
-The function defines by `lua_output_cnames` handles the outputting of the column names, and is called after `lua_output_start` and before the first call to `lua_output_row`
+The function defines by `lua_output_cnames` handles the outputting of the column names, each argument is a column-name, and is called after `lua_output_start` and before the first call to `lua_output_row`
 
 The function defined by `lua_output_row` is called for each ROW returned by the SELECT statement and each argument to the function is the value of a column (that was specified in the SELECT column list)
 
