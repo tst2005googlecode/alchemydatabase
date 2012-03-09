@@ -2,7 +2,7 @@
 = DRAFT =
 
 == Advanced Features ==
-  * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUA_Command LUA command] and DEEP lua embedding provides a turing complete language to manipulate data (far more flexible than RDBMS's procedural languages)
+  * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#LUA_Command LUA command] and [http://code.google.com/p/alchemydatabase/wiki/LuaIntegration DEEP lua embedding] provides a turing complete language to manipulate data (far more flexible than RDBMS's procedural languages)
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#CREATE_INDEX_via_BATCH CREATE INDEX via BATCH] allow the "CREATE INDEX" call to be called in batches. The Index is not active until it is completely built. This allows the non-blocking building of HUGE indexes.
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference#ORDER_BY_INDEX ORDER BY INDEX] store values sorted to another column in the table, instead of to the default PK. Very useful for dashboard updates as ORDER BY sorting is done (w/ zero overhead) at INSERT time. If you want a users last 10 tweets, this index returns them w/o buffering or sorting.
   * [http://code.google.com/p/alchemydatabase/wiki/CommandReference?ts=1317055830&updated=CommandReference#Complex_UPDATEs_via_lua-rewriting Complex Updates via Lua]. Complex updates are rewritten transparently & on-the-fly to LUA functions and then applied to all rows matching the where-cluase. This means UPDATE operations are limited in complexity by what you can program in LUA.
