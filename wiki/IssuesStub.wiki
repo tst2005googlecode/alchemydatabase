@@ -1,4 +1,0 @@
-
-
-=NOTE: Alchemy Database used to be "Redisql", the issues are being moved, but currently reside under =
-= http://code.google.com/p/redisql/issues/list =
