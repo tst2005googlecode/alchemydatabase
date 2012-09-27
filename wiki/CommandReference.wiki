@@ -330,6 +330,3 @@ The intended use-case for Prepared Statements in AlchemyDB is to give that last 
 redis supports commands to deal with many data structures, including (strings, sets, lists, sorted-sets, and hash tables)<br/>
 redis' project home page *[http://redis.io/ here]*<br/>
 Extensive documentation on redis commands can be found [http://redis.io/commands]<br/>
-<br/>
-The following is an IFRAME of redis' command reference page, complete w/ links describing each command<br/>
-<wiki:gadget url="http://www.allinram.info/alsosql/gadget2.xml"  border="0" width="1200" height="2900"/> 
